@@ -7,7 +7,7 @@ if (isset($_POST['email']) == true && empty($_POST['email']) == false) {
        echo"That is a valid email"; 
         }
     else{
-         echo"That is not a valid email!!!!";
+         echo"That is not a valid email!!!";
         }
        
     }
