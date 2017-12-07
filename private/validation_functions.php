@@ -43,7 +43,7 @@ function has_length_exactly($value, $exact) {
     $length = strlen($value);
     return $length == $exact;
 }
-
+        
 // has_length('abcd', ['min' => 3, 'max' => 5])
 // * validate string length
 // * combines functions_greater_than, _less_than, _exactly
@@ -93,16 +93,29 @@ function has_valid_email_format($value) {
     return preg_match($email_regex, $value) === 1;
 }
 
+
+
+
+
 // has_unique_event_menu_name('History')
 // * Validates uniqueness of events.menu_name
 // * For new records, provide only the menu_name.
 // * For existing records, provide current ID as second arugment
 //   has_unique_event_menu_name('History', 4)
 
+
+//----------------------------------------------------------------
+
+/// HAS UNIQUE NEED THIS FOR USERNAME AND EMAIL AND EVENT NAME 
+// AND EVENT ISNT IN THE SAME ROOM AS ANOTHER EVENT AT SAME TIME.
+
+//---------------------------------------------------------------
+
+/*
 function has_unique_event_menu_name($menu_name, $current_id = "0") {
     global $db;
 
-    $sql = "SELECT * FROM events ";
+    $sql = "SELECT * FROM event ";
     $sql .= "WHERE menu_name='" . db_escape($db, $menu_name) . "' ";
     $sql .= "AND id != '" . db_escape($db, $current_id). "'";
 
@@ -111,6 +124,5 @@ function has_unique_event_menu_name($menu_name, $current_id = "0") {
     mysqli_free_result($event_set);
 
     return $event_count === 0;
-}
-
+}*/
 ?>
