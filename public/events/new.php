@@ -3,26 +3,35 @@ require_once('../../private/initialize.php');
 
 if (is_post_request()) {
     $event = [];
-    $event['subject_id'] = $_POST['subject_id'] ?? '';
-    $event['menu_name'] = $_POST['menu_name'] ?? '';
-    $event['position'] = $_POST['position'] ?? '';
-    $event['visible'] = $_POST['visible'] ?? '';
-    $event['content'] = $_POST['content'] ?? '';
+    $event['event_id'] = $_POST['event_id'] ?? '';
+    $event['event_name'] = $_POST['event_name'] ?? '';
+    $event['host_user_id'] = $_POST['host_user_id'] ?? '';
+    $event['event_end'] = $_POST['event_description'] ?? '';
+    $event['total_tickets'] = $_POST['total_tickets'] ?? '';
+    $event['room_id'] = $_POST['room_id'] ?? '';
+    $event['event_category'] = $_POST['event_category'] ?? '';
+    $event['event_start'] = $_POST['event_start'] ?? '';
+    $event['ticket_sale_end'] = $_POST['ticket_sale_end'] ?? '';
+
 
     $result = insert_event($event);
     if ($result === true) {
         $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/events/host_pages/show.php?id=' . $new_id));
+        redirect_to(url_for('/events/show.php?id=' . $new_id));
     } else {
         $errors = $result;
     }
 } else {
     $event = [];
-    $event['subject_id'] = '';
-    $event['menu_name'] = '';
-    $event['position'] = '';
-    $event['visible'] = '';
-    $event['content'] = '';
+    $event['event_id'] = '';
+    $event['event_name'] = '';
+    $event['host_user_id'] = '';
+    $event['event_end'] = '';
+    $event['total_tickets'] = '';
+    $event['room_id'] = '';
+    $event['event_category'] = '';
+    $event['event_start'] = '';
+    $event['ticket_sale_end'] = '';
 }
 
 $event_set = find_all_events();
@@ -30,19 +39,19 @@ $event_count = mysqli_num_rows($event_set) + 1;
 mysqli_free_result($event_set);
 ?>
 
-<?php $page_title = 'Create Page'; ?>
+<?php $page_title = 'Create Event'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
 
-    <a class="back-link" href="<?php echo url_for('/events/host_pages/index.php'); ?>">&laquo; Back to List</a>
+    <a class="back-link" href="<?php echo url_for('/index.php'); ?>">&laquo; Back to Homee</a>
 
     <div class="event new">
         <h1>Create Page</h1>
 
         <?php echo display_errors($errors); ?>
 
-        <form action="<?php echo url_for('/events/host_pages/new.php'); ?>" method="post">
+        <form action="<?php echo url_for('/events/new.php'); ?>" method="post">
             <dl>
                 <dt>Subject</dt>
                 <dd>
@@ -63,8 +72,9 @@ mysqli_free_result($event_set);
             </dl>
             <dl>
                 <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="<?php echo 
-                h($event['menu_name']); ?>" /></dd>
+                <dd><input type="text" name="menu_name" value="<?php echo
+                        h($event['menu_name']);
+                        ?>" /></dd>
             </dl>
             <dl>
                 <dt>Position</dt>
@@ -87,10 +97,10 @@ mysqli_free_result($event_set);
                 <dd>
                     <input type="hidden" name="visible" value="0" />
                     <input type="checkbox" name="visible" value="1"<?php
-                        if ($event['subject_id'] == "1") {
-                            echo " checked";
-                        }
-                        ?>/>
+                    if ($event['subject_id'] == "1") {
+                        echo " checked";
+                    }
+                    ?>/>
                 </dd>
             </dl>
             <dl>

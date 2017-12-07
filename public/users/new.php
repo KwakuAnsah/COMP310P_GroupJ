@@ -5,15 +5,19 @@ if (is_post_request()) {
 
     // Handle form values
 
-    $subject = [];
-    $subject['menu_name'] = $_POST['menu_name'] ?? '';
-    $subject['position'] = $_POST['position'] ?? '';
-    $subject['visible'] = $_POST['visible'] ?? '';
+    $user = [];
+    $user['password'] = $_POST['password'] ?? '';
+    $user['first_name'] = $_POST['last_name'] ?? '';
+    $user['last_name'] = $_POST['last_name'] ?? '';
+    $user['age'] = $_POST['age'] ?? '';
+    $user['username'] = $_POST['username'] ?? '';
+    $user['address_id'] = $_POST['address_id'] ?? '';
+    $user['email'] = $_POST['email'] ?? '';
 
-    $result = insert_subject($subject);
+    $result = insert_user($user);
     if ($result === true) {
         $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/events/subjects/show.php?id=' . $new_id));
+        redirect_to(url_for('/users/show.php?id=' . $new_id));
     } else {
         $errors = $result;
     }
@@ -21,58 +25,62 @@ if (is_post_request()) {
     // display the blank form
 }
 
-$subject_set = find_all_subjects();
-$subject_count = mysqli_num_rows($subject_set) + 1;
-mysqli_free_result($subject_set);
-
-
-$subject[] = $subject["position"] = $subject_count
+$user_set = find_all_users();
+$user_count = mysqli_num_rows($user_set) + 1;
+mysqli_free_result($user_set);
 ?>
 
-<?php $page_title = 'Create Subject'; ?>
+<?php $page_title = 'Sign Up'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
 
-    <a class="back-link" href="<?php
-    echo
-    url_for('/events/subjects/index.php');
-    ?>">&laquo; Back to List</a>
-
-    <div class="subject new">
-        <h1>Create Subject</h1>
-<?php echo display_errors($errors); ?>
-        <form action="<?php echo url_for('/events/subjects/new.php'); ?>"
+    <div class="user new">
+        <h1>Create User</h1>
+        <?php echo display_errors($errors); ?>
+        <form action="<?php echo url_for('/users/new.php'); ?>"
               method="post">
             <dl>
-                <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="" /></dd>
+                <dt>First Name</dt>
+                <dd><input type="text" name="first_name" value="" /></dd>
             </dl>
             <dl>
-                <dt>Position</dt>
-                <dd>
-                    <select name="position">
-                        <?php
-                        for ($i = 1; $i <= $subject_count; $i++) {
-                            echo "<option value=\"{$i}\"";
-                            if ($subject["position"] == $i) {
-                                echo " selected";
-                            }
-                            echo ">{$i}</option>";
-                        }
-                        ?>
-                    </select>
-                </dd>
+                <dt>Last Name</dt>
+                <dd><input type="text" name="last_name" value="" /></dd>
             </dl>
             <dl>
-                <dt>Visible</dt>
-                <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1" />
-                </dd>
+                <dt>Email</dt>
+                <dd><input type="text" name="email" value="" /></dd>
             </dl>
+
+            <dl>
+                <dt>Username</dt>
+                <dd><input type="text" name="username" value="" /></dd>
+            </dl>
+
+            <dl>
+                <dt>Password</dt>
+                <dd><input type="text" name="password" value="" /></dd>
+            </dl>
+            <dl>
+                <dt>Password</dt>
+                <dd><input type="text" name="password_check" value="" /></dd>
+            </dl>
+            <dl>
+                <dt>Age</dt>
+                <dd><input type="text" name="age" value="" /></dd>
+            </dl>            
+            <dl>
+                <dt>Country</dt>
+                <dd><input type="text" name="country" value="" /></dd>
+            </dl>            
+            <dl>
+                <dt>City</dt>
+                <dd><input type="text" name="city" value="" /></dd>
+            </dl>
+
             <div id="operations">
-                <input type="submit" value="Create Subject" />
+                <input type="submit" value="Create Account" />
             </div>
         </form>
 
