@@ -6,6 +6,10 @@ require_once('../private/initialize.php');
 
 
 
+
+
+
+
 <?php $page_title = 'MovieTime - About Us'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
