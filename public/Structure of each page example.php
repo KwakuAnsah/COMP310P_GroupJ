@@ -7,17 +7,24 @@ Each element containing inline style should be added to external stylesheet-->
 
 
 
-<!--Insert head element-->
-
-<!-------------------------------------------------------------
-
------------------------------------------------------------
-
-------------------------------------------------------------->
+<html lang="eng">
+    <head>
+        <title> MovieTime</title>
+        
+<!--        Adds bootstrap libary and jQuery and javascript-->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device width, intial-scale=1">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
     
-    
+    <body>
           <div class="container text-center "> 
+        
             <h1 style="display: inline; font-size:500%;" >MovieTime     </h1>
+            
+<!--            <img src="new_logo.jpg" alt="image of logo" height="150px" style="display: inline;">-->
          </div>
         
         
@@ -63,6 +70,6 @@ Each element containing inline style should be added to external stylesheet-->
          
              
        
-
+    </body>
     
-
+</html>
