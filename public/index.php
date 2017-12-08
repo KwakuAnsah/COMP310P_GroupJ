@@ -38,11 +38,11 @@
             <div class="col-sm-8 text-left"> 
 
                 <br>
-                <br>
+                <br> 
                 <br>
                 <br>
               <div class="container-fluid "> 
-                        <h1 class=" text-center " style="font-weight: lighter">  
+                        <h1 class=" text-center" style="font-weight: lighter">  
                             Join the Biggest Film Community In the World. 
                         </h1>
               </div>
@@ -101,22 +101,28 @@
                                                                                                         </div>
                                                                                                 </form>
                                                                                                 <form id="register-form" action="" method="post" role="form" style="display: none;">
-                                                                                                        <div class="form-group">
-                                                                                                                <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                                                                                                         <div class="form-group">
+                                                                                                             <input type="text" name="first_name" id="first_name" tabindex="1" class="form-control" placeholder="First name">
                                                                                                         </div>
                                                                                                         <div class="form-group">
-                                                                                                                <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                                                                                             <input type="text" name="last_name" id="last_name" tabindex="2" class="form-control" placeholder="Last name">
                                                                                                         </div>
                                                                                                         <div class="form-group">
-                                                                                                                <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                                                                                                <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username" value="">
                                                                                                         </div>
                                                                                                         <div class="form-group">
-                                                                                                                <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                                                                                                                <input type="email" name="email" id="email" tabindex="3" class="form-control" placeholder="Email Address" value="">
+                                                                                                        </div>
+                                                                                                        <div class="form-group">
+                                                                                                                <input type="password" name="password" id="password" tabindex="4" class="form-control" placeholder="Password">
+                                                                                                        </div>
+                                                                                                        <div class="form-group">
+                                                                                                                <input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirm Password">
                                                                                                         </div>
                                                                                                         <div class="form-group">
                                                                                                                 <div class="row">
                                                                                                                         <div class="col-sm-6 col-sm-offset-3">
-                                                                                                                                <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                                                                                                                                <input type="submit" name="register-submit" id="register-submit" tabindex="6" class="form-control btn btn-register" value="Register Now">
                                                                                                                         </div>
                                                                                                                 </div>
                                                                                                         </div>
