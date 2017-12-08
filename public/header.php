@@ -29,9 +29,9 @@
                     <li><a href="#">What's on</a></li>
                     <li><a href="#">Locations</a></li> 
                     <li><a href="#">Film Genres </a></li>
-                     <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li>
-                    <li><a href="#">Page 3</a></li>
+                     <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Search</a></li>
                     
                     
                     
