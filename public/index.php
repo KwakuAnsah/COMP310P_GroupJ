@@ -17,7 +17,7 @@
 <!--    CSS to style sidenav-->
         <link rel="stylesheet for sidenav" href="index sidenav CSS.css">
 <!--    JS for Login/register form -- async used so script is executed as soon as it's downloaded, without blocking the browser in the meantime.-->
-        <script type="text/javascript" src="index-login script.js" async></script>
+        <script type="text/javascript" src="index-login script.js" async></script>       
     </head>
 
     <body>
@@ -118,6 +118,12 @@
                                                                                                         </div>
                                                                                                         <div class="form-group">
                                                                                                                 <input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirm Password">
+                                                                                                        </div>
+                                                                                                    
+<!--                                                                                                    Doesn't work-->
+                                                                                                        <div class="form-group">
+                                                                                                           <select id="countries_states1" class="input-medium bfh-countries" data-country="US"></select>
+                                                                                                           <select class="input-medium bfh-states" data-country="countries_states1"></select>
                                                                                                         </div>
                                                                                                         <div class="form-group">
                                                                                                                 <div class="row">
