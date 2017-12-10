@@ -4,15 +4,15 @@
     <head>
         <?php require_once('../private/initialize.php'); ?>
         <?php $page_title = 'MovieTime - About Us'; ?>
-        
+
         <!-- old header file -->
         <!-- <?php include(SHARED_PATH . '/header.php'); ?> -->
-        
+
         <?php include "bootstrap.php"; ?>
 
         <!-- CSS stylesheet for About us page-->    
         <link href="stylesheets/about_contact_us_style.css" rel="About us stylesheet">
-     
+
         <style>
             .well-lg {
                 background-color: rgba(0, 0, 0, 0.5);
@@ -22,6 +22,10 @@
     </head>
 
     <body>
+
+
+        <?php $page_title = 'MovieTime - About Us'; ?>
+        <?php include(SHARED_PATH . '/header.php'); ?>
         <?php include "header.php"; ?> 
 
         <div class="container">
