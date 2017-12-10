@@ -85,7 +85,6 @@ mysqli_free_result($subject_set);
         </form>
 
     </div>
-TEST
 
 </div>
 
