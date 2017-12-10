@@ -1,6 +1,7 @@
+<br>
+<br>
 <footer>
-  &copy; <?php echo date('Y'); ?> MovieTime 
-  <a href="<?php echo url_for('/about_us.php'); ?>">About Us</a> <- About us is here & needs styling
+  &copy; <?php echo date('Y'); ?> MovieTime   
 </footer>
 
 </body>

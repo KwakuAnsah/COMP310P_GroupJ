@@ -34,6 +34,7 @@ mysqli_free_result($Event_set);
 ?>
 
 <?php $page_title = 'Edit Event'; ?>
+
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
