@@ -12,7 +12,6 @@
 
         <!-- CSS stylesheet for Contact us page-->
         <link href="stylesheets/about_contact_us_style.css" rel="About us stylesheet">
-
     </head>
 
     <body>
