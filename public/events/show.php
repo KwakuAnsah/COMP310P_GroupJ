@@ -18,7 +18,7 @@
         <?php include(SHARED_PATH . '/header.php'); ?>
         <div class="container">
             <div id="content">
-                <a class="back-link" href="<?php echo url_for('/events/host_pages/index.php'); ?>">&laquo; Back to List</a>
+                <a class="back-link" href="<?php echo url_for('/search_results.php'); ?>">&laquo; Back to List</a>
                 <div class="event show">
                     <h1><?php echo h($event['event_name']); ?></h1>
                     <div class="attributes"> 
