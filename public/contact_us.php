@@ -6,7 +6,7 @@
         <?php $page_title = 'MovieTime - Contact Us'; ?>
 
         <!-- old header file -->
-        <!-- <?php include(SHARED_PATH . '/header.php'); ?> -->
+        <!-- <?php //include(SHARED_PATH . '/header.php'); ?> -->
 
         <?php include "bootstrap.php"; ?>
 
