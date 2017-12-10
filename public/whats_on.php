@@ -10,7 +10,7 @@
 
         <?php include "bootstrap.php";?>
         <!--    CSS to style sidenav-->
-        <link rel="stylesheet for sidenav" href="whats_on CSS.css">  
+        <link rel="stylesheet for sidenav & whats on page" href="whats_on CSS.css">  
     
     </head>
     
@@ -31,7 +31,7 @@
                 
           <!--          Table with data-->
                     
-                    <table id="myTable">  
+                    <table class='table table-striped' id="myTable" >  
                             <thead>  
                               <tr>  
                                 <th>Event Name</th>  
