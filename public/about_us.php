@@ -72,9 +72,9 @@
             <div>
                 <p class="larger-text aboutUs">Or <a href="<?php echo url_for('/index.php'); ?>">sign up</a>, and join the MovieTime community today!</p>
             </div>
-            <div class="sign-up">
+            <!--<div class="sign-up">
                 <input type="submit" value="Sign Up" name="sign_up_button" disabled="disabled" />
-            </div>
+            </div>-->
         </div>
         <br>
         <br>
