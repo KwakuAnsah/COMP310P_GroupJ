@@ -47,7 +47,6 @@ $user = find_user_by_id($id);
             <dd><?php echo h($user['address_id']) ?> - Link to Address info to be completed</dd>
         </dl>
     </div>
-TEST2
 
 
   </div>
