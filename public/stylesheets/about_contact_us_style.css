@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : Jenny
 */
 
-<!--About us page-->
+/* * * About us page * * */
 h1.heading-centre {
     text-align: center;
 }
@@ -30,7 +30,7 @@ p.larger-text {
     text-align: center;
 }
 
-<!--Contact us page-->
+/* * * Contact us page * * */
 h1.heading-left {
     text-align: left;
     font-size: 40px;
