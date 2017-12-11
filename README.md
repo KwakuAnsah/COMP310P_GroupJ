@@ -25,3 +25,42 @@ Event pages
 5) event show page - php queries to display events
 6) event ratings page - see 'event show page', also store their ratings
 7)
+
+Query Functions to write: 
+
+function find_booking_by_id($id) {
+function validate_booking($booking) {
+function insert_booking($booking) {
+function update_booking($booking) {
+function delete_booking($booking_id) {
+
+function find_rating_by_id($id) {
+function validate_rating($booking) {
+function insert_rating($booking) {
+function update_rating($booking) {
+function delete_rating($booking_id) {
+
+
+WIRE FRAME CHECKLIST
+To Do:
+What's On - Only show future events & Styling & add image link 
+Locations - Looks liek whats on page and columns are different and have pictures
+Profile page = users/show.php - need styling & host rating details and review details
+Header - profile link & create event
+
+
+
+
+Extras
+What's On - add image link 
+About Us - Add Team Photo
+Header -  create event redirect to sign in redirect to create event
+User page - host details on profile? or sep page?
+search results - tick box filter
+
+
+
+
+Questions
+
+do we have to alert that email sent
