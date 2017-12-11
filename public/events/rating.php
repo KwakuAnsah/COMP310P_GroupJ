@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="eng">
-
-    <head>
-        <?php
-        require_once('../../private/initialize.php');
-// $id = isset($_GET['id']) ? $_GET['id'] : '1';
+<?php 
+       require_once('../../private/initialize.php');
+   
         $id = $_GET['event_id'] ?? '1'; // PHP > 7.0
         $event = find_event_by_id($id);
 // this enables us to display the event info
-// further down the webevent
+// further down the webevent 
         
         if (is_post_request()) {
             $rating = [];
@@ -35,16 +31,15 @@
             $rating['review_text'] = '';
             $rating['event_id'] = '';
             $rating['user_id(rater)'] = '';
+        }
         ?>
         <?php $page_title = 'Show Events Page'; ?>
-      
+      <!-- <head>-->
         <!-- CSS stylesheet for Events pages-->
         <!-- <link href="../../public/stylesheets/events_style.css" rel="Style for events pages"> -->
-    </head>
+   <!-- </head> -->
     
-    
-    
-    <body>
+  
     <!-- * * * * * ADD CORRECT HEADER FILE? * * * * *-->
         <?php include(SHARED_PATH . '/header.php'); ?>
         <div class="container">
@@ -119,6 +114,5 @@
                 </div>
             </div>
         </div>
-    </body>
-    
+
     <?php include(SHARED_PATH . '/footer.php'); ?>
