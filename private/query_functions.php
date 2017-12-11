@@ -362,7 +362,7 @@ function find_booking_by_id($id) {
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
-    $event = mysqli_fetch_assoc($result);
+    $booking = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
     return $booking; //returns an associative array
 }
