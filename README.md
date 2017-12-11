@@ -19,3 +19,22 @@ We have decided to do an event management system for Musical Concert events.
 4) Create - booking confirmation page
 5) Create- create event page
 6) Create Event page
+7) Change search bar.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**** Questions for TA ****************
+1) How do I create a dropdown list showing countries and cities where cities shown depend on country chosen

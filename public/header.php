@@ -41,7 +41,7 @@ Each element containing inline style should be added to external stylesheet-->
                         </ul>
                         
 <!--                        Form to submit  user search -->
-                         <form class="navbar-form navbar-left" action="/action_page.php" style="text-align:center; position: relative; display: inline-block; left: 230px">
+                        <form class="navbar-form navbar-left" action="/action_page.php" style="text-align:center; position: relative; display: inline-block; left: 230px">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search" name="search">
                                       <div class="input-group-btn">

@@ -17,8 +17,8 @@
             <div class=" content">
                 <br> 
                 <h1> Film Genres</h1>
-                                  
-                    <table id="myTable1"> 
+                                 
+                    <table id="my_Table1"> 
                             <tbody>  
                               <tr>  
                                 <td>
@@ -60,7 +60,7 @@
                     </table> 
                 <br>
                 <br>
-                    <table id="myTable2"> 
+                    <table id="my_Table2"> 
                             <tbody>  
                               <tr>  
                                 <td>
@@ -104,7 +104,7 @@
                 
                 <br>
                 <br>
-                    <table id="myTable3"> 
+                    <table id="my_Table3"> 
                             <tbody>  
                               <tr>  
                                 <td>
