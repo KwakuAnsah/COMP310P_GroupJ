@@ -10,8 +10,10 @@
         <!-- CSS stylesheet for Bookings pages-->
         <link href="../stylesheets/bookings_style.css" rel="Bookings stylesheet">
 
+        <!-- Our page header -->
         <?php include(SHARED_PATH . '/header.php'); ?>
 
+        <!-- For obtaining users' booking ID and email -->
         <?php
         $id = $_GET['booking_id'] ?? '1';
         $booking = find_booking_by_id($id);
@@ -19,9 +21,6 @@
         $user_id = $_GET['user_id'] ?? '1'; // PHP > 7.0
         $user = find_user_by_id($user_id);
         ?>
-
-
-
     </head>
 
     <body>
@@ -67,8 +66,4 @@
         <br>
         <br>
         <br>
-
-
-
-
     </body>
