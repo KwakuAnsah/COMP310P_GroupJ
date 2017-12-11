@@ -3,13 +3,12 @@ if (!isset($page_title)) {
     $page_title = 'MovieTime';
 }
 ?>
-
 <!doctype html>
 
 <html lang="en">
     <head>
         <title><?php echo h($page_title); ?></title>
-        <meta charset="utf-8">
+        <?php require_once('../bootstrap.php');?>
 
         <!-- Stylesheet -->
         <?php
@@ -27,7 +26,6 @@ if (!isset($page_title)) {
         }
         ?>
 
-
         <!-- Script -->
         <?php
         if ($script == 'event') {
@@ -36,8 +34,6 @@ if (!isset($page_title)) {
             url_for('index-login script.js') . '" async></script>';
         }
         ?>
-
-
 
     </head>
 

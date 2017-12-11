@@ -47,7 +47,7 @@ What's On - Only show future events & Styling & add image link
 Locations - Looks liek whats on page and columns are different and have pictures
 Profile page = users/show.php - need styling & host rating details and review details
 Header - profile link & create event
-
+Create event & profile.
 
 
 
@@ -60,8 +60,11 @@ search results - tick box filter
 
 
 
+**** Questions for TA ****************
+1) How do I create a dropdown list showing countries and cities where cities shown depend on country chosen
+2) How the hell are we going to add  cookie??
+3) 
 
-Questions
 
 do we have to alert that email sent
 3) Create - Booking page
@@ -77,17 +80,3 @@ Header
 
 
 
-
-
-
-
-
-
-
-
-
-
-**** Questions for TA ****************
-1) How do I create a dropdown list showing countries and cities where cities shown depend on country chosen
-2) How the hell are we going to add  cookie??
-3) 
