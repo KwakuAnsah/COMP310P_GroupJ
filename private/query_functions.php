@@ -341,7 +341,25 @@ function delete_user($id) {
     }
 }
 
+// Countries
 
+function find_all_country_names() {
+    global $db;
+
+    $sql = "SELECT country_name FROM country ";
+    
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+function find_all_countries() {
+    global $db;
+
+    $sql = "SELECT * FROM country ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
 
 ?>
 
