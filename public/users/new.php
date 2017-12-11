@@ -9,7 +9,7 @@ if (is_post_request()) {
     $user['password'] = $_POST['password'] ?? '';
     $user['first_name'] = $_POST['last_name'] ?? '';
     $user['last_name'] = $_POST['last_name'] ?? '';
-    $user['date_of_birth'] = $_POST['age'] ?? '';
+    $user['date_of_birth'] = $_POST['date_of_birth'] ?? '';
     $user['username'] = $_POST['username'] ?? '';
     $user['address_id'] = $_POST['address_id'] ?? '';
     $user['email'] = $_POST['email'] ?? '';
