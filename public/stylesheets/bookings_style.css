@@ -10,7 +10,7 @@ and open the template in the editor.
 
 
 
-/* * * Booking Confirmation page * * */
+/* * * BOOKING CONFIRMATION PAGE * * */
 
 h1.heading-centre {
     text-align: center;
@@ -25,4 +25,11 @@ p.message {
 .well-lg {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
+}
+/* For button links */
+.view {
+    text-align: center;
+    border-radius: 10px;
+    width: 350px;
+    background-color: rgba(0, 0, 0, 0.1)
 }
