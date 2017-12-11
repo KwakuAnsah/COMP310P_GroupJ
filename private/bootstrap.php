@@ -4,8 +4,6 @@ THIS IS NOT THE UPDATED VERSION. UPDATE ME
 
 
 -->
-<!DOCTYPE html>
-
 
 <!--        Adds bootstrap library and jQuery and javascript-->
         <meta charset="utf-8">
