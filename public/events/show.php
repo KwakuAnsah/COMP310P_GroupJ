@@ -4,11 +4,10 @@
     <head>
         <?php
         require_once('../../private/initialize.php');
-// $id = isset($_GET['id']) ? $_GET['id'] : '1';
+
         $id = $_GET['event_id'] ?? '1'; // PHP > 7.0
         $event = find_event_by_id($id);
-// this enables us to display the event info
-// further down the webevent
+
         ?>
         <?php $page_title = 'Show Events Page'; ?>
     </head>
