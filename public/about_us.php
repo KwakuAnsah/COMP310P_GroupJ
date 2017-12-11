@@ -5,9 +5,6 @@
         <?php require_once('../private/initialize.php'); ?>
         <?php $page_title = 'MovieTime - About Us'; ?>
 
-        <!-- old header file -->
-        <!-- <?php include(SHARED_PATH . '/header.php'); ?> -->
-
         <?php include "bootstrap.php"; ?>
 
         <!-- CSS stylesheet for About us page-->    
@@ -22,10 +19,9 @@
     </head>
 
     <body>
-
-
         <?php $page_title = 'MovieTime - About Us'; ?>
-        <?php include(SHARED_PATH . '/header.php'); ?>
+        <!-- DECIDE WHICH HEADER FILE -->
+        <?php //include(SHARED_PATH . '/header.php'); ?>
         <?php include "header.php"; ?> 
 
         <div class="container">
