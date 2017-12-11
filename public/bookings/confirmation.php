@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-3">
-                <a href="../../public/index.php" class="view btn btn-lg btn-default">Continue Browsing</a>
+                <a href="../../public/whats_on.php" class="view btn btn-lg btn-default">Continue Browsing</a>
             </div>
             <div class="col-md-2"></div>
         </div>
