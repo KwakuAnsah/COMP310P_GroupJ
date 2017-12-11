@@ -4,6 +4,7 @@ require_once('../private/initialize.php');
 $page_title = 'MovieTime - Home Page';
 $stylesheet = 'index';
 $script = 'index';
+    
 
 ?>
 <?php include(SHARED_PATH . '/header.php'); ?>

@@ -9,7 +9,7 @@ if (is_post_request()) {
     $user['password'] = $_POST['password'] ?? '';
     $user['first_name'] = $_POST['last_name'] ?? '';
     $user['last_name'] = $_POST['last_name'] ?? '';
-    $user['age'] = $_POST['age'] ?? '';
+    $user['date_of_birth'] = $_POST['age'] ?? '';
     $user['username'] = $_POST['username'] ?? '';
     $user['address_id'] = $_POST['address_id'] ?? '';
     $user['email'] = $_POST['email'] ?? '';
@@ -67,8 +67,8 @@ mysqli_free_result($user_set);
                 <dd><input type="text" name="password_check" value="" /></dd>
             </dl>
             <dl>
-                <dt>Age</dt>
-                <dd><input type="text" name="age" value="" /></dd>
+                <dt>Date of Birth</dt>
+                <dd><input type="date" name="date_of_birth" value="" /></dd>
             </dl>            
             <dl>
                 <dt>Country</dt>

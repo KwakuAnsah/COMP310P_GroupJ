@@ -1,90 +1,114 @@
 <?php
 require_once('../../private/initialize.php');
 
-if (!isset($_GET['id'])) {
-    redirect_to(url_for('/events/subjects/index.php'));
+if (!isset($_GET['user_id'])) {
+    redirect_to(url_for('/index.php'));
 }
-$id = $_GET['id'];
+$user_id = $_GET['user_id'];
 if (is_post_request()) {
 
-    // Handle form values sent by new.php
+    // Handle form values sent by /users/new.php
 
-    $subject = [];
-    $subject['id'] = $id;
-    $subject['menu_name'] = $_POST['menu_name'] ?? '';
-    $subject['position'] = $_POST['position'] ?? '';
-    $subject['visible'] = $_POST['visible'] ?? '';
+    $user = [];
+    $user['user_id'] = $user_id;
+    $user['password'] = $_POST['password'] ?? '';
+    $user['first_name'] = $_POST['last_name'] ?? '';
+    $user['last_name'] = $_POST['last_name'] ?? '';
+    $user['date_of_birth'] = $_POST['date_of_birth'] ?? '';
+    $user['username'] = $_POST['username'] ?? '';
+    $user['address_id'] = $_POST['address_id'] ?? '';
+    $user['email'] = $_POST['email'] ?? '';
 
-    $result = update_subject($subject);
+
+    $result = update_user($user);
     if ($result === true) {
-        redirect_to(url_for('/events/subjects/show.php?id=' . $id));
+        redirect_to(url_for('/users/show.php?id=' . $user_id));
     } else {
         $errors = $result;
         //var_dump($errors); for debugging
     }
 } else {
 
-    $subject = find_subject_by_id($id);
+    $user = find_user_by_id($user_id);
 }
-$subject_set = find_all_subjects();
-$subject_count = mysqli_num_rows($subject_set);
-mysqli_free_result($subject_set);
+//Count users
+$user_set = find_all_users();
+$user_count = mysqli_num_rows($user_set);
+mysqli_free_result($user_set);
 ?>
 
-<?php $page_title = 'Edit Subject'; ?>
+<?php $page_title = 'Edit Account Details'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
 
-    <a class="back-link" href="<?php echo url_for('/events/subjects/index.php'); ?>
-       ">&laquo; Back to List</a>
+    <a class="back-link" href="<?php
+    echo
+    url_for('/users/show.php?user_id=' . $user_id);
+    ?>">&laquo; Back to Profile</a>
 
-    <div class="subject edit">
-        <h1>Edit Subject</h1>
+    <div class="user edit">
+        <h1>Edit Account Details</h1>
 
         <?php echo display_errors($errors); ?>
 
         <form action="<?php
-        echo url_for('/events/subjects/edit.php?id='
-                . h(u($id)));
+        echo url_for('/users/edit.php?user_id='
+                . h(u($user_id)));
         ?>" method="post">
             <dl>
-                <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="<?php echo h($subject['menu_name']); ?>" /></dd>
+                <dt>First Name</dt>
+                <dd><input type="text" name="first_name" value="<?php echo h($user['first_name']); ?>" /></dd>
             </dl>
             <dl>
-                <dt>Position</dt>
-                <dd>
-                    <select name="position">
-                        <?php
-                        for ($i = 1; $i <= $subject_count; $i++) {
-                            echo "<option value=\"{$i}\"";
-                            if ($subject["position"] == $i) {
-                                echo " selected";
-                            }
-                            echo ">{$i}</option>";
-                        }
-                        ?>
-                    </select>
-                </dd>
+                <dt>Last Name</dt>
+                <dd><input type="text" name="last_name" value="<?php echo h($user['last_name']); ?>" /></dd>
             </dl>
             <dl>
-                <dt>Visible</dt>
-                <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1"<?php
-                    if ($subject['visible'] == "1") {
-                        echo " checked";
-                    }
-                    ?> />
-                </dd>
+                <dt>Email</dt>
+                <dd><input type="text" name="email" value="<?php echo h($user['email']); ?>" /></dd>
             </dl>
-            <div id="operations">
-                <input type="submit" value="Edit Subject" />
-            </div>
-        </form>
+
+            <dl>
+                <dt>Username</dt>
+                <dd><input type="text" name="username" value="<?php echo h($user['username']); ?>" /></dd>
+            </dl>
+
+            <dl>
+                <dt>Password</dt>
+                <dd><input type="text" name="password" value="" /></dd>
+            </dl>
+            <dl>
+                <dt>Password</dt>
+                <dd><input type="text" name="password_check" value="" /></dd>
+            </dl>
+            <dl>
+                <dt>Date of Birth</dt>
+                <dd><input type="date" name="date_of_birth" value='<?php echo h($user['date_of_birth']); ?>' /></dd>
+            </dl>            
+            <dl>
+                <dt>Country</dt>
+                <dd><input type="text" name="country" value="TO LINK ADDRESS" /></dd>
+            </dl>            
+            <dl>
+                <dt>City</dt>
+                <dd><input type="text" name="city" value="TO LINK ADDRESS" /></dd>
+            </dl>
+
 
     </div>
+
+    <div id="operations">
+        <input type="submit" value="Edit User" />
+    </div>
+
+
+</form>
+<div>
+    <a class="action" href="<?php
+       echo url_for('/users/delete.php?user_id=' . h(u($user['user_id'])));
+       ?>">Delete your account</a>
+</div>
 
 </div>
 
