@@ -16,8 +16,7 @@ if (!isset($page_title)) {
         <!-- Stylesheet -->
         <?php
         if ($page == 'show.php') {
-//            This style sheet isn't linking
-            echo '<link rel="stylesheet for sidenav"  href=' . url_for('/public/index sidenav CSS.css') . '/>';
+            echo '<link rel="stylesheet" media="all" href=' . url_for('/stylesheets/events_style.css') . '/>';
             
         } elseif ($stylesheet == 'index') {
             echo '<link rel="stylesheet" media="all" href="' .

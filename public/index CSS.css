@@ -13,6 +13,7 @@ and open the template in the editor.
 body {
     padding-top: 0px;
 }
+/* Styles login/register form*/
 .panel-login {
     border-color: #ccc;
 	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
@@ -109,7 +110,7 @@ body {
 	background-color: #1CA347;
 	border-color: #1CA347;
 }
-    
+/* Styles images   */
 .img {
             display: block;
             max-width: 100%;

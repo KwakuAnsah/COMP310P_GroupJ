@@ -15,11 +15,12 @@ We have decided to do an event management system for Musical Concert events.
 
 User pages
 1) Finish User Profile Page - Kwaku (user show)
-2) Create - Host Profile page - Kwaku (
+2) Create - Host Profile page - Kwaku ()
 
 Booking pages
 3) booking confirmation page - add php links to get their email and booking ID to display
 4) Finish - Make a booking page
+
 
 Event pages
 5) event show page - php queries to display events
@@ -47,6 +48,7 @@ What's On - Only show future events & Styling & add image link
 Locations - Looks liek whats on page and columns are different and have pictures
 Profile page = users/show.php - need styling & host rating details and review details
 Header - profile link & create event
+
 
 
 
