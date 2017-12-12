@@ -2,8 +2,9 @@
 require_once('../../private/initialize.php');
 ?>
 
+
 <?php
-$user_id = $_GET['user_id'] ?? '1'; // PHP > 7.0
+$rating_id = $_GET['rating_id'] ?? '1'; // PHP > 7.0
 $user = find_user_by_id($user_id);
 ?>
 
