@@ -18,10 +18,12 @@ We have decided to do an event management system for Musical Concert events.
 User pages
 1) Finish User Profile Page - Kwaku (user show)
 2) Create - Host Profile page - Kwaku ()
+3) Add page showing MY BOOKINGS (events I've booked to)
 
 Booking pages
 **COMPLETE** booking confirmation page - add php links to get their email and booking ID to display
 4) Make a booking page - update after events are finished
+
 
 
 Event pages
