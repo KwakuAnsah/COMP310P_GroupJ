@@ -9,9 +9,7 @@ $user_id = $_GET['user_id'] ?? '1'; // PHP > 7.0
 $user = find_user_by_id($user_id);
 ?>
 
-<?php $page_title = 'Profile Page'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
-
 <!--Start of body-->
 <div class="container-fluid text-center">    
           <div class="row content">
