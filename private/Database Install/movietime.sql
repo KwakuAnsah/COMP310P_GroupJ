@@ -21,8 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `movietime5`
 -- 
-create database movietime5;
-use movietime5;
+create database movietime;
+use movietime;
 -- --------------------------------------------------------
 
 --
@@ -6676,11 +6676,11 @@ CREATE TABLE IF NOT EXISTS `rating` (
   `event_rating` float DEFAULT NULL,
   `host_rating` float DEFAULT NULL,
   `review_text` text COLLATE utf8_general_mysql500_ci,
-  `event_ ID` int(10) UNSIGNED NOT NULL,
+  `event_id` int(10) UNSIGNED NOT NULL,
   `rater_user_id` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`rating_id`),
   UNIQUE KEY `Rating_ID_UNIQUE` (`rating_id`),
-  KEY `fk_Rating_Event1_idx` (`event_ ID`),
+  KEY `fk_Rating_Event1_idx` (`event_id`),
   KEY `fk_Rating_User1_idx` (`rater_user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_mysql500_ci;
 
@@ -6688,7 +6688,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
 -- Dumping data for table `rating`
 --
 
-INSERT INTO `rating` (`rating_id`, `event_rating`, `host_rating`, `review_text`, `event_ ID`, `rater_user_id`) VALUES
+INSERT INTO `rating` (`rating_id`, `event_rating`, `host_rating`, `review_text`, `event_id`, `rater_user_id`) VALUES
 (1, 7.5, 8, 'Had a very nice time watching this film with Jenny.', 2, 11);
 
 -- --------------------------------------------------------
@@ -6843,7 +6843,7 @@ ALTER TABLE `film_film_genre`
 -- Constraints for table `rating`
 --
 ALTER TABLE `rating`
-  ADD CONSTRAINT `fk_Rating_Event1` FOREIGN KEY (`event_ ID`) REFERENCES `event` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Rating_Event1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Rating_User1` FOREIGN KEY (`user_ ID(rater)`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -6859,7 +6859,7 @@ ALTER TABLE `user`
   ADD CONSTRAINT `fk_User_Address1` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
-GRANT ALL PRIVILEGES ON MovieTime.* TO 'webuser'@'localhost' IDENTIFIED BY 'secretpassword';
+GRANT ALL PRIVILEGES ON movietime.* TO 'webuser'@'localhost' IDENTIFIED BY 'secretpassword';
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

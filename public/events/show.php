@@ -28,14 +28,12 @@ $page = 'show';
 
                 <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
                 <?php $rating = find_rating_by_event_id($event['event_id']) ?>
+               
                 <?php if (isset($rating)) { ?>
                     <dl> 
                         <dt>Host average rating:</dt>
-
-                        <dd><?php echo 'YES there is at least one...............(should say 8)'; ?>
-                            <?php echo 'testing function find_average_host_rating($event_id)'; ?>
-                            <?php $average_rating = find_avg_host_rating($event['event_id'],$event['host_user_id']);
-                            echo $average_rating ?> </dd>
+                        <?php $average_rating = find_avg_host_rating($event['host_user_id']);?>
+                        <dd><?php echo $average_rating ?> / 10</dd>
                     </dl>
                 <?php } ?>
                 <dl>

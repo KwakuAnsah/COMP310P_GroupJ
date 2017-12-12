@@ -955,7 +955,7 @@ function find_rating_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM rating ";
-    $sql .= "WHERE event_id='" . db_escape($db, $event_id) . "'";
+    $sql .= "WHERE event_id='".db_escape($db, $event_id)."'";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
 
@@ -1141,21 +1141,20 @@ function delete_rating($rating_id) {
 
 // Done
 
-function find_avg_host_rating($event_id,$host_user_id) {
+function find_avg_host_rating($host_user_id) {
     global $db;
 
     $sql = "SELECT AVG(host_rating) FROM rating ";
-    $sql .= "JOIN event ON event.event_id = rating."; 
-    $sql .= db_escape($db, $event_id);
+    $sql .= "JOIN event ON event.event_id = rating.event_id";
     $sql .= " WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
     $result = mysqli_query($db, $sql);
     if (!$result) {
         return 'BROKEN';
     }
-
-    //$rating = $result;
-    //mysqli_free_result($result);
-    return $result;
+   
+    $rating = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $rating[0];
 }
 
 // Don't know if this works yet
