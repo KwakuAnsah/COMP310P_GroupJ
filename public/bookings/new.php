@@ -5,15 +5,13 @@ if (is_post_request()) {
 
     // Handle form values
 
-    $subject = [];
-    $subject['menu_name'] = $_POST['menu_name'] ?? '';
-    $subject['position'] = $_POST['position'] ?? '';
-    $subject['visible'] = $_POST['visible'] ?? '';
+    $booking = [];
+    $booking['number_of_tickets'] = $_POST['number_of_tickets'] ?? '';
 
-    $result = insert_subject($subject);
+    $result = insert_booking($booking);
     if ($result === true) {
         $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/events/subjects/show.php?id=' . $new_id));
+        redirect_to(url_for('/bookings/show.php?id=' . $new_id));
     } else {
         $errors = $result;
     }
@@ -21,60 +19,102 @@ if (is_post_request()) {
     // display the blank form
 }
 
-$subject_set = find_all_subjects();
-$subject_count = mysqli_num_rows($subject_set) + 1;
-mysqli_free_result($subject_set);
+$booking_set = find_all_bookings();
+$booking_count = mysqli_num_rows($booking_set) + 1;
+mysqli_free_result($booking_set);
 
 
-$subject[] = $subject["position"] = $subject_count
+// FOR DISPLAYING THE EVENT DETAILS
+$id = $_GET['event_id'] ?? '1'; // PHP > 7.0
+        $event = find_event_by_id($id);
+
 ?>
 
 <?php $page_title = 'Make a booking'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
-    <a class="back-link" href="<?php echo url_for('/events/events/show.php');
-    ?>">&laquo; Back to List</a>
+    <a class="back-link" href="<?php echo url_for('/events/show.php'); ?>">&laquo; Back to Event</a>
 
-    <div class="subject new">
-        <h1>Create Subject</h1>
-<?php echo display_errors($errors); ?>
-        <form action="<?php echo url_for('/events/subjects/new.php'); ?>"
-              method="post">
+    <div class="new_booking">
+        <h1>Make a Booking</h1>
+        <?php echo display_errors($errors); ?>
+
+        
+        
+        <!-- THIS SECTION IS FROM EVENT SHOW CODE - UPDATE ONCE EVENT SHOW IS COMPLETE -->
+                    <div class="attributes"> 
+                        <h2>Event Details</h2>
+                        <dl>
+                            <dt>Event name:</dt>
+                            <dd><?php echo h($event['event_name']); ?></dd>
+                        </dl>
+                        <dl>
+                            <dt>Event type:</dt>
+                            <dd><?php echo h($event['event_category_id']); ?></dd>
+                        </dl>
+                        <dl>
+                            <dt>Hosted by:</dt>
+                            <dd><?php echo h($event['host_user_id']); ?></dd>
+                        </dl>
+                        <dl>
+                            <dt>Host rating:</dt>
+    <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
+                            <dd><?php echo h($XXX['XXX']); ?></dd>
+                        </dl>
+                        <!-- Not sure what this is for?
+                        <dl>
+                            <dt>Visible:</dt>
+                            <dd><?php echo $event['visible'] == '1' ? 'true' : 'false'; ?></dd>
+                        </dl>
+                        -->
+                        <dl>
+                            <dt>Event Description:</dt>
+                            <dd><?php echo h($event['event_description']); ?></dd>
+                        </dl>
+                        <dl>
+                            <dt>Films showing:</dt>
+    <!-- * * * * * * * * * * INSERT films to be shown * * * * * * * * * * -->
+                            <dd><?php echo h($XXX['XXX']); ?></dd>
+                        </dl>
+                        <br>
+                        <h2>Date and Time</h2>
+                        <dl>
+                            <dt>Start:</dt>
+                            <dd><?php echo h($event['event_start']); ?></dd>
+                        </dl>
+                        <dl>
+                            <dt>End:</dt>
+                            <dd><?php echo h($event['event_end']); ?></dd>
+                        </dl>
+                        <br>
+                        <h2>Location</h2>
+                        <dl>
+                            <dt>Room:</dt>
+                            <dd><?php echo h($event['room_id']); ?></dd>
+                        </dl>
+    <!-- * * * * * Include rest of address? - address id, postcode, city id, country id etc.? * * * * * -->       
+                        <br>
+                        <h2>More Information</h2>
+                        <dl>
+                            <dt>Room is wheelchair accessible:</dt>
+    <!-- * * * * * * * * * * Include this here? Or show this on the locations page? * * * * * * * * * * -->                        
+                            <dd><?php echo h($XXX['XXX']); ?></dd>
+        
+                            <br>
+                            <br>
+                            <br>                        
+                            
+                            
+                            
+                            
+        <!-- FOR ENTERING NUMBER OF TICKETS -->                    
+                            
+        <form action="<?php echo url_for('/bookings/new.php'); ?>" method="post">
+            <h2>Please enter number of tickets below</h2>
             <dl>
-                <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="" /></dd>
+                <dt>Number of tickets:</dt>
+                <dd><input type="text" name="number_of_tickets" value="" /></dd>
             </dl>
-            <dl>
-                <dt>Position</dt>
-                <dd>
-                    <select name="position">
-                        <?php
-                        for ($i = 1; $i <= $subject_count; $i++) {
-                            echo "<option value=\"{$i}\"";
-                            if ($subject["position"] == $i) {
-                                echo " selected";
-                            }
-                            echo ">{$i}</option>";
-                        }
-                        ?>
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt>Visible</dt>
-                <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1" />
-                </dd>
-            </dl>
-            <div id="operations">
-                <input type="submit" value="Create Subject" />
-            </div>
-        </form>
-
-    </div>
-
-</div>
-
+           
 <?php include(SHARED_PATH . '/footer.php'); ?>
