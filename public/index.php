@@ -71,28 +71,8 @@
                     mysqli_free_result($subject_set);
                     ?>
                 </select>
-<!--                                        Code to get drop down list of countries-->
-                                        <?php  $country_set = find_all_countries();                   
-                                                         $output = "List of countries:";
-                                                         $output .= "<ul>";
-                                                         foreach ($country_set as $country) {
-                                                             $output .= "<li>" . h($country['country_name']) . "</li>";
-                                                         }
-                                                         $output .= "</ul>"; ?>
+  <?php include "header.php";?>       
 
-                                                          <select name="subject_id">
-                                                         <?php
-                                                         $country_set = find_all_subjects();
-                                                         while ($subject = mysqli_fetch_assoc($subject_set)) {
-                                                             echo "<option value=\"" . h($subject['id']) . "\"";
-                                                             if ($page["subject_id"] == $subject['id']) {
-                                                                 echo " selected";
-                                                             }
-                                                             echo ">" . h($subject['menu_name']) . "</option>";
-                                                         }
-                                                         mysqli_free_result($subject_set);
-                                                         ?>
-                </select>
                     <!--        Creates sign-up & login form-->
                     <div class="container">
                         <div class="row" style="text-align:center; position: relative; right: 80px">
