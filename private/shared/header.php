@@ -15,8 +15,10 @@ if (!isset($page_title)) {
         <?php
         if ($page == 'show.php') {
 //            This style sheet isn't linking
-            echo '<link rel="stylesheet for sidenav"  href=' . url_for('/public/index sidenav CSS.css') . '/>';
-        } elseif ($stylesheet == 'index') {
+            echo '<link rel="stylesheet_for_sidenav"  href=' . url_for('/index sidenav CSS.css') . '/>';
+        } 
+        
+        elseif ($stylesheet == 'index') {
             echo '<link rel="stylesheet" media="all" href="' .
             url_for('/stylesheets/index_CSS.css') . '/>' . '< /br>' .
             '<link rel="stylesheet" media="all" href="' .
