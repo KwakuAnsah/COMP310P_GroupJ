@@ -2,20 +2,17 @@
 require_once('../../private/initialize.php');
 
 
-$id = $_GET['event_id'] ?? '1'; // PHP > 7.0
-$event = find_event_by_id($id);
+$event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
+$event = find_event_by_id($event_id);
 
 $page_title = $event['event_name'];
 $page = 'show';
 ?>
 
 
-
-<!-- * * * * * ADD CORRECT HEADER FILE? * * * * *-->
 <?php include(SHARED_PATH . '/header.php'); ?>
 <div class="container">
     <div id="content">
-        <a class="back-link" href="<?php echo url_for('/search_results.php'); ?>">&laquo; Back to List</a>
         <div class="event show">
             <h1><?php echo h($event['event_name']); ?></h1>
             <div class="attributes"> 
@@ -28,17 +25,19 @@ $page = 'show';
                     <dt>Hosted by:</dt>
                     <dd><?php echo h($event['host_user_id']); ?></dd>
                 </dl>
-                <dl>
-                    <dt>Host rating:</dt>
-                    <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
-                    <dd><?php echo h($XXX['XXX']); ?></dd>
-                </dl>
-                <!-- Not sure what this is for?
-                <dl>
-                    <dt>Visible:</dt>
-                    <dd><?php echo $event['visible'] == '1' ? 'true' : 'false'; ?></dd>
-                </dl>
-                -->
+
+                <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
+                <?php $rating = find_rating_by_event_id($event['event_id']) ?>
+                <?php if (isset($rating)) { ?>
+                    <dl> 
+                        <dt>Host average rating:</dt>
+
+                        <dd><?php echo 'YES there is at least one...............'; ?>
+                            <?php echo 'testing function find_average_host_rating($event_id)'; ?>
+                            <?php $average_rating = find_avg_host_rating($event['event_id']);
+                            echo $average_rating ?> </dd>
+                    </dl>
+                <?php } ?>
                 <dl>
                     <dt>Event Description:</dt>
                     <dd><?php echo h($event['event_description']); ?></dd>
@@ -46,7 +45,7 @@ $page = 'show';
                 <dl>
                     <dt>Films showing:</dt>
                     <!-- * * * * * * * * * * INSERT films to be shown * * * * * * * * * * -->
-                    <dd><?php echo h($XXX['XXX']); ?></dd>
+                    <dd><?php //echo h($XXX['XXX']); ?></dd>
                 </dl>
                 <br>
                 <h2>Date and Time</h2>

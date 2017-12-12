@@ -1,6 +1,6 @@
 <?php
 
-// Events
+// Events ----------------------------------------------------------------------
 
 function find_all_events() {
     global $db;
@@ -12,11 +12,11 @@ function find_all_events() {
     return $result;
 }
 
-function find_event_by_id($id) {
+function find_event_by_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM event ";
-    $sql .= "WHERE event_id='" . db_escape($db, $id) . "'";
+    $sql .= "WHERE event_id='" . db_escape($db, $event_id) . "'";
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
@@ -24,6 +24,8 @@ function find_event_by_id($id) {
     mysqli_free_result($result);
     return $event; //returns an associative array
 }
+
+// Done
 
 function validate_event($event) {
     $errors = [];
@@ -201,7 +203,7 @@ function delete_event($event_id) {
     }
 }
 
-// Users 
+// Users -----------------------------------------------------------------------
 
 function find_all_users() {
     global $db;
@@ -341,17 +343,18 @@ function delete_user($id) {
     }
 }
 
-// Countries
+// Countries -------------------------------------------------------------------
 
 function find_all_country_names() {
     global $db;
 
     $sql = "SELECT country_name FROM country ";
-    
+
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
+
 function find_all_countries() {
     global $db;
 
@@ -360,7 +363,8 @@ function find_all_countries() {
     confirm_result_set($result);
     return $result;
 }
-// Bookings
+
+// Bookings --------------------------------------------------------------------
 
 function find_all_bookings() {
     global $db;
@@ -385,7 +389,6 @@ function find_booking_by_id($id) {
     return $booking; //returns an associative array
 }
 
-//EDIT VALIDATE_BOOKING FUNCTION
 function validate_booking($booking) {
     $errors = [];
 
@@ -546,8 +549,7 @@ function delete_booking($booking_id) {
     }
 }
 
-
-// Booking_has_user
+// Booking_has_user ------------------------------------------------------------
 
 function find_all_booking_has_user() {
     global $db;
@@ -733,8 +735,7 @@ function delete_booking_has_user($booking_id) {
     }
 }
 
-
-// Event_has_booking
+// Event_has_booking -----------------------------------------------------------
 
 function find_all_event_has_booking() {
     global $db;
@@ -747,7 +748,7 @@ function find_all_event_has_booking() {
 }
 
 function find_event_has_booking_by_id($id) {
-    
+
     global $db;
 
     $sql = "SELECT * FROM event_has_booking ";
@@ -921,7 +922,239 @@ function delete_event_has_booking($event_id) {
     }
 }
 
+// Rating ----------------------------------------------------------------------
 
+function find_all_ratings() {
+    global $db;
 
+    $sql = "SELECT * FROM rating ";
+    $sql .= "ORDER BY event_id ASC, event_rating ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+// Done
+
+function find_rating_by_id($rating_id) {
+    global $db;
+
+    $sql = "SELECT * FROM rating ";
+    $sql .= "WHERE rating_id='" . db_escape($db, $rating_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $event = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $rating; //returns an associative array
+}
+
+//Done
+
+function find_rating_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT * FROM rating ";
+    $sql .= "WHERE event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    if ($rating = mysqli_fetch_assoc($result)) {
+        return '';
+    }
+    mysqli_free_result($result);
+    return $rating; //returns an associative array
+}
+
+//Done
+//EDIT VALIDATE_RATING   FUNCTION
+function validate_rating($rating) {
+    $errors = [];
+
+    /* EXAMPLES TESTS 
+     * CANNOT BE BLANK
+      if (is_blank($event['XXXX'])) {
+      $errors[] = "XXXXX cannot be blank.";
+      }
+     * 
+     * MUST BE UNIQUE
+      $current_id = $event['event_id'] ?? '0';
+      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
+      $errors[] = "Menu name must be unique.";
+      }
+     * 
+     * MUST BE WITHIN A RANGE (INTs)
+      $postion_int = (int) $event['position'];
+      if ($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+      }
+      if ($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+      }
+     * 
+     * STRING LENGTH MUST BE WITH RANGE
+     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
+      $errors[] = "Name must be between 2 and 150 characters.";
+      }
+     * 
+     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
+      $visible_str = (string) $event['visible'];
+      if (!has_inclusion_of($visible_str, ["0", "1"])) {
+      $errors[] = "Visible must be true or false.";
+      }
+
+     */
+
+    // event_name -------------------------------------------------------------
+    //      Event name cannot be blank.
+    //      Name must be between 2 and 150 characters.
+    // ------------------------------------------------------------------------
+    if (is_blank($event['event_name'])) {
+        $errors[] = "Event name cannot be blank.";
+    } elseif (!has_length($event['event_name'], ['min' => 2, 'max' => 150])) {
+        $errors[] = "Name must be between 2 and 150 characters.";
+    }
+
+    // host_user_id -----------------------------------------------------------
+    //      You must log in to create an event. (host_user_id cannot be blank).
+    // ------------------------------------------------------------------------
+    if (is_blank($event['host_user_id'])) {
+        $errors[] = "You must log in to create an event. (host_user_id cannot be blank).";
+    }
+
+    // event_end --------------------------------------------------------------
+    //      Event end time must be after event start time.
+    // ------------------------------------------------------------------------
+    $event_end = (int) $event['event_end'];
+    $event_start = (int) $event['event_start'];
+    if ($event_end < $event_start) {
+        $errors[] = "Event end time must be after event start time.";
+    }
+
+    // ticket_sale_end --------------------------------------------------------
+    //      The time that ticket sales end must be before the event start time.
+    // ------------------------------------------------------------------------
+    $event_end = (int) $event['event_end'];
+    $event_start = (int) $event['event_start'];
+    if ($event_end < $event_start) {
+        $errors[] = "Event end time must be after event start time.";
+    }
+
+    // event_start ------------------------------------------------------------
+    //      The event start time cannot be in the past.
+    // ------------------------------------------------------------------------
+    $event_end = (int) $event['event_end'];
+    $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
+    $todays_date_int = (int) $todays_date_obj;
+    if ($todays_date_int > $event_start) {
+        $errors[] = "The event start time cannot be in the past.";
+    }
+
+    // event_description  -----------------------------------------------------
+    //      Event description cannot be blank.
+    // ------------------------------------------------------------------------
+    if (is_blank($event['event_description'])) {
+        $errors[] = "Event description cannot be blank.";
+    }
+
+    return $errors;
+}
+
+function insert_rating($rating) {
+    global $db;
+
+    $errors = validate_rating($rating); //array of errors
+    if (!empty($errors)) {
+        return $errors;
+    }
+
+    $sql = "INSERT INTO rating ";
+    $sql .= "(event_rating, host_rating, review_text, event_id, "
+            . "user_ID(rater)) VALUES (";
+    $sql .= "'" . db_escape($db, $rating['event_rating']) . "',";
+    $sql .= "'" . db_escape($db, $rating['host_rating']) . "',";
+    $sql .= "'" . db_escape($db, $rating['review_text']) . "',";
+    $sql .= "'" . db_escape($db, $rating['event_id']) . "',";
+    $sql .= "'" . db_escape($db, $rating['rater_user_id']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    // For INSERT statements, $result is true/false
+    if ($result) {
+        return true;
+    } else {
+        // INSERT failed
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
+//Done
+
+function update_rating($rating) {
+    global $db;
+    $errors = validate_event($event); //array of errors
+    if (!empty($errors)) {
+        return $errors;
+    }
+    $sql = "UPDATE rating SET ";
+    $sql .= "rating_id='" . db_escape($db, $rating['rating_id']) . "', ";
+    $sql .= "event_rating='" . db_escape($db, $rating['event_rating']) . "', ";
+    $sql .= "host_rating='" . db_escape($db, $rating['host_rating']) . "', ";
+    $sql .= "review_text='" . db_escape($db, $rating['review_text']) . "', ";
+    $sql .= "event_id='" . db_escape($db, $rating['event_id']) . "', ";
+    $sql .= "rater_user_id='" . db_escape($db, $rating['ticket_sale_end']) . "' ";
+    $sql .= "WHERE ratingt_id='" . db_escape($db, $rating['rating_id']) . "' ";
+    $sql .= "LIMIT 1";
+
+    $result = mysqli_query($db, $sql);
+    // For UPDATE statements, $result is true/false
+    if ($result) {
+        return true;
+    } else {
+        // UPDATE failed
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
+// Done
+
+function delete_rating($rating_id) {
+    global $db;
+    $sql = "DELETE FROM rating ";
+    $sql .= "WHERE raring_id ='" . db_escape($db, $rating_id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    //For DELETE statements, $result is true false
+
+    if ($result) {
+        return true;
+    } else {
+        // DELETE failed
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
+// Done
+
+function find_avg_host_rating($event_id) {
+    global $db;
+
+    $sql = "SELECT AVG(host_rating) FROM rating ";
+    $sql .= "WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "JOIN event ON event.event_id = rating.'" . db_escape($db, $event_id) . "' ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    $rating = $result;
+    mysqli_free_result($result);
+    return $rating;
+}
+
+// Don't know if this works yet
 ?>
 
