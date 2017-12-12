@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `movietime5`
+-- Database: `movietime`
 -- 
-create database movietime5;
-use movietime5;
+create database movietime;
+use movietime;
 -- --------------------------------------------------------
 
 --
