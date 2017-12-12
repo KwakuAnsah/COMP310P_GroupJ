@@ -1141,14 +1141,17 @@ function delete_rating($rating_id) {
 
 // Done
 
-function find_avg_host_rating($event_id) {
+function find_avg_host_rating($event_id,$host_user_id) {
     global $db;
 
     $sql = "SELECT AVG(host_rating) FROM rating ";
+    $sql .= "JOIN event ON event.event_id = 'rating."; 
+    $sql .= db_escape($db, $event_id) . "' ";
     $sql .= "WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
-    $sql .= "JOIN event ON event.event_id = rating.'" . db_escape($db, $event_id) . "' ";
     $result = mysqli_query($db, $sql);
-    confirm_result_set($result);
+    if (!$result) {
+        return '';
+    }
 
     $rating = $result;
     mysqli_free_result($result);
