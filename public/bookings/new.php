@@ -29,14 +29,11 @@ mysqli_free_result($subject_set);
 $subject[] = $subject["position"] = $subject_count
 ?>
 
-<?php $page_title = 'Create Subject'; ?>
+<?php $page_title = 'Make a booking'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
-
-    <a class="back-link" href="<?php
-    echo
-    url_for('/events/subjects/index.php');
+    <a class="back-link" href="<?php echo url_for('/events/events/show.php');
     ?>">&laquo; Back to List</a>
 
     <div class="subject new">
