@@ -20,8 +20,8 @@ User pages
 2) Create - Host Profile page - Kwaku ()
 
 Booking pages
-3) booking confirmation page - add php links to get their email and booking ID to display
-4) Finish - Make a booking page
+**COMPLETE** booking confirmation page - add php links to get their email and booking ID to display
+4) Make a booking page - update after events are finished
 
 
 Event pages
@@ -31,11 +31,12 @@ Event pages
 
 Query Functions to write: 
 
-function find_booking_by_id($id) {
-function validate_booking($booking) {
-function insert_booking($booking) {
-function update_booking($booking) {
-function delete_booking($booking_id) {
+**COMPLETE**
+*function find_booking_by_id($id) {
+*function validate_booking($booking) {
+*function insert_booking($booking) {
+*function update_booking($booking) {
+*function delete_booking($booking_id) {
 
 function find_rating_by_id($id) {
 function validate_rating($booking) {
