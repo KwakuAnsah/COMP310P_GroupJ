@@ -1,7 +1,7 @@
 <?php
 
 function url_for($script_path) {
-    // add the leading '/' if not present
+// add the leading '/' if not present
     if ($script_path[0] != '/') {
         $script_path = "/" . $script_path;
     }
@@ -58,4 +58,22 @@ function display_errors($errors = array()) {
     return $output;
 }
 
+function display_event_films_details($films) {
+    $output = '<table>
+            <tr>
+                <th>Title</th>
+                <th>Tagline</th>
+                <th>Certificate</th>
+            </tr>';
+    while ($film = mysqli_fetch_assoc($films)) {
+        $output .= '<tr>';
+        $output .=    '<td>'. h($film['title']).'</td>';
+        $output .=    '<td>'. h($film['tagline']).'</td>';
+        $output .=    '<td>'. h($film['certificate']).'</td>';
+        $output .=    '</tr>';
+    }
+    $output .= '</table>';
+
+    return $output;
+}
 ?>
