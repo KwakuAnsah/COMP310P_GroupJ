@@ -1145,17 +1145,17 @@ function find_avg_host_rating($event_id,$host_user_id) {
     global $db;
 
     $sql = "SELECT AVG(host_rating) FROM rating ";
-    $sql .= "JOIN event ON event.event_id = 'rating."; 
-    $sql .= db_escape($db, $event_id) . "' ";
-    $sql .= "WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "JOIN event ON event.event_id = rating."; 
+    $sql .= db_escape($db, $event_id);
+    $sql .= " WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        return '';
+        return 'BROKEN';
     }
 
-    $rating = $result;
-    mysqli_free_result($result);
-    return $rating;
+    //$rating = $result;
+    //mysqli_free_result($result);
+    return $result;
 }
 
 // Don't know if this works yet
