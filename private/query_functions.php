@@ -3,7 +3,7 @@
 // Users -----------------------------------------------------------------------
 
 
-function find_all_users() {
+/* Done */ function find_all_users() {
     global $db;
 
     $sql = "SELECT * FROM user ";
@@ -11,9 +11,9 @@ function find_all_users() {
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
-}// Done ^^^
+}
 
-function find_user_by_id($user_id) {
+/* Done */ function find_user_by_id($user_id) {
     global $db;
     $sql = "SELECT * FROM user ";
     $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
@@ -22,7 +22,7 @@ function find_user_by_id($user_id) {
     $user = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
     return $user;
-}// Done ^^^
+}
 
 function validate_users($user) {
     $errors = [];
@@ -96,7 +96,7 @@ function validate_users($user) {
     return $errors;
 }
 
-function insert_user($user) {
+/* Done */ function insert_user($user) {
     global $db;
 
     $errors = validate_user($subject); //array of errors
@@ -121,9 +121,9 @@ function insert_user($user) {
         db_disconnect($db);
         exit;
     }
-}// Done ^^^
+}
 
-function delete_user($id) {
+/* Done */ function delete_user($id) {
     global $db;
     $sql = "DELETE FROM user ";
     $sql .= "WHERE id ='" . db_escape($db, $id) . "' ";
@@ -139,12 +139,13 @@ function delete_user($id) {
         db_disconnect($db);
         exit;
     }
-}// Done ^^^
+}
+
 
 // Events ----------------------------------------------------------------------
 
 
-function find_all_events() {
+/* Done */ function find_all_events() {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -152,9 +153,9 @@ function find_all_events() {
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
-}// Done ^^^
+}
 
-function find_event_by_id($event_id) {
+/* Done */ function find_event_by_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -166,8 +167,6 @@ function find_event_by_id($event_id) {
     mysqli_free_result($result);
     return $event; //returns an associative array
 }
-
-// Done ^^^
 
 function validate_event($event) {
     $errors = [];
@@ -261,7 +260,7 @@ function validate_event($event) {
     return $errors;
 }
 
-function insert_event($event) {
+/* Done */ function insert_event($event) {
     global $db;
 
     $errors = validate_event($event); //array of errors
@@ -293,9 +292,9 @@ function insert_event($event) {
         db_disconnect($db);
         exit;
     }
-}// Done ^^^
+}
 
-function update_event($event) {
+/* Done */ function update_event($event) {
     global $db;
     $errors = validate_event($event); //array of errors
     if (!empty($errors)) {
@@ -325,9 +324,9 @@ function update_event($event) {
         db_disconnect($db);
         exit;
     }
-}// Done ^^^
+}
 
-function delete_event($event_id) {
+/* Done */ function delete_event($event_id) {
     global $db;
     $sql = "DELETE FROM event ";
     $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
@@ -343,8 +342,7 @@ function delete_event($event_id) {
         db_disconnect($db);
         exit;
     }
-}// Done ^^^
-
+}
 
 
 // Bookings --------------------------------------------------------------------
@@ -1147,8 +1145,6 @@ function find_avg_host_rating($host_user_id) {
 }
 
 // Done ^^^
-
-
 // Film  ----------------------------------------------------------------------
 
 
@@ -1252,9 +1248,6 @@ function find_room_by_event_id($event_id) {
 }
 
 // Done ^^^
-
-
-
 // Address -----------------------------------------------------------------------
 
 
@@ -1272,9 +1265,8 @@ function find_address_by_room_id($room_id) {
     mysqli_free_result($result);
     return $room; //returns an associative array
 }
+
 // Done ^^^
-
-
 // Countries -------------------------------------------------------------------
 
 
@@ -1312,8 +1304,6 @@ function find_country_by_id($country_id) {
 }
 
 //Done ^^^
-
-
 // Cities -------------------------------------------------------------------
 
 
@@ -1351,5 +1341,4 @@ function find_city_by_id($city_id) {
 }
 
 //Done ^^^
-
 ?>
