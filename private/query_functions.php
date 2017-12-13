@@ -164,6 +164,17 @@ function find_all_events() {
     confirm_result_set($result);
     return $result;
 }
+
+function find_all_events_detailed() {
+    global $db;
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
 function find_event_by_id($event_id) {
     global $db;
 
@@ -566,6 +577,23 @@ function delete_booking($booking_id) {
         exit;
     }
 }
+
+function find_tickets_sold($event_id){
+    global $db;
+
+    $sql = "SELECT SUM(number_of_tickets) AS tickets_sold FROM booking ";
+    $sql .= "JOIN event_has_booking ON event_has_booking.booking_id = booking.booking_id ";
+    $sql .= "WHERE event_has_booking.event_id ='".$event_id."'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return '0';
+    }
+    $tickets_sold = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $tickets_sold[0];
+    
+}
+
 
 // Booking_has_user ------NEED TO CHECK------------------------------------------------------
 
@@ -1165,8 +1193,6 @@ function find_all_films() {
     return $result;
 }
 
-
-
 function find_film_by_id($film_id) {
     global $db;
 
@@ -1179,7 +1205,6 @@ function find_film_by_id($film_id) {
     mysqli_free_result($result);
     return $film; //returns an associative array
 }
-
 
 function find_films_by_event_id($event_id) {
     global $db;
