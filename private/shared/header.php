@@ -11,11 +11,22 @@ if (!isset($page_title)) {
         <meta charset="utf-8">
 
         <?php include(PUBLIC_PATH . '/bootstrap.php'); ?>
-        <!-- Stylesheet -->
+        <!-- Stylesheet and script-->
         <?php
         if ($page == 'show.php') {
-//            This style sheet isn't linking
-           echo '<link rel="stylesheet for sidenav" href= "' . url_for('index_sidenav_CSS.css').'"/>';  
+           echo '<link rel="stylesheet for sidenav" href= "' . url_for('stylesheets/index_sidenav_CSS.css').'"/>';  
+        } elseif ($page == 'index.php') {
+           echo '<link rel="stylesheet for sidenav" href= "' . url_for('stylesheets/index_sidenav_CSS.css').'"/>';
+           echo '<script type = "text/javascript" src = "' .url_for('script/index-login script.js') . '" async></script>'; 
+           echo '<link rel="stylesheet for index page" href= "' . url_for('stylesheets/index CSS.css').'"/>';
+        } elseif ($page == 'event_genres.php') {
+            echo '<link rel="stylesheet for event_genres" href= "' . url_for('stylesheets/event_genres_CSS.css').'"/>';
+        } elseif ($page == 'whats_on.php') {
+            echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
+            echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
+        }elseif ($page == 'host_events.php') {
+            echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
+            echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         } 
         
         elseif ($stylesheet == 'index') {
@@ -50,6 +61,8 @@ if (!isset($page_title)) {
             url_for('index-login script.js') . '" async></script>';
         }
         ?>
+
+       
     </head>
     
     <body>

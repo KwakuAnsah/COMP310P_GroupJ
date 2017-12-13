@@ -1,37 +1,22 @@
+<?php
+require_once('../private/initialize.php');
 
-<!DOCTYPE html>
+$page_title = 'MovieTime - Home Page';
+$page ="index.php";
+    
 
-<html lang="eng">
-    <head>
-         <?php require_once('../private/initialize.php'); ?>
-         <?php $page_title = 'MovieTime - Home Page'; ?>
-
-
-
-        <title> MovieTime</title>
-
-         <?php include "bootstrap.php";?>
- 
-<!--    CSS to style login/register form-->
-        <link rel="stylesheet for login form" href="index CSS.css">
-        <!--    CSS to style sidenav-->
-        <link rel="stylesheet for sidenav" href="index_sidenav_CSS.css">
-        <!--    JS for Login/register form -- async used so script is executed as soon as it's downloaded, without blocking the browser in the meantime.-->
-        <script type="text/javascript" src="index-login script.js" async></script>       
-    </head>
-
-    <body>
-
-  <?php include "header.php";?>       
+?>
+<?php include(SHARED_PATH . '/header.php'); ?>
+  
 
 
         <!--     Change this to show list of images -->
         <div class="container-fluid text-center">    
             <div class="row content">
                 <div class="col-sm-2 sidenav">
-                    <p><img src="avengers poster.jpeg" class="img-thumbnail img" alt=Avengers_Poster"> Watch the Lastest Avengers movie with your friends NOW</p>
-                    <p><img src="got poster.jpg" class="img-thumbnail img" alt="GOT_Poster"> Watch the Lastest GOT series with your friends NOW</p>
-                    <p><img src="Justice league poster.jpg" class="img-thumbnail img" alt="Justice League Poster"> Watch the Lastest Justice League movie with your friends NOW</p>
+                    <p><img src="<?php echo url_for("images/avengers poster.jpeg")?>" class="img-thumbnail img" alt=Avengers_Poster"> Watch the Lastest Avengers movie with your friends NOW</p>
+                    <p><img src="<?php echo url_for("images/got poster.jpg")?>" class="img-thumbnail img" alt="GOT_Poster"> Watch the Lastest GOT series with your friends NOW</p>
+                    <p><img src="<?php echo url_for("images/Justice league poster.jpg")?>" class="img-thumbnail img" alt="Justice League Poster"> Watch the Lastest Justice League movie with your friends NOW</p>
                 </div>
 
                 <!--            Anything that should be in middle of page goes here-->
@@ -119,41 +104,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirm Password">
-                                                    </div>
-
-                                                    <!--                                                                                                    Doesn't work-->
-                                                    <div class="form-group">
-                                                       <!--<select id="countries_states1" class="input-medium bfh-countries" data-country="US"></select>-->
-                                                     <select name="country_id">
-                                                        <?php
-                                                        $country_set = find_all_countries();
-                                                        echo $country_set;
-                                                        while ($country = mysqli_fetch_assoc($country_set)) {
-                                                            echo "<option value=" . h($country['country_name']) . ">" . h($country['country_name']) . "</option>";
-                                                        }
-                                                        mysqli_free_result($country_set);
-                                                        ?>
-                                                     </select>
-<!--                                        Code to get drop down list of countries-->
-                                            <?php  $country_set = find_all_countries();                   
-                                                         $output = "List of countries:";
-                                                         $output .= "<ul>";
-                                                         foreach ($country_set as $country) {
-                                                             $output .= "<li>" . h($country['country_name']) . "</li>";
-                                                         }
-                                                         $output .= "</ul>"; ?>
-                                                        
-                                                        <select class="input-medium bfh-states" data-country="countries_states1"></select>
-                                                    </div>
-                                                    
-                                                    
-                                                 
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
+                                                    </div> 
                                                     
                                                     <div class="form-group">
                                                         <div class="row">
@@ -205,12 +156,7 @@
 
 
 
-    </body>
-
-
-
     <?php include(SHARED_PATH . '/footer.php'); ?>
-</html>
 
                                                           <select name="subject_id">
                                                          <?php

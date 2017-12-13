@@ -15,13 +15,14 @@ $user = find_user_by_id($user_id);
     
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <p><img src="" class="img-thumbnail img" alt="Generic profile picure"> Profile picture above </p>
+            <p><img src="<?php echo url_for("images/Justice league poster.jpg")?>" class="img-thumbnail img" alt="Generic profile picure"> Profile picture</p>
             <br>
             <br>
             <!--                Include links to pages later-->
             <p><a href="">Create Event</a></p>
             <p><a class="action" href="<?php echo url_for('/users/delete.php?user_id=' . h(u($user['user_id']))); ?>">Delete your account</a></p>
             <p><a class="action" href="<?php echo url_for('/users/edit.php?user_id=' . h(u($user['user_id']))); ?>">Edit your account details</a></p>
+            <p><a class="action" href="">View your Host events</a></p>
         </div>
         <div id="content">
 
