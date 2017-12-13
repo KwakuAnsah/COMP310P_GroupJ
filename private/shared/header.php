@@ -27,6 +27,19 @@ if (!isset($page_title)) {
             echo '<link rel="stylesheet" media="all" href="' .
             url_for('/stylesheets/style.css') . '/>';
         }
+        
+    //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
+        elseif ($page == 'user_new.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
+    //  FOR LINKING TO DELETE USER PAGE :    
+        elseif ($page == 'user_delete.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
+    //  FOR LINKING TO EDIT USER PAGE :   
+        elseif ($page == 'user_edit.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
         ?>
 
         <!-- Script -->

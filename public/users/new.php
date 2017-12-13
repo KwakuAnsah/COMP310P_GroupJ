@@ -1,10 +1,13 @@
 <?php
 require_once('../../private/initialize.php');
+$page_title = 'Create new user';
+$page = 'user_new.php'
+?>
 
+<?php
 if (is_post_request()) {
 
     // Handle form values
-
     $user = [];
     $user['password'] = $_POST['password'] ?? '';
     $user['first_name'] = $_POST['last_name'] ?? '';
@@ -30,16 +33,20 @@ $user_count = mysqli_num_rows($user_set) + 1;
 mysqli_free_result($user_set);
 ?>
 
-<?php $page_title = 'Sign Up'; ?>
+<!-- Link to our header file -->
 <?php include(SHARED_PATH . '/header.php'); ?>
 
-<div id="content">
-
-    <div class="user new">
-        <h1>Create User</h1>
+<!-- Start of body -->
+<div class="container-fluid text-center">
+    <div class="user_new">
+        <h1>Create an account</h1>
+        <br>
+        <h5>Please enter your details below. All fields are compulsory.</h5>
+        <br>
         <?php echo display_errors($errors); ?>
-        <form action="<?php echo url_for('/users/new.php'); ?>"
-              method="post">
+     
+    <!-- * * * EDIT ACTION LINK? * * * -->   
+        <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
             <dl>
                 <dt>First Name</dt>
                 <dd><input type="text" name="first_name" value="" /></dd>
@@ -63,7 +70,7 @@ mysqli_free_result($user_set);
                 <dd><input type="text" name="password" value="" /></dd>
             </dl>
             <dl>
-                <dt>Password</dt>
+                <dt>Confirm Password</dt>
                 <dd><input type="text" name="password_check" value="" /></dd>
             </dl>
             <dl>
@@ -78,14 +85,14 @@ mysqli_free_result($user_set);
                 <dt>City</dt>
                 <dd><input type="text" name="city" value="" /></dd>
             </dl>
-
+            <br>
+            <br>
+            <!-- * * * button to submit details - EDIT LINK * * * -->    
             <div id="operations">
-                <input type="submit" value="Create Account" />
+                <a class="submission_btn btn btn-lg btn-default" href="">Create Account</a>
             </div>
         </form>
-
     </div>
-
 </div>
 
 <?php include(SHARED_PATH . '/footer.php'); ?>
