@@ -5,6 +5,8 @@ require_once('../../private/initialize.php');
 $event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
 $event = find_event_by_id($event_id);
 $films = find_films_by_event_id($event_id); 
+$host = find_host_by_event_id($event_id);
+$category = find_category_by_event_id($event_id);
 $room = find_room_by_event_id($event_id);
 $address = find_address_by_room_id($event['room_id']);
 $city = find_city_by_id($address['city_id']);
@@ -20,16 +22,17 @@ $page = 'show';
 <div class="container">
     <div id="content">
         <div class="event show">
-            <h1><?php echo h($event['event_name']); ?></h1>
+            <h1>TEST<?php echo h($event['event_name']); ?></h1>
             <div class="attributes"> 
                 <h2>Event Details</h2>
                 <dl>
                     <dt>Event type:</dt>
-                    <dd><?php echo h($event['event_category_id']); ?></dd>
+                    <dd><?php echo  h($category['category_name']); ?></dd>
                 </dl>
                 <dl>
                     <dt>Hosted by:</dt>
-                    <dd><?php echo h($event['host_user_id']); ?></dd>
+                    <dd><?php echo h($host['first_name']) .' '. 
+                            h($host['last_name']).' - '.h($host['username']); ?></dd>
                 </dl>
 
                 <?php $rating = find_rating_by_event_id($event['event_id']) ?>
