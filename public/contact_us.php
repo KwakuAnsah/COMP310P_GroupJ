@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="eng">
 
     <head>
         <?php require_once('../private/initialize.php'); ?>

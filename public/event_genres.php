@@ -1,17 +1,14 @@
-<!DOCTYPE html>
 
-<html lang="eng">
-    <head>
-         <?php require_once('../private/initialize.php'); ?>    
-          <title> Event Genres</title>
-        <?php include "bootstrap.php";?>
-       
-    <link rel="stylesheet for sidenav & whats on page" href="event_genres_CSS.css">
-    </head>
+<?php
+require_once('../private/initialize.php');
+
+$page_title = 'Genres-Event';
+$page ="event_genres.php";
     
-    <body> 
-        
-         <?php include "header.php";?>     
+
+?>
+<?php include(SHARED_PATH . '/header.php'); ?>
+    
         
         <div class="container text-center">
             <div class=" content">
@@ -24,7 +21,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_1'>Action</h2>
                                                <a class="info" href="#">link here</a>
@@ -35,7 +32,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_2'>Adventure</h2>
                                                <a class="info" href="#">link here</a>
@@ -46,7 +43,7 @@
                                 <td>
                                      <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_3'>Comedy</h2>
                                                <a class="info" href="#">link here</a>
@@ -66,7 +63,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_4'>Crime</h2>
                                                <a class="info" href="#">link here</a>
@@ -77,7 +74,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_5'>Drama</h2>
                                                <a class="info" href="#">link here</a>
@@ -88,7 +85,7 @@
                                 <td>
                                      <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_6'>Horror</h2>
                                                <a class="info" href="#">link here</a>
@@ -110,7 +107,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_7'>Musical</h2>
                                                <a class="info" href="#">link here</a>
@@ -121,7 +118,7 @@
                                 <td>
                                     <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_8'>Sci-Fi</h2>
                                                <a class="info" href="#">link here</a>
@@ -132,7 +129,7 @@
                                 <td>
                                      <div class="col-lg-3">
                                         <div class="hovereffect">
-                                            <img class="img-responsive" src="got poster.jpg" alt="">
+                                            <img class="img-responsive" src="<?php echo url_for("images/got poster.jpg")?>" alt="">
                                             <div class="overlay">
                                                <h2 name='genre_9'>War</h2>
                                                <a class="info" href="#">link here</a>
@@ -147,13 +144,9 @@
 
             </div>  
         </div>
-      
+  <?php include(SHARED_PATH . '/footer.php'); ?>    
         
              
         
-    </body>
-    
-        
-         
-</html>    
+      
 

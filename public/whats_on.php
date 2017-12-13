@@ -1,30 +1,17 @@
 
-<!DOCTYPE html>
+<?php
+require_once('../private/initialize.php');
 
-<html lang="eng">
-    <head>
-        <?php require_once('../private/initialize.php'); ?>    
-        <?php $page_title = 'MovieTime - Home Page'; ?>
-
-            <title> Whats On</title>
-
-        <?php include "bootstrap.php";?>
-        <!--    CSS to style sidenav-->
-        <link rel="stylesheet for sidenav & whats on page" href="whats_on CSS.css">  
+$page_title = 'Whats On';
+$page ="whats_on.php";
     
-    </head>
-    
-    <body> 
-       
-         <?php include "header.php";?>     
-        
+
+?>
+<?php include(SHARED_PATH . '/header.php'); ?>
+     
+<!--        Asynchronous searching used on this page-->
         <div class="container-fluid text-center">
             <div class="row content">
-<!--                <div class="col-sm-3 sidenav">
-                   <p> Watch the Lastest Avengers movie with your friends NOW</p>
-                   <p><img src="got poster.jpg" class="img-thumbnail img" alt="GOT_Poster"> Watch the Lastest GOT series with your friends NOW</p>
-                   <p><img src="Justice league poster.jpg" class="img-thumbnail img" alt="Justice League Poster"> Watch the Lastest Justice League movie with your friends NOW</p>
-                </div>-->
                 <br>
                 <br> 
                 <h1 class='whats_on_title'>What's On</h1>
@@ -63,21 +50,7 @@
                             </tbody> 
                             
                     </table> 
-<!--           Will add to JS below to seperate file later-->
-                    <script>
-                    $(document).ready(function(){
-                        $('#myTable').dataTable();
-                    });
-                    </script>
             </div>  
         </div>
       
-        
-             
-        
-    </body>
-    
-        
-         
-</html>    
-
+<?php include(SHARED_PATH . '/footer.php'); ?>
