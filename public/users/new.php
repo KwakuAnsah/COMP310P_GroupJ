@@ -31,6 +31,12 @@ if (is_post_request()) {
 $user_set = find_all_users();
 $user_count = mysqli_num_rows($user_set) + 1;
 mysqli_free_result($user_set);
+
+
+//Testing query functions
+$user_check = validate_users($user);
+
+        
 ?>
 
 <!-- Link to our header file -->
@@ -89,7 +95,7 @@ mysqli_free_result($user_set);
             <br>
             <!-- * * * button to submit details - EDIT LINK * * * -->    
             <div id="operations">
-                <a class="submission_btn btn btn-lg btn-default" href="">Create Account</a>
+                <input class="submission_btn btn btn-lg btn-default" type="submit" name="create_account" value="Create Account">
             </div>
         </form>
     </div>
