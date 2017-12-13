@@ -18,24 +18,28 @@ We have decided to do an event management system for Musical Concert events.
 User pages
 1) Finish User Profile Page - Kwaku (user show)
 2) Create - Host Profile page - Kwaku ()
+3) Add page showing MY BOOKINGS (events I've booked to)
 
 Booking pages
-3) booking confirmation page - add php links to get their email and booking ID to display
-4) Finish - Make a booking page
+**COMPLETE** booking confirmation page - add php links to get their email and booking ID to display
+4) Make a booking page - update after events are finished
 
+About us/contact us
+5) place stylesheet links in header file
 
 Event pages
-5) event show page - php queries to display events
-6) event ratings page - see 'event show page', also store their ratings
-7)
+6) event show page - php queries to display events
+7) event ratings page - see 'event show page', also store their ratings
+
 
 Query Functions to write: 
 
-function find_booking_by_id($id) {
-function validate_booking($booking) {
-function insert_booking($booking) {
-function update_booking($booking) {
-function delete_booking($booking_id) {
+**COMPLETE**
+*function find_booking_by_id($id) {
+*function validate_booking($booking) {
+*function insert_booking($booking) {
+*function update_booking($booking) {
+*function delete_booking($booking_id) {
 
 function find_rating_by_id($id) {
 function validate_rating($booking) {

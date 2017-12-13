@@ -25,7 +25,29 @@ if (!isset($page_title)) {
             echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         } 
-
+        
+        elseif ($stylesheet == 'index') {
+            echo '<link rel="stylesheet" media="all" href="' .
+            url_for('/stylesheets/index_CSS.css') . '/>' . '< /br>' .
+            '<link rel="stylesheet" media="all" href="' .
+            url_for('/stylesheets/index_sidenav_CSS.css') . '/>';
+        } elseif ($stylesheet == 'index') {
+            echo '<link rel="stylesheet" media="all" href="' .
+            url_for('/stylesheets/style.css') . '/>';
+        }
+        
+    //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
+        elseif ($page == 'user_new.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
+    //  FOR LINKING TO DELETE USER PAGE :    
+        elseif ($page == 'user_delete.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
+    //  FOR LINKING TO EDIT USER PAGE :   
+        elseif ($page == 'user_edit.php') {
+            echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
+        }
         ?>
 
        

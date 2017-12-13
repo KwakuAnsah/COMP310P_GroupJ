@@ -1,8 +1,150 @@
 <?php
 
+// Users -----------------------------------------------------------------------
+
+
+/* Done */ function find_all_users() {
+    global $db;
+
+    $sql = "SELECT * FROM user ";
+    $sql .= "ORDER BY user_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_user_by_id($user_id) {
+    global $db;
+    $sql = "SELECT * FROM user ";
+    $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $user = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $user;
+}
+
+function validate_users($user) {
+    $errors = [];
+    /* TESTS 
+     * CANNOT BE BLANK
+      if (is_blank($event['XXXX'])) {
+      $errors[] = "XXXXX cannot be blank.";
+      }
+     * 
+     * MUST BE UNIQUE
+      $current_id = $event['id'] ?? '0';
+      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
+      $errors[] = "Menu name must be unique.";
+      }
+     * 
+     * MUST BE WITHIN A RANGE (INTs)
+      $postion_int = (int) $event['position'];
+      if ($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+      }
+      if ($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+      }
+     * 
+     * STRING LENGTH MUST BE WITH RANGE
+     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
+      $errors[] = "Name must be between 2 and 150 characters.";
+      }
+     * 
+     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
+      $visible_str = (string) $event['visible'];
+      if (!has_inclusion_of($visible_str, ["0", "1"])) {
+      $errors[] = "Visible must be true or false.";
+      }
+
+     */
+    // first_name
+    if (is_blank($user['first_name'])) {
+        $errors[] = "Name cannot be blank.";
+    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
+        $errors[] = "Name must be between 2 and 65 characters.";
+    }
+
+    // last_name
+    if (is_blank($user['first_name'])) {
+        $errors[] = "Name cannot be blank.";
+    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
+        $errors[] = "Name must be between 2 and 65 characters.";
+    }
+
+
+
+
+    // position
+    // Make sure we are working with an integer
+    $postion_int = (int) $subject['position'];
+    if ($postion_int <= 0) {
+        $errors[] = "Position must be greater than zero.";
+    }
+    if ($postion_int > 999) {
+        $errors[] = "Position must be less than 999.";
+    }
+
+    // visible
+    // Make sure we are working with a string
+    $visible_str = (string) $subject['visible'];
+    if (!has_inclusion_of($visible_str, ["0", "1"])) {
+        $errors[] = "Visible must be true or false.";
+    }
+
+    return $errors;
+}
+
+/* Done */ function insert_user($user) {
+    global $db;
+
+    $errors = validate_user($subject); //array of errors
+    if (!empty($errors)) {
+        return $errors;
+    }
+
+    $sql = "INSERT INTO user ";
+    $sql .= "(email, password, first_name, last_name) ";
+    $sql .= "VALUES (";
+    //  $sql .= "'" . db_escape($db, $user['user_id']) . "',";
+    $sql .= "'" . db_escape($db, $user['email']) . "',";
+    $sql .= "'" . db_escape($db, $user['password']) . "',";
+    $sql .= "'" . db_escape($db, $user['first_name']) . "',";
+    $sql .= "'" . db_escape($db, $user['last_name']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    if ($result) {
+        return true;
+    } else {
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
+/* Done */ function delete_user($id) {
+    global $db;
+    $sql = "DELETE FROM user ";
+    $sql .= "WHERE id ='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    //For DELETE statements, $result is true false
+
+    if ($result) {
+        return true;
+    } else {
+        // DELETE failed
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
 // Events ----------------------------------------------------------------------
 
-function find_all_events() {
+
+/* Done */ function find_all_events() {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -12,7 +154,7 @@ function find_all_events() {
     return $result;
 }
 
-function find_event_by_id($event_id) {
+/* Done */ function find_event_by_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -24,8 +166,6 @@ function find_event_by_id($event_id) {
     mysqli_free_result($result);
     return $event; //returns an associative array
 }
-
-// Done
 
 function validate_event($event) {
     $errors = [];
@@ -119,7 +259,7 @@ function validate_event($event) {
     return $errors;
 }
 
-function insert_event($event) {
+/* Done */ function insert_event($event) {
     global $db;
 
     $errors = validate_event($event); //array of errors
@@ -153,7 +293,7 @@ function insert_event($event) {
     }
 }
 
-function update_event($event) {
+/* Done */ function update_event($event) {
     global $db;
     $errors = validate_event($event); //array of errors
     if (!empty($errors)) {
@@ -185,7 +325,7 @@ function update_event($event) {
     }
 }
 
-function delete_event($event_id) {
+/* Done */ function delete_event($event_id) {
     global $db;
     $sql = "DELETE FROM event ";
     $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
@@ -203,168 +343,35 @@ function delete_event($event_id) {
     }
 }
 
-// Users -----------------------------------------------------------------------
 
-function find_all_users() {
+// Categorys ----------------------------------------------------------------------
+
+/* Done */ function find_all_categories() {
     global $db;
 
-    $sql = "SELECT * FROM user ";
-    $sql .= "ORDER BY user_id ASC";
+    $sql = "SELECT * FROM category ";
+    $sql .= "ORDER BY event_id ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
 
-function find_user_by_id($user_id) {
+/* Done */ function find_category_by_id($category_id) {
     global $db;
-    $sql = "SELECT * FROM user ";
-    $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "WHERE event_id='" . db_escape($db, $category_id) . "'";
     $result = mysqli_query($db, $sql);
+
     confirm_result_set($result);
-    $user = mysqli_fetch_assoc($result);
+    $category = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
-    return $user;
+    return $category; //returns an associative array
 }
 
-function validate_users($user) {
-    $errors = [];
-    /* TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
-    // first_name
-    if (is_blank($user['first_name'])) {
-        $errors[] = "Name cannot be blank.";
-    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
-        $errors[] = "Name must be between 2 and 65 characters.";
-    }
-
-    // last_name
-    if (is_blank($user['first_name'])) {
-        $errors[] = "Name cannot be blank.";
-    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
-        $errors[] = "Name must be between 2 and 65 characters.";
-    }
-
-
-
-
-    // position
-    // Make sure we are working with an integer
-    $postion_int = (int) $subject['position'];
-    if ($postion_int <= 0) {
-        $errors[] = "Position must be greater than zero.";
-    }
-    if ($postion_int > 999) {
-        $errors[] = "Position must be less than 999.";
-    }
-
-    // visible
-    // Make sure we are working with a string
-    $visible_str = (string) $subject['visible'];
-    if (!has_inclusion_of($visible_str, ["0", "1"])) {
-        $errors[] = "Visible must be true or false.";
-    }
-
-    return $errors;
-}
-
-function insert_user($user) {
-    global $db;
-
-    $errors = validate_user($subject); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }
-
-    $sql = "INSERT INTO user ";
-    $sql .= "(email, password, first_name, last_name) ";
-    $sql .= "VALUES (";
-    //  $sql .= "'" . db_escape($db, $user['user_id']) . "',";
-    $sql .= "'" . db_escape($db, $user['email']) . "',";
-    $sql .= "'" . db_escape($db, $user['password']) . "',";
-    $sql .= "'" . db_escape($db, $user['first_name']) . "',";
-    $sql .= "'" . db_escape($db, $user['last_name']) . "'";
-    $sql .= ")";
-    $result = mysqli_query($db, $sql);
-    if ($result) {
-        return true;
-    } else {
-        echo mysqli_error($db);
-        db_disconnect($db);
-        exit;
-    }
-}
-
-function delete_user($id) {
-    global $db;
-    $sql = "DELETE FROM user ";
-    $sql .= "WHERE id ='" . db_escape($db, $id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = mysqli_query($db, $sql);
-    //For DELETE statements, $result is true false
-
-    if ($result) {
-        return true;
-    } else {
-        // DELETE failed
-        echo mysqli_error($db);
-        db_disconnect($db);
-        exit;
-    }
-}
-
-// Countries -------------------------------------------------------------------
-
-function find_all_country_names() {
-    global $db;
-
-    $sql = "SELECT country_name FROM country ";
-
-    $result = mysqli_query($db, $sql);
-    confirm_result_set($result);
-    return $result;
-}
-
-function find_all_countries() {
-    global $db;
-
-    $sql = "SELECT * FROM country ";
-    $result = mysqli_query($db, $sql);
-    confirm_result_set($result);
-    return $result;
-}
 
 // Bookings --------------------------------------------------------------------
+
 
 function find_all_bookings() {
     global $db;
@@ -551,6 +558,7 @@ function delete_booking($booking_id) {
 
 // Booking_has_user ------------------------------------------------------------
 
+
 function find_all_booking_has_user() {
     global $db;
 
@@ -736,6 +744,7 @@ function delete_booking_has_user($booking_id) {
 }
 
 // Event_has_booking -----------------------------------------------------------
+
 
 function find_all_event_has_booking() {
     global $db;
@@ -924,7 +933,8 @@ function delete_event_has_booking($event_id) {
 
 // Rating ----------------------------------------------------------------------
 
-function find_all_ratings() {
+
+/* Done */ function find_all_ratings() {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -934,9 +944,7 @@ function find_all_ratings() {
     return $result;
 }
 
-// Done
-
-function find_rating_by_id($rating_id) {
+/* Done */ function find_rating_by_id($rating_id) {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -944,14 +952,12 @@ function find_rating_by_id($rating_id) {
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
-    $event = mysqli_fetch_assoc($result);
+    $rating = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
     return $rating; //returns an associative array
 }
 
-//Done
-
-function find_rating_by_event_id($event_id) {
+/* Done */ function find_rating_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -966,8 +972,6 @@ function find_rating_by_event_id($event_id) {
     return $rating; //returns an associative array
 }
 
-//Done
-//EDIT VALIDATE_RATING   FUNCTION
 function validate_rating($rating) {
     $errors = [];
 
@@ -1060,7 +1064,9 @@ function validate_rating($rating) {
     return $errors;
 }
 
-function insert_rating($rating) {
+//EDIT VALIDATE_RATING   FUNCTION
+
+/* Done */ function insert_rating($rating) {
     global $db;
 
     $errors = validate_rating($rating); //array of errors
@@ -1089,9 +1095,7 @@ function insert_rating($rating) {
     }
 }
 
-//Done
-
-function update_rating($rating) {
+/* Done */ function update_rating($rating) {
     global $db;
     $errors = validate_event($event); //array of errors
     if (!empty($errors)) {
@@ -1119,9 +1123,7 @@ function update_rating($rating) {
     }
 }
 
-// Done
-
-function delete_rating($rating_id) {
+/* Done */ function delete_rating($rating_id) {
     global $db;
     $sql = "DELETE FROM rating ";
     $sql .= "WHERE raring_id ='" . db_escape($db, $rating_id) . "' ";
@@ -1139,25 +1141,198 @@ function delete_rating($rating_id) {
     }
 }
 
-// Done
-
-function find_avg_host_rating($event_id,$host_user_id) {
+/* Done */ function find_avg_host_rating($host_user_id) {
     global $db;
 
     $sql = "SELECT AVG(host_rating) FROM rating ";
-    $sql .= "JOIN event ON event.event_id = rating."; 
-    $sql .= db_escape($db, $event_id);
+    $sql .= "JOIN event ON event.event_id = rating.event_id";
     $sql .= " WHERE host_user_id='" . db_escape($db, $host_user_id) . "' ";
     $result = mysqli_query($db, $sql);
     if (!$result) {
-        return 'BROKEN';
+        return 'No Rating';
     }
 
-    //$rating = $result;
-    //mysqli_free_result($result);
+    $rating = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $rating[0];
+}
+
+// Film  ----------------------------------------------------------------------
+
+
+/* Done */ function find_all_films() {
+    global $db;
+
+    $sql = "SELECT * FROM film ";
+    $sql .= "ORDER BY title ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
     return $result;
 }
 
-// Don't know if this works yet
-?>
+/* Done */ function find_film_by_id($film_id) {
+    global $db;
 
+    $sql = "SELECT * FROM film ";
+    $sql .= "WHERE film_id='" . db_escape($db, $film_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $film = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $film; //returns an associative array
+}
+
+/* Done */ function find_films_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT title, tagline, certificate FROM film ";
+    $sql .= "JOIN film_event ON film_event.film_id = film.film_id ";
+    $sql .= "JOIN event ON event.event_id = film_event.event_id ";
+    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_number_of_films_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT COUNT(event_id) FROM film_event ";
+    $sql .= "WHERE event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return 'No Rating';
+    }
+    $number_of_films = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $number_of_films[0];
+}
+
+// Room -----------------------------------------------------------------------
+
+
+/* Done */ function find_all_rooms() {
+    global $db;
+
+    $sql = "SELECT * FROM room ";
+    $sql .= "ORDER BY room_name ASC ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_room_by_id($room_id) {
+    global $db;
+
+    $sql = "SELECT * FROM room ";
+    $sql .= "WHERE room_id='" . db_escape($db, $room_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $room = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $room; //returns an associative array
+}
+
+/* Done */ function find_room_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT * FROM room ";
+    $sql .= "JOIN event ON event.room_id = room.room_id  ";
+    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $room = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $room; //returns an associative array
+}
+
+// Address -----------------------------------------------------------------------
+
+/* Done */ function find_address_by_room_id($room_id) {
+    global $db;
+
+    $sql = "SELECT * FROM address ";
+    $sql .= "JOIN room ON room.address_id = address.address_id  ";
+    $sql .= "WHERE room.room_id='" . db_escape($db, $room_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $room = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $room; //returns an associative array
+}
+
+// Countries -------------------------------------------------------------------
+
+
+/* Done */ function find_all_countries() {
+    global $db;
+
+    $sql = "SELECT * FROM country ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_all_country_names() {
+    global $db;
+
+    $sql = "SELECT country_name FROM country ";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_country_by_id($country_id) {
+    global $db;
+
+    $sql = "SELECT * FROM country ";
+    $sql .= "WHERE country_id='" . db_escape($db, $country_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $country = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $country; //returns an associative array
+}
+
+// Cities -------------------------------------------------------------------
+
+
+/* Done */ function find_all_cities() {
+    global $db;
+
+    $sql = "SELECT * FROM city ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_all_city_names() {
+    global $db;
+
+    $sql = "SELECT city_name FROM country ";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* Done */ function find_city_by_id($city_id) {
+    global $db;
+
+    $sql = "SELECT * FROM city ";
+    $sql .= "WHERE city_id='" . db_escape($db, $city_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $city = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $city; //returns an associative array
+}
+?>

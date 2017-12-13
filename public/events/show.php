@@ -4,6 +4,12 @@ require_once('../../private/initialize.php');
 
 $event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
 $event = find_event_by_id($event_id);
+$films = find_films_by_event_id($event_id); 
+$room = find_room_by_event_id($event_id);
+$address = find_address_by_room_id($event['room_id']);
+$city = find_city_by_id($address['city_id']);
+$country = find_country_by_id($city['country_id']);
+
 
 $page_title = $event['event_name'];
 $page = 'show';
@@ -26,16 +32,13 @@ $page = 'show';
                     <dd><?php echo h($event['host_user_id']); ?></dd>
                 </dl>
 
-                <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
                 <?php $rating = find_rating_by_event_id($event['event_id']) ?>
+
                 <?php if (isset($rating)) { ?>
                     <dl> 
                         <dt>Host average rating:</dt>
-
-                        <dd><?php echo 'YES there is at least one...............(should say 8)'; ?>
-                            <?php echo 'testing function find_average_host_rating($event_id)'; ?>
-                            <?php $average_rating = find_avg_host_rating($event['event_id'],$event['host_user_id']);
-                            echo $average_rating ?> </dd>
+                        <?php $average_rating = find_avg_host_rating($event['host_user_id']); ?>
+                        <dd><?php echo $average_rating ?> / 10</dd>
                     </dl>
                 <?php } ?>
                 <dl>
@@ -43,10 +46,10 @@ $page = 'show';
                     <dd><?php echo h($event['event_description']); ?></dd>
                 </dl>
                 <dl>
-                    <dt>Films showing:</dt>
-                    <!-- * * * * * * * * * * INSERT films to be shown * * * * * * * * * * -->
-                    <dd><?php //echo h($XXX['XXX']); ?></dd>
+                    <?php $number_of_films = find_number_of_films_by_event_id($event_id) ?>
+                    <dt>Films showing: <?php echo $number_of_films ?></dt>
                 </dl>
+                <?php echo display_event_films_details($films); ?>
                 <br>
                 <h2>Date and Time</h2>
                 <dl>
@@ -61,20 +64,37 @@ $page = 'show';
                 <h2>Location</h2>
                 <dl>
                     <dt>Room:</dt>
-                    <dd><?php echo h($event['room_id']); ?></dd>
+                    <dd><?php echo h($room['room_name']); ?></dd>
+                </dl>
+                <dl>
+                    <dt>Address:</dt>
+                    <dd><?php echo h($address['address_line_1']); ?></dd>
+                    <dd><?php echo h($address['postcode']); ?></dd>
+                    <dd><?php echo h($city['city_name']); ?></dd>
+                    <dd><?php echo h($country['country_name']); ?></dd>
                 </dl>
                 <!-- * * * * * Include rest of address? - address id, postcode, city id, country id etc.? * * * * * -->       
                 <br>
                 <h2>More Information</h2>
                 <dl>
-                    <dt>Room is wheelchair accessible:</dt>
-                    <!-- * * * * * * * * * * Include this here? Or show this on the locations page? * * * * * * * * * * -->                        
-                    <dd><?php echo h($XXX['XXX']); ?></dd>
+                    <dt>Wheelchair Accessible:</dt>                       
+                    <dd><?php echo h($room['wheelchair_accessible']); ?></dd>
+                </dl>
+                <h2>Booking</h2>
+                <dl>
+                    <dt>Ticket sales end:</dt>
+                    <dd><?php echo h($event['ticket_sale_end']); ?></dd>
+                    <dt><a href="<?php echo url_for('/bookings/new.php?eventid='
+                        . h(u($event['event_id'])));
+                ?>">Click to book</a></dt>
                 </dl>
             </div>                  
         </div>
     </div>
 </div>
+
+
+
 </body>
 
 <?php include(SHARED_PATH . '/footer.php'); ?>
