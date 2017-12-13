@@ -1241,6 +1241,33 @@ function validate_rating($rating) {
     return $number_of_films[0];
 }
 
+// Film_Film_Genre  -------------------------------------------------------------
+/*
+function find_film_genres_by_film_id($film_id) {
+    global $db;
+
+    $sql = "SELECT genre_name FROM film_film_genre ";
+    $sql .= "JOIN film ON film.film_id = film_film_genre.film_id ";
+    $sql .= "JOIN film_genre ON film_genre.genre_id = film_film_genre.genre_id ";
+    $sql .= "WHERE film.film_id='" . db_escape($db, $film_id) . "'";
+
+    $result = mysqli_query($db, $sql);
+    $genres = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    
+    $prefix = $genre_list = '';
+    foreach ($genres as $genre)
+    {
+        $genre_list .= $prefix . '"' . $genre['genre_name'] . '"';
+        $prefix = ', ';
+    }
+    return $genre_list;
+}
+*/
+
+
+
+
 // Room -----------------------------------------------------------------------
 
 

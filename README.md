@@ -28,7 +28,7 @@ About us/contact us
 5) place stylesheet links in header file
 
 Event pages
-6) event show page - php queries to display events
+6) **COMPLETE** event show page - php queries to display events
 7) event ratings page - see 'event show page', also store their ratings
 
 
