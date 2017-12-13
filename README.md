@@ -16,8 +16,8 @@ We have decided to do an event management system for Musical Concert events.
 ******* THINGS TO DO *********
 
 User pages
-1) Finish User Profile Page - Kwaku (user show)
-2) Create - Host Profile page - Kwaku ()
+1) Finish User Profile Page - Kwaku (user show) ----> DONE
+2) Create - Host Profile page - Kwaku () --->   DONE
 3) Add page showing MY BOOKINGS (events I've booked to)
 
 Booking pages
