@@ -22,7 +22,7 @@ $page = 'show';
 <div class="container">
     <div id="content">
         <div class="event show">
-            <h1>TEST<?php echo h($event['event_name']); ?></h1>
+            <h1><?php echo h($event['event_name']); ?></h1>
             <div class="attributes"> 
                 <h2>Event Details</h2>
                 <dl>
