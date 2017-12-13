@@ -3,10 +3,13 @@ require_once('../../private/initialize.php');
 
 $page_title = 'Events - Host';
 $page ="host_events.php";
-    
-
+   
+if (!isset($_GET['host_user_id'])) {
+    redirect_to(url_for('/index.php'));
+}
+$host_user_id = $_GET['host_user_id'];
 ?>
-<?php include(SHARED_PATH . '/header.php'); ?>
+<?php include(SHARED_PATH . '/header.php');?>
      
 <!--        Asynchronous searching used on this page-->
         <div class="container-fluid text-center">

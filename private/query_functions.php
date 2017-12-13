@@ -24,6 +24,7 @@
     return $user;
 }
 
+
 function validate_users($user) {
     $errors = [];
     /* TESTS 
@@ -73,7 +74,7 @@ function validate_users($user) {
         $errors[] = "Name must be between 2 and 65 characters.";
     }
 
-
+    
 
 
     // position
@@ -99,7 +100,7 @@ function validate_users($user) {
 /* Done */ function insert_user($user) {
     global $db;
 
-    $errors = validate_user($subject); //array of errors
+    $errors = validate_user($user); //array of errors
     if (!empty($errors)) {
         return $errors;
     }
