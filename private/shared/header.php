@@ -50,6 +50,15 @@ if (!isset($page_title)) {
         }
         ?>
 
+        <!-- Script -->
+        <?php
+        if ($script == 'event') {
+            // JS for Login/register form -- async used so script is executed as soon as it's downloaded, without blocking the browser in the meantime.-->
+            echo '<script type = "text/javascript" src = "' .
+            url_for('index-login script.js') . '" async></script>';
+        }
+        ?>
+
        
     </head>
     
