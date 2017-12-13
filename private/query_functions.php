@@ -142,6 +142,22 @@ function validate_users($user) {
     }
 }
 
+/* Done */ function find_host_by_event_id($event_id){
+    global $db;
+
+
+    $sql = "SELECT * FROM user ";
+    $sql .= "JOIN event ON event.host_user_id = user.user_id  ";
+    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $host = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $host; //returns an associative array
+}
+
+
 // Events ----------------------------------------------------------------------
 
 
@@ -345,7 +361,7 @@ function validate_event($event) {
 }
 
 
-// Categorys ----------------------------------------------------------------------
+// Categories ----------------------------------------------------------------------
 
 /* Done */ function find_all_categories() {
     global $db;
@@ -369,6 +385,21 @@ function validate_event($event) {
     mysqli_free_result($result);
     return $category; //returns an associative array
 }
+
+/* Done */ function find_category_by_event_id($event_id) {
+     global $db;
+
+    $sql = "SELECT * FROM category ";
+    $sql .= "JOIN event ON event.event_category_id = category.category_id ";
+    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    $category = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $category; //returns an associative array
+}
+
 
 
 // Bookings --------------------------------------------------------------------
