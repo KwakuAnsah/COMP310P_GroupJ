@@ -1,5 +1,8 @@
 <?php
 require_once('../../private/initialize.php');
+$page_title = 'Create Event';
+$page = 'show';
+
 
 if (is_post_request()) {
     $event = [];
@@ -39,78 +42,73 @@ $event_count = mysqli_num_rows($event_set) + 1;
 mysqli_free_result($event_set);
 ?>
 
-<?php $page_title = 'Create Event'; ?>
+
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
 
-    <a class="back-link" href="<?php echo url_for('/index.php'); ?>">&laquo; Back to Homee</a>
-
     <div class="event new">
-        <h1>Create Page</h1>
+        <h1>Create Event</h1>
 
         <?php echo display_errors($errors); ?>
 
         <form action="<?php echo url_for('/events/new.php'); ?>" method="post">
             <dl>
-                <dt>Subject</dt>
-                <dd>
-                    <select name="subject_id">
-                        <?php
-                        $subject_set = find_all_subjects();
-                        while ($subject = mysqli_fetch_assoc($subject_set)) {
-                            echo "<option value=\"" . h($subject['id']) . "\"";
-                            if ($event["subject_id"] == $subject['id']) {
-                                echo " selected";
-                            }
-                            echo ">" . h($subject['menu_name']) . "</option>";
-                        }
-                        mysqli_free_result($subject_set);
-                        ?>
-                    </select>
+                <dt>Event Name</dt>
+                <dd><input type="text" name="event_name" value="<?php
+                    echo
+                    h($event['event_name']);
+                    ?>" />
                 </dd>
             </dl>
             <dl>
-                <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="<?php echo
-                        h($event['menu_name']);
-                        ?>" /></dd>
-            </dl>
-            <dl>
-                <dt>Position</dt>
-                <dd>
-                    <select name="position">
-                        <?php
-                        for ($i = 1; $i <= $event_count; $i++) {
-                            echo "<option value=\"{$i}\"";
-                            if ($event["position"] == $i) {
-                                echo " selected";
-                            }
-                            echo ">{$i}</option>";
-                        }
-                        ?>
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt>Visible</dt>
-                <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1"<?php
-                    if ($event['subject_id'] == "1") {
-                        echo " checked";
+                <dt>Host</dt>
+                <select name="host_user_id">
+                    <?php
+                    $user_set = find_all_users();
+                    while ($user = mysqli_fetch_assoc($user_set)) {
+                        echo "<option value=" . $user["user_id"] . ">"
+                        . h($user["username"]) . " - " . h($user["first_name"])
+                        . " " . h($user["last_name"]) . "</option>";
                     }
-                    ?>/>
+                    mysqli_free_result($user_set);
+                    ?>
+                </select>
+            </dl>
+            <h2>Date and Time</h2>
+            <dl>
+                <dt>Event Start</dt>
+                <dd><input type="datetime-local" name="event_start" value="<?php echo h($event['event_start']); ?>" />
                 </dd>
             </dl>
             <dl>
-                <dt>Content</dt>
-                <dd>
-                    <textarea name="content" cols="60" rows="10"><?php echo h($event['content']); ?></textarea>
+                <dt>Event End</dt>
+                <dd><input type="datetime-local" name="event_end" value="<?php echo h($event['event_end']); ?>" />
                 </dd>
+            </dl>
+            <dl>
+                <dt>Ticket Sale End</dt>
+                <dd><input type="datetime-local" name="ticket_sale_end" value="<?php echo h($event['ticket_sale_end']); ?>" />
+                </dd>
+            </dl>
+            <h2>Location</h2>
+            <dl>
+                <dt>Room</dt>
+                <select name="room_id">
+                    <?php
+                    $room_set = find_all_rooms_locations();
+                    while ($room = mysqli_fetch_assoc($room_set)) {
+                        echo "<option value=" . $room["room_id"] . ">"
+                        . h($room["room_name"]) . ", " . h($room["address_line_1"]) .
+                        ", " . h($room["postcode"]) . ", " . h($room["city_name"]) .
+                        ", " . h($room["country_name"]) . "</option>";
+                    }
+                    mysqli_free_result($room_set);
+                    ?>
+                </select>
             </dl>
             <div id="operations">
-                <input type="submit" value="Create Page" />
+                <input type="submit" value="Create Event" />
             </div>
         </form>
 
