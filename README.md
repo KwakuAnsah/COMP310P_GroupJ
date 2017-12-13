@@ -24,12 +24,13 @@ Booking pages
 **COMPLETE** booking confirmation page - add php links to get their email and booking ID to display
 4) Make a booking page - update after events are finished
 
-
+About us/contact us
+5) place stylesheet links in header file
 
 Event pages
-5) event show page - php queries to display events
-6) event ratings page - see 'event show page', also store their ratings
-7)
+6) event show page - php queries to display events
+7) event ratings page - see 'event show page', also store their ratings
+
 
 Query Functions to write: 
 
