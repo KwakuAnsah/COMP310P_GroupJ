@@ -94,11 +94,16 @@ function insert_user($user) {
     }
 
     $sql = "INSERT INTO user ";
-    $sql .= "(email, password, first_name, last_name) ";
+    $sql .= "(email, password, first_name, last_name, username, address_id, date_of_birth) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $user['email']) . "',";
     $sql .= "'" . db_escape($db, $user['password']) . "',";
     $sql .= "'" . db_escape($db, $user['first_name']) . "',";
+    $sql .= "'" . db_escape($db, $user['last_name']) . "',";
+    $sql .= "'" . db_escape($db, $user['username']) . "',";
+    $sql .= "'" . db_escape($db, $user['address_id']) . "',";
+    $sql .= "'" . db_escape($db, $user['date_of_birth']) . "'";
+    $sql .= ")";
     $sql .= "'" . db_escape($db, $user['last_name']) . "'";
     $sql .= ") ";
     $sql .= "INSERT INTO address ";
@@ -1510,5 +1515,4 @@ $city_id) {
     mysqli_free_result($result);
     return $city; //returns an associative array
 }
-
 ?>
