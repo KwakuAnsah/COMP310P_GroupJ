@@ -30,6 +30,15 @@ if (!isset($page_title)) {
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }
         
+
+    //  FOR ABOUT US PAGE :    
+        elseif ($page == 'about_us.php') {
+            echo '<link rel="stylesheet for about us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
+    //  FOR CONTACT US PAGE :    
+        elseif ($page == 'contact_us.php') {
+            echo '<link rel="stylesheet for contact us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
     //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
         elseif ($page == 'user_new.php') {
             echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
