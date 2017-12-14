@@ -8,5 +8,5 @@
 </html>
 
 <?php
-    db_disconnnect($db);
+    db_disconnect($db);
 ?>
