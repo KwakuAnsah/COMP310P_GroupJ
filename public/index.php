@@ -6,6 +6,7 @@ $page ="index.php";
     
 
 ?>
+ <?php include(PUBLIC_PATH . '/users/login.php'); ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
   
 
@@ -28,7 +29,7 @@ $page ="index.php";
                     <br>
                     <div class="container-fluid "> 
                         <h1 class=" text-center" style="font-weight: lighter">  
-                            Join the Biggest Film Community In the World. 
+                            Join the Biggest Film Community In the World.   <?php echo $_SESSION["first_name"];?>
                         </h1>
                     </div>
                     <br>
@@ -58,19 +59,24 @@ $page ="index.php";
                                             <div class="col-lg-12">
                                                 <!--                                                                                                **Action should be included once the page is created-->
                                                 <form id="login-form" action="" method="post" role="form" style="display: block;">
+                                                    
+                                                     <?php echo $error; ?>
                                                     <div class="form-group">
-                                                        <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                                                        <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" value="">
                                                     </div>
                                                     <div class="form-group text-center">
                                                         <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
                                                         <label for="remember"> Remember Me</label>
                                                     </div>
+                                                   
                                                     <div class="form-group">
                                                         <div class="row">
+                                                             
                                                             <div class="col-sm-6 col-sm-offset-3">
+                                                                
                                                                 <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
                                                             </div>
                                                         </div>

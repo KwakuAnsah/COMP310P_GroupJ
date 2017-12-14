@@ -28,4 +28,5 @@ $db = db_connect();
 $errors = [];
 $page = '';
 
+session_start();
 ?>

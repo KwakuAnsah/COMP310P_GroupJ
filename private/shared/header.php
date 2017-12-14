@@ -1,4 +1,5 @@
 <?php
+
 if (!isset($page_title)) {
     $page_title = 'MovieTime';
 }
@@ -29,6 +30,15 @@ if (!isset($page_title)) {
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }
         
+
+    //  FOR ABOUT US PAGE :    
+        elseif ($page == 'about_us.php') {
+            echo '<link rel="stylesheet for about us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
+    //  FOR CONTACT US PAGE :    
+        elseif ($page == 'contact_us.php') {
+            echo '<link rel="stylesheet for contact us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
     //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
         elseif ($page == 'user_new.php') {
             echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
@@ -60,23 +70,34 @@ if (!isset($page_title)) {
                     <ul class="nav navbar-nav" style="text-align:center; position: relative; display: inline-block; left: 200px">
                         <li class="active"><a href="<?php echo url_for('/index.php'); ?>">Home</a></li>
                         <li><a href="<?php echo url_for('/whats_on.php'); ?>">What's on</a></li>
-                        <li><a href="<?php echo url_for('/location_browse.php'); ?>">Locations</a></li> 
+                        <li><a href="<?php echo url_for('/events/new.php'); ?>">Create Event</a></li> 
                         <li><a href="<?php echo url_for('/film_genres_browse.php'); ?>">Film Genres </a></li>
                         <li><a href="<?php echo url_for('/about_us.php'); ?>">About Us</a></li>
                         <li><a href="<?php echo url_for('/contact_us.php'); ?>">Contact Us</a></li>
                     </ul>
 
                     <!--                        Form to submit  user search -->
-                    <form class="navbar-form navbar-left" action="/search_results.php" style="text-align:center; position: relative; display: inline-block; left: 230px">
+                    <form class="navbar-form navbar-left" action="/search_results.php" style="text-align:center; position: relative; display: inline-block; left: 240px">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search" name="search">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="glyphicon glyphicon-search"></i>
                                 </button>
+                                 
                             </div>
+                            
                         </div>
-                    </form>                     
-                </div>                              
+                    </form>
+                    <div class="container" style="text-align:">
+                    <ul class="nav navbar-nav" style="text-align:center; position: relative; display: inline-block; left: 290px"> <?php if(isset($_SESSION['user_id'])){                   
+                                         echo "<li><a href='". url_for('users/show.php?user_id=').$_SESSION['user_id'] ."'> ".$_SESSION['first_name']."'s Profile</a></li>";
+                                          }
+                                
+                                         ?>
+                    </ul>
+                    </div>   
+                </div>   
+                
             </nav>
         </div>
