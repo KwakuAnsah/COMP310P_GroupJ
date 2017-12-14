@@ -1,8 +1,13 @@
+
 <?php
 require_once('../../private/initialize.php');
 $page_title = 'Create Event';
 $page = 'show.php';
 
+if(!isset($_SESSION['user_id'])){
+    echo "<div class='no_session'> ksndkcsdn </div>";
+    redirect_to(url_for("index.php"));
+}
 
 if (is_post_request()) {
     $event = [];
