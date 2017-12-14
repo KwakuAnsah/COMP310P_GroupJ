@@ -159,7 +159,7 @@ function find_all_events_detailed() {
             . "total_tickets, event_category_id, category_name, event_start, ticket_sale_end, "
             . "room.room_id, room_name, capacity, wheelchair_accessible, "
             . "address.address_id, address_line_1, postcode, city.city_id, "
-            . "city_name, country.country_id, country_name, genre_name, title ";
+            . "city_name, country.country_id, country_name, genre_name ";
     $sql .= "FROM event "
             . "JOIN user ON event.host_user_id = user.user_id "
             . "JOIN film_event ON film_event.event_id = event.event_id "
