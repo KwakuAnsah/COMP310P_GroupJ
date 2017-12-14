@@ -59,12 +59,12 @@ function display_errors($errors = array()) {
 }
 
 function display_event_films_details($films) {
-    $output = '<table>
+    $output = "<table class='table table-striped'>
             <tr>
                 <th>Title</th>
                 <th>Tagline</th>
                 <th>Certificate</th>
-            </tr>';
+            </tr>";
     while ($film = mysqli_fetch_assoc($films)) {
 
         $output .= '<tr>';
