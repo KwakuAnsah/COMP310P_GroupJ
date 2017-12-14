@@ -57,46 +57,32 @@ function validate_users($user) {
       }
 
      */
-    // first_name
+    // first_name -------------------------------------------------------------
+    //      First name cannot be blank.
+    //      First name must be between 2 and 65 characters.
+    // ------------------------------------------------------------------------
+    
     if (is_blank($user['first_name'])) {
         $errors[] = "Name cannot be blank.";
     } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
         $errors[] = "Name must be between 2 and 65 characters.";
     }
-
-    // last_name
+    
+    // last_name -------------------------------------------------------------
+    //      Last name cannot be blank.
+    //      Last name must be between 2 and 100 characters.
+    // ------------------------------------------------------------------------
     if (is_blank($user['first_name'])) {
-        $errors[] = "Name cannot be blank.";
-    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
-        $errors[] = "Name must be between 2 and 65 characters.";
+        $errors[] = "Last name cannot be blank.";
+    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 100])) {
+        $errors[] = "Last name must be between 2 and 100 characters.";
     }
-
-
-
-
-    // position
-    // Make sure we are working with an integer
-    $postion_int = (int) $subject['position'];
-    if ($postion_int <= 0) {
-        $errors[] = "Position must be greater than zero.";
-    }
-    if ($postion_int > 999) {
-        $errors[] = "Position must be less than 999.";
-    }
-
-    // visible
-    // Make sure we are working with a string
-    $visible_str = (string) $subject['visible'];
-    if (!has_inclusion_of($visible_str, ["0", "1"])) {
-        $errors[] = "Visible must be true or false.";
-    }
-
     return $errors;
 }
 function insert_user($user) {
     global $db;
 
-    $errors = validate_user($subject); //array of errors
+    $errors = validate_user($user); //array of errors
     if (!empty($errors)) {
         return $errors;
     }
@@ -164,7 +150,6 @@ function find_all_events() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_all_events_detailed() {
     global $db;
 
@@ -190,7 +175,6 @@ function find_all_events_detailed() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_event_by_id($event_id) {
     global $db;
 
@@ -1208,7 +1192,6 @@ function find_all_films() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_film_by_id($film_id) {
     global $db;
 
@@ -1221,7 +1204,6 @@ function find_film_by_id($film_id) {
     mysqli_free_result($result);
     return $film; //returns an associative array
 }
-
 function find_films_by_event_id($event_id) {
     global $db;
 
@@ -1234,8 +1216,6 @@ function find_films_by_event_id($event_id) {
     confirm_result_set($result);
     return $result;
 }
-
-
 function find_number_of_films_by_event_id($event_id) {
     global $db;
 
@@ -1296,10 +1276,10 @@ function insert_film_event($film_event) {
     }
 }
 
-// Room -----------------------------------------------------------------------
 
+// Room ---DONE----------------------------------------------------------------
 
-/* function below is done */ function find_all_rooms() {
+function find_all_rooms() {
     global $db;
 
     $sql = "SELECT * FROM room ";
@@ -1309,9 +1289,6 @@ function insert_film_event($film_event) {
     confirm_result_set($result);
     return $result;
 }
-
-/* function below is done */
-
 function find_all_rooms_locations() {
     global $db;
 
@@ -1326,9 +1303,6 @@ function find_all_rooms_locations() {
     confirm_result_set($result);
     return $result;
 }
-
-/* function below is done */
-
 function find_room_by_id($room_id) {
     global $db;
 
@@ -1341,9 +1315,6 @@ function find_room_by_id($room_id) {
     mysqli_free_result($result);
     return $room; //returns an associative array
 }
-
-/* function below is done */
-
 function find_room_by_event_id($event_id) {
     global $db;
 
@@ -1360,7 +1331,7 @@ function find_room_by_event_id($event_id) {
 
 // Address -----------------------------------------------------------------------
 
-/* function below is done */ function find_address_by_room_id($room_id) {
+function find_address_by_room_id($room_id) {
     global $db;
 
     $sql = "SELECT room.room_id, room_name, capacity, wheelchair_accessible, ";
@@ -1378,6 +1349,36 @@ function find_room_by_event_id($event_id) {
     mysqli_free_result($result);
     return $address; //returns an associative array
 }
+function validate_address($address) {
+    $errors = [];
+
+    // address_line_1 -------------------------------------------------------------
+    //      Address Line 1 cannot be blank.
+    //      Address Line 1 must be between 2 and 150 characters.
+    // ------------------------------------------------------------------------
+    if (is_blank($address['address_line_1'])) {
+        $errors[] = "Address Line 1 cannot be blank.";
+    } elseif (!has_length($address['address_line_1'], ['min' => 2, 'max' => 100])) {
+        $errors[] = "Address Line 1 must be between 2 and 100 characters.";
+    }
+    // Postcode -----------------------------------------------------------
+    //      Postcode cannot be blank.
+    //      Postcode must be between 2 and 150 characters.
+    // ------------------------------------------------------------------------
+    if (is_blank($address['postcode'])) {
+        $errors[] = "Postcode cannot be blank.";
+    } elseif (!has_length($address['postcode'], ['min' => 2, 'max' => 45])) {
+        $errors[] = "Postcode must be between 2 and 45 characters.";
+    }
+    // city_id -----------------------------------------------------------
+    //      City_id cannot be blank.
+    // ------------------------------------------------------------------------
+    if (is_blank($address['city_id'])) {
+        $errors[] = "Please select your closest city.";
+    }
+    return $errors;
+}
+
 
 // Countries -------------------------------------------------------------------
 
