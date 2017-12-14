@@ -5,7 +5,7 @@ require_once('../../private/initialize.php');
 <?php $page_title = 'MovieTime - Log In'; ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
 
-<body>
+
 
     <h1> Log In</h1>
     <div id="content">
@@ -17,5 +17,6 @@ require_once('../../private/initialize.php');
         Not really sure how it will work at the moment. something to do with cookies
     </div>
 
-</body>
+
 <?php include(SHARED_PATH . '/footer.php'); ?>
+

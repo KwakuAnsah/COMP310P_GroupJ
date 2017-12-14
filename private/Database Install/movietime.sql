@@ -6758,7 +6758,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(30) COLLATE utf8_general_mysql500_ci NOT NULL,
   `first_name` varchar(65) COLLATE utf8_general_mysql500_ci NOT NULL,
   `last_name` varchar(100) COLLATE utf8_general_mysql500_ci NOT NULL,
-  `age` int(10) UNSIGNED NOT NULL,
   `username` varchar(60) COLLATE utf8_general_mysql500_ci NOT NULL,
   `address_id` int(11) NOT NULL,
   `email` varchar(200) COLLATE utf8_general_mysql500_ci NOT NULL,
