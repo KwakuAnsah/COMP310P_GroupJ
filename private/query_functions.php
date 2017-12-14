@@ -12,7 +12,6 @@ function find_all_users() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_user_by_id($user_id) {
     global $db;
     $sql = "SELECT * FROM user ";
@@ -23,8 +22,7 @@ function find_user_by_id($user_id) {
     mysqli_free_result($result);
     return $user;
 }
-
-function validate_users($user) {
+function validate_user($user) {
     $errors = [];
     /* TESTS 
      * CANNOT BE BLANK
@@ -81,14 +79,11 @@ function validate_users($user) {
     }
     return $errors;
 }
-
 function insert_user($user) {
     global $db;
 
 
-    $user_errors = validate_user($user);
-    $address_errors = validate_address($address);
-    $errors = array_merge($user_errors, $address_errors);
+    $errors = validate_user($user);
     if (!empty($errors)) {
         return $errors;
     }
@@ -103,16 +98,8 @@ function insert_user($user) {
     $sql .= "'" . db_escape($db, $user['username']) . "',";
     $sql .= "'" . db_escape($db, $user['address_id']) . "',";
     $sql .= "'" . db_escape($db, $user['date_of_birth']) . "'";
-    $sql .= ")";
-    $sql .= "'" . db_escape($db, $user['last_name']) . "'";
     $sql .= ") ";
-    $sql .= "INSERT INTO address ";
-    $sql .= "(address_line_1, city_id, postcode) ";
-    $sql .= "VALUES (";
-    $sql .= "'" . db_escape($db, $user['address_line_1']) . "',";
-    $sql .= "'" . db_escape($db, $user['city_id']) . "',";
-    $sql .= "'" . db_escape($db, $user['postcode']) . "'";
-    $sql .= ") ";
+    
     $result = mysqli_query($db, $sql);
     if ($result) {
         return true;
@@ -122,7 +109,6 @@ function insert_user($user) {
         exit;
     }
 }
-
 function delete_user($id) {
     global $db;
     $sql = "DELETE FROM user ";
@@ -140,7 +126,6 @@ function delete_user($id) {
         exit;
     }
 }
-
 function find_host_by_event_id($event_id) {
     global $db;
 
@@ -1427,6 +1412,31 @@ function validate_address($address) {
     }
     return $errors;
 }
+function insert_address($address) {
+    global $db;
+
+
+    $errors = validate_address($address);
+    if (!empty($errors)) {
+        return $errors;
+    }
+
+    $sql = "INSERT INTO address ";
+    $sql .= "(address_line_1, city_id, postcode) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $address['address_line_1']) . "',";
+    $sql .= "'" . db_escape($db, $address['city_id']) . "',";
+    $sql .= "'" . db_escape($db, $address['postcode']) . "'";
+    $sql .= ") ";
+    $result = mysqli_query($db, $sql);
+    if ($result) {
+        return true;
+    } else {
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
 
 // Countries -------------------------------------------------------------------
 
@@ -1472,38 +1482,21 @@ $country_id) {
     return $country; //returns an associative array
 }
 
-// Cities -------------------------------------------------------------------
+// Cities -----DONE----------------------------------------------------------
 
 
-/* function below is done */ function find_all_cities() {
+function find_all_cities() {
     global
 
     $db;
 
-    $sql = "SELECT * FROM city ";
+    $sql = "SELECT * FROM city ORDER BY city_name ";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
 
-/* function below is done */
-
-function find_all_city_names() {
-    global
-
-    $db;
-
-    $sql = "SELECT city_name FROM country ";
-
-    $result = mysqli_query($db, $sql);
-    confirm_result_set($result);
-    return $result;
-}
-
-/* function below is done */
-
-function find_city_by_id(
-$city_id) {
+function find_city_by_id($city_id) {
     global $db;
 
     $sql = "SELECT * FROM city ";

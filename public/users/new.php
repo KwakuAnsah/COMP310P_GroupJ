@@ -10,26 +10,34 @@ if (is_post_request()) {
     // Handle form values
     $user = [];
     $user['password'] = $_POST['password'] ?? '';
-    $user['first_name'] = $_POST['last_name'] ?? '';
+    $user['first_name'] = $_POST['first_name'] ?? '';
     $user['last_name'] = $_POST['last_name'] ?? '';
     $user['date_of_birth'] = $_POST['date_of_birth'] ?? '';
     $user['username'] = $_POST['username'] ?? '';
-    $user['address_id'] = $_POST['address_id'] ?? '';
     $user['email'] = $_POST['email'] ?? '';
-    $user['address_line_1'] = $_POST['address_line_1'] ?? '';
-    $user['city_id'] = $_POST['city_id'] ?? '';
-    $user['postcode'] = $_POST['postcode'] ?? '';
+    $user['password_check'] = $_POST['password_check'] ?? '';
 
+    $address = [];
+    $address['address_line_1'] = $_POST['address_line_1'] ?? '';
+    $address['city_id'] = $_POST['city_id'] ?? '';
+    $address['postcode'] = $_POST['postcode'] ?? '';
 
-    $result = insert_user($user);
-    if ($result === true) {
-        $new_user_id = mysqli_insert_id($db);
-
-
-        redirect_to(url_for('/users/show.php?id=' . $new_user_id));
-    } else {
-        $errors = $result;
+    $address_errors = validate_address($address);
+    if (empty($address_errors)) {
+        $address_result = insert_address($address);
+        if ($address_result === true) {
+            $new_address_id = mysqli_insert_id($db);
+            $user['address_id'] = $new_address_id;
+            $user_result = insert_user($user);
+            if ($user_result === true) {
+                $new_user_id = mysqli_insert_id($db);
+                redirect_to(url_for('/users/show.php?user_id=' . $new_user_id));
+            } else {
+                $user_result = $user_errors;
+            }
+        }
     }
+    $errors = array_merge($address_errors, $user_errors);
 } else {
     $user = [];
     $user['password'] = '';
@@ -39,9 +47,12 @@ if (is_post_request()) {
     $user['username'] = '';
     $user['address_id'] = '';
     $user['email'] = '';
-    $user['address_line_1'];
-    $user['city_id'];
-    $user['postcode'];
+
+
+    $address = [];
+    $address['address_line_1'] = '';
+    $address['city_id'] = '';
+    $address['postcode'] = '';
 }
 
 $user_set = find_all_users();
@@ -61,24 +72,32 @@ mysqli_free_result($user_set);
         <br>
         <?php echo display_errors($errors); ?>
 
-        <!-- * * * EDIT ACTION LINK? * * * -->   
         <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
             <dl>
                 <dt>First Name</dt>
-                <dd><input type="text" name="first_name" value="" /></dd>
+                <dd><input type="text" name="first_name" value="<?php
+                    echo
+                    h($user['first_name']);
+                    ?>" /></dd>
             </dl>
             <dl>
                 <dt>Last Name</dt>
-                <dd><input type="text" name="last_name" value="" /></dd>
+                <dd><input type="text" name="last_name" value="<?php
+                    echo
+                    h($user['last_name']);
+                    ?>" /></dd>
             </dl>
             <dl>
                 <dt>Email</dt>
-                <dd><input type="text" name="email" value="" /></dd>
+                <dd><input type="text" name="email" value="<?php
+                    echo
+                    h($user['email']);
+                    ?>" /></dd>
             </dl>
 
             <dl>
                 <dt>Username</dt>
-                <dd><input type="text" name="username" value="" /></dd>
+                <dd><input type="text" name="username" value="<?php echo h($user['username']); ?>" /></dd>
             </dl>
 
             <dl>
@@ -91,15 +110,39 @@ mysqli_free_result($user_set);
             </dl>
             <dl>
                 <dt>Date of Birth</dt>
-                <dd><input type="date" name="date_of_birth" value="" /></dd>
-            </dl>            
+                <dd><input type="date" name="date_of_birth" value="<?php
+                    echo
+                    h($user['date_of_birth']);
+                    ?>" /></dd>
+            </dl>
             <dl>
-                <dt>Country</dt>
-                <dd><input type="text" name="country" value="" /></dd>
-            </dl>            
+                <dt>Address Line 1</dt>
+                <dd><input type="text" name="address_line_1" value="<?php
+                    echo
+                    h($address['address_line_1']);
+                    ?>" /></dd>
+            </dl> 
+            <dl>
+                <dt>Postcode</dt>
+                <dd><input type="text" name="postcode" value="<?php
+                    echo
+                    h($address['postcode']);
+                    ?>" /></dd>
+            </dl>             
             <dl>
                 <dt>City</dt>
-                <dd><input type="text" name="city" value="" /></dd>
+                <dd>
+                    <select name="city_id">
+                        <?php
+                        $city_set = find_all_cities();
+                        while ($city = mysqli_fetch_assoc($city_set)) {
+                            echo "<option value=" . $city["city_id"] . ">"
+                            . h($city["city_name"]) . "</option>";
+                        }
+                        mysqli_free_result($city_set);
+                        ?>
+                    </select>
+                </dd>
             </dl>
             <br>
             <br>

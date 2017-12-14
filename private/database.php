@@ -10,7 +10,7 @@ function db_connect() {
 }
 
 // Disconnect from database connection
-function db_disconnnect($connection) {
+function db_disconnect($connection) {
     if (isset($connection)) {
         mysqli_close($connection);
     }
