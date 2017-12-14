@@ -7,6 +7,7 @@ include(SHARED_PATH . '/header.php');
 <?php
 
 $connection = db_connect();
+session_start();
 $email = "";
 $password = "";
 $first_name = "";
@@ -16,7 +17,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($connection, $_POST['email']);
     $password = mysqli_real_escape_string($connection, $_POST['password']);
-    ech
+    
     $sql = "SELECT * FROM user WHERE email = '$email' AND password = '$password'";
     $result = mysqli_query($connection, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -32,9 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
-<html>
-    <body>
     <center>
         <br />
         <h1>Log In</h1>
@@ -54,6 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </center>
-</body>
-</html>
+
+
 <?php include(SHARED_PATH . '/footer.php'); ?>
