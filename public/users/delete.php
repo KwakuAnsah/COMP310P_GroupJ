@@ -44,7 +44,7 @@ if (is_post_request()) {
         <!-- * * * button to submit details - EDIT LINK * * * -->            
         <form action="<?php echo url_for('/users/delete.php?id=' . h(u($user['user_id']))); ?>" method="post">            
             <div id="operations">
-                <a class="submission_btn btn btn-lg btn-default" href="">Delete User</a>
+                <input class="submission_btn btn btn-lg btn-default" type="submit" name="delete_user" value="Delete User">
             </div>
         </form>
     </div>

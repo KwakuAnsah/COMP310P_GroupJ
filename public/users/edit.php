@@ -93,7 +93,7 @@ mysqli_free_result($user_set);
             
             <!-- * * * button to save edited details - EDIT LINK * * * --> 
             <div id="operations">
-                <a class="submission_btn btn btn-lg btn-default" href="">Save changes</a>
+                <input class="submission_btn btn btn-lg btn-default" type="submit" name="edit_user" value="Edit User">
             </div>
         </form>
     </div>

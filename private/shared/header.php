@@ -27,16 +27,6 @@ if (!isset($page_title)) {
         }elseif ($page == 'host_events.php') {
             echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
-        } 
-        
-        elseif ($stylesheet == 'index') {
-            echo '<link rel="stylesheet" media="all" href="' .
-            url_for('/stylesheets/index_CSS.css') . '/>' . '< /br>' .
-            '<link rel="stylesheet" media="all" href="' .
-            url_for('/stylesheets/index_sidenav_CSS.css') . '/>';
-        } elseif ($stylesheet == 'index') {
-            echo '<link rel="stylesheet" media="all" href="' .
-            url_for('/stylesheets/style.css') . '/>';
         }
         
     //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
@@ -51,18 +41,7 @@ if (!isset($page_title)) {
         elseif ($page == 'user_edit.php') {
             echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
         }
-        ?>
-
-        <!-- Script -->
-        <?php
-        if ($script == 'event') {
-            // JS for Login/register form -- async used so script is executed as soon as it's downloaded, without blocking the browser in the meantime.-->
-            echo '<script type = "text/javascript" src = "' .
-            url_for('index-login script.js') . '" async></script>';
-        }
-        ?>
-
-       
+        ?>       
     </head>
     
     <body>

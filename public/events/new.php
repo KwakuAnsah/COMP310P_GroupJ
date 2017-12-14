@@ -1,37 +1,46 @@
 <?php
 require_once('../../private/initialize.php');
+$page_title = 'Create Event';
+$page = 'show.php';
+
 
 if (is_post_request()) {
     $event = [];
-    $event['event_id'] = $_POST['event_id'] ?? '';
     $event['event_name'] = $_POST['event_name'] ?? '';
     $event['host_user_id'] = $_POST['host_user_id'] ?? '';
-    $event['event_end'] = $_POST['event_description'] ?? '';
+    $event['event_description'] = $_POST['event_description'] ?? '';
     $event['total_tickets'] = $_POST['total_tickets'] ?? '';
     $event['room_id'] = $_POST['room_id'] ?? '';
-    $event['event_category'] = $_POST['event_category'] ?? '';
+    $event['event_category_id'] = $_POST['event_category_id'] ?? '';
     $event['event_start'] = $_POST['event_start'] ?? '';
     $event['ticket_sale_end'] = $_POST['ticket_sale_end'] ?? '';
+    $event['event_end'] = $_POST['event_end'] ?? '';
 
 
     $result = insert_event($event);
     if ($result === true) {
-        $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/events/show.php?id=' . $new_id));
+        $new_event_id = mysqli_insert_id($db);
+        $film_event['film_id'] = $_POST['film_id'] ?? '';
+        $film_event['event_id'] = $new_event_id;
+        insert_film_event($film_event);
+        redirect_to(url_for('/events/show.php?id=' . $new_event_id));
     } else {
         $errors = $result;
     }
 } else {
     $event = [];
-    $event['event_id'] = '';
     $event['event_name'] = '';
     $event['host_user_id'] = '';
     $event['event_end'] = '';
     $event['total_tickets'] = '';
     $event['room_id'] = '';
-    $event['event_category'] = '';
+    $event['event_category_id'] = '';
     $event['event_start'] = '';
     $event['ticket_sale_end'] = '';
+    $event['event_description'] = '';
+
+    $film_event['film_id'] = '';
+    $film_event['event_id'] = '';
 }
 
 $event_set = find_all_events();
@@ -39,78 +48,131 @@ $event_count = mysqli_num_rows($event_set) + 1;
 mysqli_free_result($event_set);
 ?>
 
-<?php $page_title = 'Create Event'; ?>
+
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="content">
 
-    <a class="back-link" href="<?php echo url_for('/index.php'); ?>">&laquo; Back to Homee</a>
-
     <div class="event new">
-        <h1>Create Page</h1>
+        <h1>Create Event</h1>
 
         <?php echo display_errors($errors); ?>
 
         <form action="<?php echo url_for('/events/new.php'); ?>" method="post">
             <dl>
-                <dt>Subject</dt>
+                <dt>Event Name</dt>
+                <dd><input type="text" name="event_name" value="<?php
+                    echo
+                    h($event['event_name']);
+                    ?>" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>Host</dt>
                 <dd>
-                    <select name="subject_id">
+                    <select name="host_user_id">
                         <?php
-                        $subject_set = find_all_subjects();
-                        while ($subject = mysqli_fetch_assoc($subject_set)) {
-                            echo "<option value=\"" . h($subject['id']) . "\"";
-                            if ($event["subject_id"] == $subject['id']) {
-                                echo " selected";
-                            }
-                            echo ">" . h($subject['menu_name']) . "</option>";
+                        $user_set = find_all_users();
+                        while ($user = mysqli_fetch_assoc($user_set)) {
+                            echo "<option value=" . $user["user_id"] . ">"
+                            . h($user["username"]) . " - " . h($user["first_name"])
+                            . " " . h($user["last_name"]) . "</option>";
                         }
-                        mysqli_free_result($subject_set);
+                        mysqli_free_result($user_set);
                         ?>
                     </select>
                 </dd>
             </dl>
             <dl>
-                <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="<?php echo
-                        h($event['menu_name']);
-                        ?>" /></dd>
-            </dl>
-            <dl>
-                <dt>Position</dt>
+                <dt>Category</dt>
                 <dd>
-                    <select name="position">
+                    <select name="event_category_id">
                         <?php
-                        for ($i = 1; $i <= $event_count; $i++) {
-                            echo "<option value=\"{$i}\"";
-                            if ($event["position"] == $i) {
-                                echo " selected";
-                            }
-                            echo ">{$i}</option>";
+                        $category_set = find_all_categories();
+                        while ($category = mysqli_fetch_assoc($category_set)) {
+                            echo "<option value='" . $category["category_id"] .
+                            "'>" . h($category["category_name"]) . "</option>";
                         }
+                        mysqli_free_result($category_set);
                         ?>
                     </select>
                 </dd>
             </dl>
             <dl>
-                <dt>Visible</dt>
+
+                <dt>Description</dt>
+                <dd><input type="text" name="event_description" value="<?php
+                    echo
+                    h($event['event_description']);
+                    ?>" />
+                </dd>
+            </dl>
+            <h2>Films</h2>
+            <dl>
+                <dt>Film</dt>
                 <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1"<?php
-                    if ($event['subject_id'] == "1") {
-                        echo " checked";
+                    <select name="film_id">
+                        <?php
+                        $film_set = find_all_films();
+                        while ($film = mysqli_fetch_assoc($film_set)) {
+                            echo "<option value=" . $film["film_id"] . ">"
+                            . h($film["title"]) . " ("
+                            . h($film["certificate"]) . ") - "
+                            . h($film["genre_name"]) . "</option>";
+                        }
+                        mysqli_free_result($film_set);
+                        ?>
+                    </select>
+                </dd>
+            </dl>
+
+
+
+
+            <h2>Date and Time</h2>
+            <p> Please select a date and type a time:</p>
+            <dl>
+                <dt>Event Start</dt>
+                <dd><input type="datetime-local" name="event_start" value="<?php echo h($event['event_start']); ?>" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>Event End</dt>
+                <dd><input type="datetime-local" name="event_end" value="<?php echo h($event['event_end']); ?>" />
+                </dd>
+            </dl>
+            <h2>Location</h2>
+            <dl>
+                <dt>Room</dt>
+                <select name="room_id">
+                    <?php
+                    $room_set = find_all_rooms_locations();
+                    while ($room = mysqli_fetch_assoc($room_set)) {
+                        echo "<option value=" . $room["room_id"] . ">"
+                        . h($room["room_name"]) . " - (Capacity: "
+                        . h($room["capacity"]) . "), "
+                        . h($room["address_line_1"]) . ", "
+                        . h($room["postcode"]) . ", "
+                        . h($room["city_name"]) . ", "
+                        . h($room["country_name"]) . "</option>";
                     }
-                    ?>/>
+                    mysqli_free_result($room_set);
+                    ?>
+                </select>
+            </dl>
+            <h2>Tickets</h2>
+            <dl>
+                <dt>Ticket Sale End</dt>
+                <dd><input type="datetime-local" name="ticket_sale_end" value="<?php echo h($event['ticket_sale_end']); ?>" />
                 </dd>
             </dl>
             <dl>
-                <dt>Content</dt>
-                <dd>
-                    <textarea name="content" cols="60" rows="10"><?php echo h($event['content']); ?></textarea>
+                <dt>Total Tickets</dt>
+                <dd><input type="int" name="total_tickets" value="<?php echo h($event['total_tickets']); ?>" />
                 </dd>
             </dl>
             <div id="operations">
-                <input type="submit" value="Create Page" />
+                <input type="submit" value="Create Event" />
             </div>
         </form>
 

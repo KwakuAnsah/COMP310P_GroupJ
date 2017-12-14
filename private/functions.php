@@ -66,6 +66,7 @@ function display_event_films_details($films) {
                 <th>Certificate</th>
             </tr>';
     while ($film = mysqli_fetch_assoc($films)) {
+
         $output .= '<tr>';
         $output .=    '<td>'. h($film['title']).'</td>';
         $output .=    '<td>'. h($film['tagline']).'</td>';

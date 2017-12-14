@@ -1,9 +1,9 @@
 <?php
 
-// Users -----------------------------------------------------------------------
+// Users ----DONE except validate users-----------------------------------------
 
 
-/* Done */ function find_all_users() {
+function find_all_users() {
     global $db;
 
     $sql = "SELECT * FROM user ";
@@ -12,8 +12,7 @@
     confirm_result_set($result);
     return $result;
 }
-
-/* Done */ function find_user_by_id($user_id) {
+function find_user_by_id($user_id) {
     global $db;
     $sql = "SELECT * FROM user ";
     $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
@@ -23,8 +22,6 @@
     mysqli_free_result($result);
     return $user;
 }
-
-
 function validate_users($user) {
     $errors = [];
     /* TESTS 
@@ -96,8 +93,7 @@ function validate_users($user) {
 
     return $errors;
 }
-
-/* Done */ function insert_user($user) {
+function insert_user($user) {
     global $db;
 
     $errors = validate_user($user); //array of errors
@@ -123,8 +119,7 @@ function validate_users($user) {
         exit;
     }
 }
-
-/* Done */ function delete_user($id) {
+function delete_user($id) {
     global $db;
     $sql = "DELETE FROM user ";
     $sql .= "WHERE id ='" . db_escape($db, $id) . "' ";
@@ -141,8 +136,7 @@ function validate_users($user) {
         exit;
     }
 }
-
-/* Done */ function find_host_by_event_id($event_id){
+function find_host_by_event_id($event_id) {
     global $db;
 
 
@@ -158,10 +152,10 @@ function validate_users($user) {
 }
 
 
-// Events ----------------------------------------------------------------------
+// Events -------DONE except validate event-------------------------------------
 
 
-/* Done */ function find_all_events() {
+function find_all_events() {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -171,7 +165,17 @@ function validate_users($user) {
     return $result;
 }
 
-/* Done */ function find_event_by_id($event_id) {
+function find_all_events_detailed() {
+    global $db;
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+function find_event_by_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -183,7 +187,6 @@ function validate_users($user) {
     mysqli_free_result($result);
     return $event; //returns an associative array
 }
-
 function validate_event($event) {
     $errors = [];
 
@@ -275,18 +278,17 @@ function validate_event($event) {
 
     return $errors;
 }
-
-/* Done */ function insert_event($event) {
+function insert_event($event) {
     global $db;
 
-    $errors = validate_event($event); //array of errors
+    /*$errors = validate_event($event); //array of errors
     if (!empty($errors)) {
         return $errors;
-    }
+    } */
 
     $sql = "INSERT INTO event ";
     $sql .= "(event_name, host_user_id, event_end, event_description, "
-            . "total_tickets, room_id, event_category, event_start, ticket_sale_end) ";
+            . "total_tickets, room_id, event_category_id, event_start, ticket_sale_end) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $event['event_name']) . "',";
     $sql .= "'" . db_escape($db, $event['host_user_id']) . "',";
@@ -294,7 +296,7 @@ function validate_event($event) {
     $sql .= "'" . db_escape($db, $event['event_description']) . "',";
     $sql .= "'" . db_escape($db, $event['total_tickets']) . "',";
     $sql .= "'" . db_escape($db, $event['room_id']) . "',";
-    $sql .= "'" . db_escape($db, $event['event_category']) . "',";
+    $sql .= "'" . db_escape($db, $event['event_category_id']) . "',";
     $sql .= "'" . db_escape($db, $event['event_start']) . "',";
     $sql .= "'" . db_escape($db, $event['ticket_sale_end']) . "'";
     $sql .= ")";
@@ -309,8 +311,7 @@ function validate_event($event) {
         exit;
     }
 }
-
-/* Done */ function update_event($event) {
+function update_event($event) {
     global $db;
     $errors = validate_event($event); //array of errors
     if (!empty($errors)) {
@@ -341,8 +342,7 @@ function validate_event($event) {
         exit;
     }
 }
-
-/* Done */ function delete_event($event_id) {
+function delete_event($event_id) {
     global $db;
     $sql = "DELETE FROM event ";
     $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
@@ -361,19 +361,17 @@ function validate_event($event) {
 }
 
 
-// Categories ----------------------------------------------------------------------
-
-/* Done */ function find_all_categories() {
+// Categories ----DONE----------------------------------------------------------
+function find_all_categories() {
     global $db;
 
     $sql = "SELECT * FROM category ";
-    $sql .= "ORDER BY event_id ASC";
+    $sql .= "ORDER BY category_name ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
-
-/* Done */ function find_category_by_id($category_id) {
+function find_category_by_id($category_id) {
     global $db;
 
     $sql = "SELECT * FROM event ";
@@ -385,9 +383,8 @@ function validate_event($event) {
     mysqli_free_result($result);
     return $category; //returns an associative array
 }
-
-/* Done */ function find_category_by_event_id($event_id) {
-     global $db;
+function find_category_by_event_id($event_id) {
+    global $db;
 
     $sql = "SELECT * FROM category ";
     $sql .= "JOIN event ON event.event_category_id = category.category_id ";
@@ -400,9 +397,7 @@ function validate_event($event) {
     return $category; //returns an associative array
 }
 
-
-
-// Bookings --------------------------------------------------------------------
+// Bookings ----NEED TO CHECK---------------------------------------------------
 
 
 function find_all_bookings() {
@@ -414,7 +409,6 @@ function find_all_bookings() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_booking_by_id($id) {
     global $db;
 
@@ -427,7 +421,6 @@ function find_booking_by_id($id) {
     mysqli_free_result($result);
     return $booking; //returns an associative array
 }
-
 function validate_booking($booking) {
     $errors = [];
 
@@ -519,7 +512,6 @@ function validate_booking($booking) {
 
     return $errors;
 }
-
 function insert_booking($booking) {
     global $db;
 
@@ -545,7 +537,6 @@ function insert_booking($booking) {
         exit;
     }
 }
-
 function update_booking($booking) {
     global $db;
     $errors = validate_booking($booking); //array of errors
@@ -569,7 +560,6 @@ function update_booking($booking) {
         exit;
     }
 }
-
 function delete_booking($booking_id) {
     global $db;
     $sql = "DELETE FROM booking ";
@@ -588,8 +578,24 @@ function delete_booking($booking_id) {
     }
 }
 
-// Booking_has_user ------------------------------------------------------------
+function find_tickets_sold($event_id){
+    global $db;
 
+    $sql = "SELECT SUM(number_of_tickets) AS tickets_sold FROM booking ";
+    $sql .= "JOIN event_has_booking ON event_has_booking.booking_id = booking.booking_id ";
+    $sql .= "WHERE event_has_booking.event_id ='".$event_id."'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return '0';
+    }
+    $tickets_sold = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $tickets_sold[0];
+    
+}
+
+
+// Booking_has_user ------NEED TO CHECK------------------------------------------------------
 
 function find_all_booking_has_user() {
     global $db;
@@ -600,7 +606,6 @@ function find_all_booking_has_user() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_booking_has_user_by_id($id) {
     global $db;
 
@@ -613,7 +618,6 @@ function find_booking_has_user_by_id($id) {
     mysqli_free_result($result);
     return $booking_has_user; //returns an associative array
 }
-
 //EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
 function validate_booking_has_user($booking_has_user) {
     $errors = [];
@@ -706,7 +710,6 @@ function validate_booking_has_user($booking_has_user) {
 
     return $errors;
 }
-
 function insert_booking_has_user($booking_has_user) {
     global $db;
 
@@ -732,7 +735,6 @@ function insert_booking_has_user($booking_has_user) {
         exit;
     }
 }
-
 function update_booking_has_user($booking_has_user) {
     global $db;
     $errors = validate_booking_has_user($booking_has_user); //array of errors
@@ -756,7 +758,6 @@ function update_booking_has_user($booking_has_user) {
         exit;
     }
 }
-
 function delete_booking_has_user($booking_id) {
     global $db;
     $sql = "DELETE FROM booking_has_user ";
@@ -775,8 +776,7 @@ function delete_booking_has_user($booking_id) {
     }
 }
 
-// Event_has_booking -----------------------------------------------------------
-
+// Event_has_booking --------NEED TO CHECK---------------------------------------------------
 
 function find_all_event_has_booking() {
     global $db;
@@ -787,7 +787,6 @@ function find_all_event_has_booking() {
     confirm_result_set($result);
     return $result;
 }
-
 function find_event_has_booking_by_id($id) {
 
     global $db;
@@ -801,7 +800,6 @@ function find_event_has_booking_by_id($id) {
     mysqli_free_result($result);
     return $event_has_booking; //returns an associative array
 }
-
 //EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
 function validate_event_has_booking($event_has_booking) {
     $errors = [];
@@ -894,7 +892,6 @@ function validate_event_has_booking($event_has_booking) {
 
     return $errors;
 }
-
 function insert_event_has_booking($event_has_booking) {
     global $db;
 
@@ -920,7 +917,6 @@ function insert_event_has_booking($event_has_booking) {
         exit;
     }
 }
-
 function update_event_has_booking($event_has_booking) {
     global $db;
     $errors = validate_event_has_booking($event_has_booking); //array of errors
@@ -944,7 +940,6 @@ function update_event_has_booking($event_has_booking) {
         exit;
     }
 }
-
 function delete_event_has_booking($event_id) {
     global $db;
     $sql = "DELETE FROM event_has_booking ";
@@ -963,10 +958,11 @@ function delete_event_has_booking($event_id) {
     }
 }
 
-// Rating ----------------------------------------------------------------------
+
+// Rating ----DONE except validate rating-----------------------------------
 
 
-/* Done */ function find_all_ratings() {
+function find_all_ratings() {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -975,8 +971,7 @@ function delete_event_has_booking($event_id) {
     confirm_result_set($result);
     return $result;
 }
-
-/* Done */ function find_rating_by_id($rating_id) {
+function find_rating_by_id($rating_id) {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -988,8 +983,7 @@ function delete_event_has_booking($event_id) {
     mysqli_free_result($result);
     return $rating; //returns an associative array
 }
-
-/* Done */ function find_rating_by_event_id($event_id) {
+function find_rating_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM rating ";
@@ -1003,7 +997,6 @@ function delete_event_has_booking($event_id) {
     mysqli_free_result($result);
     return $rating; //returns an associative array
 }
-
 function validate_rating($rating) {
     $errors = [];
 
@@ -1095,10 +1088,8 @@ function validate_rating($rating) {
 
     return $errors;
 }
-
 //EDIT VALIDATE_RATING   FUNCTION
-
-/* Done */ function insert_rating($rating) {
+function insert_rating($rating) {
     global $db;
 
     $errors = validate_rating($rating); //array of errors
@@ -1126,8 +1117,7 @@ function validate_rating($rating) {
         exit;
     }
 }
-
-/* Done */ function update_rating($rating) {
+function update_rating($rating) {
     global $db;
     $errors = validate_event($event); //array of errors
     if (!empty($errors)) {
@@ -1154,8 +1144,7 @@ function validate_rating($rating) {
         exit;
     }
 }
-
-/* Done */ function delete_rating($rating_id) {
+function delete_rating($rating_id) {
     global $db;
     $sql = "DELETE FROM rating ";
     $sql .= "WHERE raring_id ='" . db_escape($db, $rating_id) . "' ";
@@ -1172,8 +1161,7 @@ function validate_rating($rating) {
         exit;
     }
 }
-
-/* Done */ function find_avg_host_rating($host_user_id) {
+function find_avg_host_rating($host_user_id) {
     global $db;
 
     $sql = "SELECT AVG(host_rating) FROM rating ";
@@ -1189,20 +1177,23 @@ function validate_rating($rating) {
     return $rating[0];
 }
 
+
 // Film  ----------------------------------------------------------------------
 
 
-/* Done */ function find_all_films() {
+function find_all_films() {
     global $db;
 
-    $sql = "SELECT * FROM film ";
+    $sql = "SELECT film.film_id, title, tagline, certificate, genre_name FROM film ";
+    $sql .= "JOIN film_film_genre ON film_film_genre.film_id = film.film_id ";
+    $sql .= "JOIN film_genre ON film_film_genre.genre_id = film_genre.genre_id ";
     $sql .= "ORDER BY title ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
 
-/* Done */ function find_film_by_id($film_id) {
+function find_film_by_id($film_id) {
     global $db;
 
     $sql = "SELECT * FROM film ";
@@ -1215,7 +1206,7 @@ function validate_rating($rating) {
     return $film; //returns an associative array
 }
 
-/* Done */ function find_films_by_event_id($event_id) {
+function find_films_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT title, tagline, certificate FROM film ";
@@ -1228,7 +1219,8 @@ function validate_rating($rating) {
     return $result;
 }
 
-/* Done */ function find_number_of_films_by_event_id($event_id) {
+
+function find_number_of_films_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT COUNT(event_id) FROM film_event ";
@@ -1242,20 +1234,86 @@ function validate_rating($rating) {
     return $number_of_films[0];
 }
 
+// Film_Film_Genre  -------------------------------------------------------------
+/*
+  function find_film_genres_by_film_id($film_id) {
+  global $db;
+
+  $sql = "SELECT genre_name FROM film_film_genre ";
+  $sql .= "JOIN film ON film.film_id = film_film_genre.film_id ";
+  $sql .= "JOIN film_genre ON film_genre.genre_id = film_film_genre.genre_id ";
+  $sql .= "WHERE film.film_id='" . db_escape($db, $film_id) . "'";
+
+  $result = mysqli_query($db, $sql);
+  $genres = mysqli_fetch_assoc($result);
+  mysqli_free_result($result);
+
+  $prefix = $genre_list = '';
+  foreach ($genres as $genre)
+  {
+  $genre_list .= $prefix . '"' . $genre['genre_name'] . '"';
+  $prefix = ', ';
+  }
+  return $genre_list;
+  }
+ */
+
+// Film_Event ------------------------------------------------------------------
+
+function insert_film_event($film_event) {
+    global $db;
+
+    $sql = "INSERT INTO film_event ";
+    $sql .= "(film_id, event_id) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $film_event['film_id']) . "', ";
+    $sql .= "'" . db_escape($db, $film_event['event_id']) . "'";
+    $sql .= ")";
+    
+    $result = mysqli_query($db, $sql);
+    if ($result) {
+        return true;
+    } else {
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit;
+    }
+}
+
 // Room -----------------------------------------------------------------------
 
 
-/* Done */ function find_all_rooms() {
+/* function below is done */ function find_all_rooms() {
     global $db;
 
     $sql = "SELECT * FROM room ";
+
     $sql .= "ORDER BY room_name ASC ";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
 
-/* Done */ function find_room_by_id($room_id) {
+/* function below is done */
+
+function find_all_rooms_locations() {
+    global $db;
+
+    $sql = "SELECT room.room_id, room_name, capacity, wheelchair_accessible, ";
+    $sql .= "address.address_id, address_line_1, postcode, city.city_id, ";
+    $sql .= "city_name, country.country_id, country_name  FROM address ";
+    $sql .= "JOIN city ON address.city_id = city.city_id ";
+    $sql .= "JOIN country ON country.country_id = city.country_id ";
+    $sql .= "JOIN room ON room.address_id = address.address_id ";
+    $sql .= "ORDER BY country_name ASC ";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+/* function below is done */
+
+function find_room_by_id($room_id) {
     global $db;
 
     $sql = "SELECT * FROM room ";
@@ -1268,7 +1326,9 @@ function validate_rating($rating) {
     return $room; //returns an associative array
 }
 
-/* Done */ function find_room_by_event_id($event_id) {
+/* function below is done */
+
+function find_room_by_event_id($event_id) {
     global $db;
 
     $sql = "SELECT * FROM room ";
@@ -1284,25 +1344,32 @@ function validate_rating($rating) {
 
 // Address -----------------------------------------------------------------------
 
-/* Done */ function find_address_by_room_id($room_id) {
+/* function below is done */ function find_address_by_room_id($room_id) {
     global $db;
 
-    $sql = "SELECT * FROM address ";
-    $sql .= "JOIN room ON room.address_id = address.address_id  ";
-    $sql .= "WHERE room.room_id='" . db_escape($db, $room_id) . "'";
+    $sql = "SELECT room.room_id, room_name, capacity, wheelchair_accessible, ";
+    $sql .= "address.address_id, address_line_1, postcode, city.city_id, ";
+    $sql .= "city_name, country.country_id, country_name  FROM address ";
+    $sql .= "JOIN city ON address.city_id = city.city_id ";
+    $sql .= "JOIN country ON country.country_id = city.country_id ";
+    $sql .= "JOIN room ON room.address_id = address.address_id ";
+    $sql .= "WHERE room.room_id = '" . db_escape($db, $room_id) . "' ";
+    $sql .= "ORDER BY country.country_name ";
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
-    $room = mysqli_fetch_assoc($result);
+    $address = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
-    return $room; //returns an associative array
+    return $address; //returns an associative array
 }
 
 // Countries -------------------------------------------------------------------
 
 
-/* Done */ function find_all_countries() {
-    global $db;
+/* function below is done */ function find_all_countries() {
+    global
+
+    $db;
 
     $sql = "SELECT * FROM country ";
     $result = mysqli_query($db, $sql);
@@ -1310,8 +1377,12 @@ function validate_rating($rating) {
     return $result;
 }
 
-/* Done */ function find_all_country_names() {
-    global $db;
+/* function below is done */
+
+function find_all_country_names() {
+    global
+
+    $db;
 
     $sql = "SELECT country_name FROM country ";
 
@@ -1320,11 +1391,14 @@ function validate_rating($rating) {
     return $result;
 }
 
-/* Done */ function find_country_by_id($country_id) {
+/* function below is done */
+
+function find_country_by_id(
+$country_id) {
     global $db;
 
     $sql = "SELECT * FROM country ";
-    $sql .= "WHERE country_id='" . db_escape($db, $country_id) . "'";
+    $sql .= "WHERE country_id = '" . db_escape($db, $country_id) . "' ";
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
@@ -1336,8 +1410,10 @@ function validate_rating($rating) {
 // Cities -------------------------------------------------------------------
 
 
-/* Done */ function find_all_cities() {
-    global $db;
+/* function below is done */ function find_all_cities() {
+    global
+
+    $db;
 
     $sql = "SELECT * FROM city ";
     $result = mysqli_query($db, $sql);
@@ -1345,8 +1421,12 @@ function validate_rating($rating) {
     return $result;
 }
 
-/* Done */ function find_all_city_names() {
-    global $db;
+/* function below is done */
+
+function find_all_city_names() {
+    global
+
+    $db;
 
     $sql = "SELECT city_name FROM country ";
 
@@ -1355,11 +1435,14 @@ function validate_rating($rating) {
     return $result;
 }
 
-/* Done */ function find_city_by_id($city_id) {
+/* function below is done */
+
+function find_city_by_id(
+$city_id) {
     global $db;
 
     $sql = "SELECT * FROM city ";
-    $sql .= "WHERE city_id='" . db_escape($db, $city_id) . "'";
+    $sql .= "WHERE city_id = '" . db_escape($db, $city_id) . "' ";
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);

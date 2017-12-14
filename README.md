@@ -28,7 +28,7 @@ About us/contact us
 5) place stylesheet links in header file
 
 Event pages
-6) event show page - php queries to display events
+6) **COMPLETE** event show page - php queries to display events
 7) event ratings page - see 'event show page', also store their ratings
 
 
@@ -87,4 +87,25 @@ Header
 
 
 
-
+--------------------------------------------------------------------------------
+COURSEWORK REQUIREMENTS
+--------------------------------------------------------------------------------
+1.
+--------------------------------------------------------------------------------
+All users can register with the system and create an account. A user must log in to the system
+before using it. A user can be a host and may set up their own events. A user can also be a
+participant and book tickets to other people’s events.
+2. A user may create an event, setting suitable conditions and features of the event including the
+description, location, date, categorisation, number of tickets available and end date.
+3. A user can search the system for categories of events and can browse events within certain
+categories or timeframes.
+4. A user can book a ticket for an event. The system will manage the ticket sales until the set end
+time. No further ticket sales will be permitted if the event is full or if the end time for ticket sales
+of that event has been reached.
+5 Participants can view a list of events they are attending and receive emailed updates on events
+that are imminent. You only have to show that an event (creating an email message) can be
+triggered at the date and time, you do not need to implement an email system.
+6. Users hosting events can view the progress of ticket sales and generate a list of participants for
+an event.
+7. Participants can give feedback and ratings on events after they have happened. Ratings and
+feedback are visible to other users.
