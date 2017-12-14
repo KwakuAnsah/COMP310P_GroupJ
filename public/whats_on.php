@@ -214,7 +214,7 @@ $Search1 = filter_input(INPUT_POST, "Search");
             echo "</tbody>";
             echo "</table>";
             // Free result set
-            mysqli_free_result($result);
+            mysqli_free_result($events_set);
         } else {
             echo "No records matching your request were found.";
         }
@@ -280,7 +280,7 @@ $Search1 = filter_input(INPUT_POST, "Search");
 
 <!--          Table with data-->
 <div class="container-fluid text-center">
-    <table class='table table-striped' <!--  id="myTable"--> >  
+    <table class='table table-striped'  id="myTable" >  
         <thead>  
             <tr>  
                 <th>Event Name</th>  
