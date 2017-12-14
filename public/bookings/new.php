@@ -84,6 +84,7 @@ $country = find_country_by_id($city['country_id']);
             </div>
             </form>
 
+            
 
             <!-- THIS SECTION IS FROM EVENT SHOW CODE - UPDATE ONCE EVENT SHOW IS COMPLETE -->
             <div class="attributes"> 
