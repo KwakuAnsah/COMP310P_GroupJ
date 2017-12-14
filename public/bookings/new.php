@@ -1,11 +1,20 @@
 <?php
 require_once('../../private/initialize.php');
 
+
+$event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
+$user_id = $_SESSION['user_id'];
+
 if (is_post_request()) {
 
     // Handle form values
     $booking = [];
     $booking['number_of_tickets'] = $_POST['number_of_tickets'] ?? '';
+    $booking['user_id'] = $user_id;
+    $booking['event_id'] = $event_id;
+
+    $booking_has_user = [];
+    $event_has_booking = [];
 
     $result = insert_booking($booking);
     if ($result === true) {
@@ -17,6 +26,10 @@ if (is_post_request()) {
 } else {
     $booking = [];
     $booking['number_of_tickets'] = "";
+    $booking['user_id'] = $user_id;
+    $booking['event_id'] = $event_id;
+    $booking_has_user = [];
+    $event_has_booking = [];
 }
 
 $booking_set = find_all_bookings();
@@ -25,7 +38,7 @@ mysqli_free_result($booking_set);
 
 
 // FOR DISPLAYING THE EVENT DETAILS
-$event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
+
 $event = find_event_by_id($event_id);
 $films = find_films_by_event_id($event_id);
 $host = find_host_by_event_id($event_id);
@@ -34,6 +47,9 @@ $room = find_room_by_event_id($event_id);
 $address = find_address_by_room_id($event['room_id']);
 $city = find_city_by_id($address['city_id']);
 $country = find_country_by_id($city['country_id']);
+
+$t_sold = find_tickets_sold($event['event_id']);
+$tickets_remaining = $event['total_tickets'] - $t_sold;
 ?>
 
 <?php $page_title = 'Make a booking'; ?>
@@ -50,41 +66,50 @@ $country = find_country_by_id($city['country_id']);
             <form action="<?php echo url_for('/bookings/new.php'); ?>" method="post">
                 <h3>Please enter number of tickets below</h3>
                 <dl>
-                    <dt>Number of tickets:</dt>
-                    <dd><input type="text" name="number_of_tickets" value="" /></dd>
+                    <dt>Tickets remaining:</dt>
+                    <dd>
+                        <?php echo $tickets_remaining . " / " . $event['total_tickets']; ?> 
+                    </dd>
                 </dl>
                 <dl>
                     <dt>Ticket sales end:</dt>
                     <dd><?php echo h($event['ticket_sale_end']); ?></dd>
+                    <dt>Time Left:</dt>
                     <?php
-                    $diff = date_create()->diff(date_create($event['ticket_sale_end']));
-                    echo $diff->format("%a days\n%h hours\n%i minutes\n"); //Walter Tross
-                    //https://stackoverflow.com/questions/22597110/need-to-show-days-hours-minutes-and-seconds-between-two-dates-in-php
-                    ?>  
-
-                </dl>
-                <dl>
-                    <dt>User - to be got from session but this is just for testing for now</dt>
+                    $now = time();
+                    $timestamp_ticket_sale_end = strtotime($event['ticket_sale_end']);
+                    $time_to_sale_end = date_create()->diff(date_create($event['ticket_sale_end']));
+                    ?>
                     <dd>
-                        <select name="user_id">
-                            <?php
-                            $user_set = find_all_users();
-                            while ($user = mysqli_fetch_assoc($user_set)) {
-                                echo "<option value=" . $user["user_id"] . ">"
-                                . h($user["username"]) . " - " . h($user["first_name"])
-                                . " " . h($user["last_name"]) . "</option>";
-                            }
-                            mysqli_free_result($user_set);
-                            ?>
-                        </select>
+                        <?php
+                        echo $time_to_sale_end->format("%a days\n%h hours\n%i minutes\n"); //Walter Tross
+                        //https://stackoverflow.com/questions/22597110/need-to-show-days-hours-minutes-and-seconds-between-two-dates-in-php
+                        ?>
                     </dd>
                 </dl>
+                <?php
+                if ($timestamp_ticket_sale_end > $now && $tickets_remaining > 0) {
+                    echo '<dl>' . '<dt>Number of tickets:</dt>' .
+                    '<dd><input type="text" name="number_of_tickets" value="" /></dd>' .
+                    '</dl>';
+                } else {
+                    echo '<dl><dt>You cannot book a ticket</dt>';
+                    if ($timestamp_ticket_sale_end < $now) {
+                        echo "<dd>Tickets are no longer available to book because the sale has closed now.</dd>";
+                    }
+                    if ($tickets_remaining <= 0) {
+                        echo "<dd>This event has SOLD OUT.</dd>";
+                    }
+                    echo "</dl>";
+                }
+                ?>  
+
                 <div id="operations">
-                <input type="submit" value="Confirm Booking" />
-            </div>
+                    <input type="submit" value="Confirm Booking" />
+                </div>
             </form>
 
-            
+
 
             <!-- THIS SECTION IS FROM EVENT SHOW CODE - UPDATE ONCE EVENT SHOW IS COMPLETE -->
             <div class="attributes"> 

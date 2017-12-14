@@ -53,9 +53,12 @@ $user = find_user_by_id($user_id);
                         <dd><?php echo h($user['email']) ?></dd>
                     </dl>
                     <dl>
-                        <dt>Address</dt>
-                        <dd><?php echo h($user['address_id']) ?> - Link to Address info to be completed</dd>
-                    </dl>
+                    <dt>Address:</dt>
+                    <dd><?php echo h($user['address_line_1']); ?></dd>
+                    <dd><?php echo h($user['postcode']); ?></dd>
+                    <dd><?php echo h($user['city_name']); ?></dd>
+                    <dd><?php echo h($user['country_name']); ?></dd>
+                </dl>
                 </div>
             </div>
 

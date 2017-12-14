@@ -12,7 +12,13 @@ function find_all_users() {
 }
 function find_user_by_id($user_id) {
     global $db;
-    $sql = "SELECT * FROM user ";
+    $sql = "SELECT user.user_id, user.password, user.first_name, user.last_name,";
+    $sql .= " user.username, user.address_id, user.email, user.date_of_birth, ";
+    $sql .= "address.address_id, address_line_1, postcode, city.city_id, ";
+    $sql .= "city_name, country.country_id, country_name FROM user ";
+    $sql .= "JOIN address ON address.address_id = user.address_id ";
+    $sql .= "JOIN city ON address.city_id = city.city_id ";
+    $sql .= "JOIN country ON country.country_id = city.country_id ";
     $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
@@ -20,6 +26,8 @@ function find_user_by_id($user_id) {
     mysqli_free_result($result);
     return $user;
 }
+
+
 function validate_user($user) {
     $errors = [];
     /* TESTS 
