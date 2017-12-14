@@ -12,6 +12,7 @@ function find_all_users() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_user_by_id($user_id) {
     global $db;
     $sql = "SELECT * FROM user ";
@@ -22,6 +23,7 @@ function find_user_by_id($user_id) {
     mysqli_free_result($result);
     return $user;
 }
+
 function validate_users($user) {
     $errors = [];
     /* TESTS 
@@ -61,13 +63,13 @@ function validate_users($user) {
     //      First name cannot be blank.
     //      First name must be between 2 and 65 characters.
     // ------------------------------------------------------------------------
-    
+
     if (is_blank($user['first_name'])) {
         $errors[] = "Name cannot be blank.";
     } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 65])) {
         $errors[] = "Name must be between 2 and 65 characters.";
     }
-    
+
     // last_name -------------------------------------------------------------
     //      Last name cannot be blank.
     //      Last name must be between 2 and 100 characters.
@@ -79,10 +81,14 @@ function validate_users($user) {
     }
     return $errors;
 }
+
 function insert_user($user) {
     global $db;
 
-    $errors = validate_user($user); //array of errors
+
+    $user_errors = validate_user($user);
+    $address_errors = validate_address($address);
+    $errors = array_merge($user_errors, $address_errors);
     if (!empty($errors)) {
         return $errors;
     }
@@ -90,12 +96,18 @@ function insert_user($user) {
     $sql = "INSERT INTO user ";
     $sql .= "(email, password, first_name, last_name) ";
     $sql .= "VALUES (";
-    //  $sql .= "'" . db_escape($db, $user['user_id']) . "',";
     $sql .= "'" . db_escape($db, $user['email']) . "',";
     $sql .= "'" . db_escape($db, $user['password']) . "',";
     $sql .= "'" . db_escape($db, $user['first_name']) . "',";
     $sql .= "'" . db_escape($db, $user['last_name']) . "'";
-    $sql .= ")";
+    $sql .= ") ";
+    $sql .= "INSERT INTO address ";
+    $sql .= "(address_line_1, city_id, postcode) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $user['address_line_1']) . "',";
+    $sql .= "'" . db_escape($db, $user['city_id']) . "',";
+    $sql .= "'" . db_escape($db, $user['postcode']) . "'";
+    $sql .= ") ";
     $result = mysqli_query($db, $sql);
     if ($result) {
         return true;
@@ -105,6 +117,7 @@ function insert_user($user) {
         exit;
     }
 }
+
 function delete_user($id) {
     global $db;
     $sql = "DELETE FROM user ";
@@ -122,6 +135,7 @@ function delete_user($id) {
         exit;
     }
 }
+
 function find_host_by_event_id($event_id) {
     global $db;
 
@@ -137,7 +151,6 @@ function find_host_by_event_id($event_id) {
     return $host; //returns an associative array
 }
 
-
 // Events -------DONE except validate event-------------------------------------
 
 
@@ -150,6 +163,7 @@ function find_all_events() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_all_events_detailed() {
     global $db;
 
@@ -175,6 +189,7 @@ function find_all_events_detailed() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_event_by_id($event_id) {
     global $db;
 
@@ -187,6 +202,7 @@ function find_event_by_id($event_id) {
     mysqli_free_result($result);
     return $event; //returns an associative array
 }
+
 function validate_event($event) {
     $errors = [];
 
@@ -278,13 +294,14 @@ function validate_event($event) {
 
     return $errors;
 }
+
 function insert_event($event) {
     global $db;
 
-    /*$errors = validate_event($event); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    } */
+    /* $errors = validate_event($event); //array of errors
+      if (!empty($errors)) {
+      return $errors;
+      } */
 
     $sql = "INSERT INTO event ";
     $sql .= "(event_name, host_user_id, event_end, event_description, "
@@ -311,6 +328,7 @@ function insert_event($event) {
         exit;
     }
 }
+
 function update_event($event) {
     global $db;
     $errors = validate_event($event); //array of errors
@@ -342,6 +360,7 @@ function update_event($event) {
         exit;
     }
 }
+
 function delete_event($event_id) {
     global $db;
     $sql = "DELETE FROM event ";
@@ -360,7 +379,6 @@ function delete_event($event_id) {
     }
 }
 
-
 // Categories ----DONE----------------------------------------------------------
 function find_all_categories() {
     global $db;
@@ -371,6 +389,7 @@ function find_all_categories() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_category_by_id($category_id) {
     global $db;
 
@@ -383,6 +402,7 @@ function find_category_by_id($category_id) {
     mysqli_free_result($result);
     return $category; //returns an associative array
 }
+
 function find_category_by_event_id($event_id) {
     global $db;
 
@@ -409,6 +429,7 @@ function find_all_bookings() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_booking_by_id($id) {
     global $db;
 
@@ -421,6 +442,7 @@ function find_booking_by_id($id) {
     mysqli_free_result($result);
     return $booking; //returns an associative array
 }
+
 function validate_booking($booking) {
     $errors = [];
 
@@ -512,6 +534,7 @@ function validate_booking($booking) {
 
     return $errors;
 }
+
 function insert_booking($booking) {
     global $db;
 
@@ -537,6 +560,7 @@ function insert_booking($booking) {
         exit;
     }
 }
+
 function update_booking($booking) {
     global $db;
     $errors = validate_booking($booking); //array of errors
@@ -560,6 +584,7 @@ function update_booking($booking) {
         exit;
     }
 }
+
 function delete_booking($booking_id) {
     global $db;
     $sql = "DELETE FROM booking ";
@@ -578,12 +603,12 @@ function delete_booking($booking_id) {
     }
 }
 
-function find_tickets_sold($event_id){
+function find_tickets_sold($event_id) {
     global $db;
 
     $sql = "SELECT SUM(number_of_tickets) AS tickets_sold FROM booking ";
     $sql .= "JOIN event_has_booking ON event_has_booking.booking_id = booking.booking_id ";
-    $sql .= "WHERE event_has_booking.event_id ='".$event_id."'";
+    $sql .= "WHERE event_has_booking.event_id ='" . $event_id . "'";
     $result = mysqli_query($db, $sql);
     if (!$result) {
         return '0';
@@ -591,9 +616,7 @@ function find_tickets_sold($event_id){
     $tickets_sold = mysqli_fetch_array($result);
     mysqli_free_result($result);
     return $tickets_sold[0];
-    
 }
-
 
 // Booking_has_user ------NEED TO CHECK------------------------------------------------------
 
@@ -606,6 +629,7 @@ function find_all_booking_has_user() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_booking_has_user_by_id($id) {
     global $db;
 
@@ -618,6 +642,7 @@ function find_booking_has_user_by_id($id) {
     mysqli_free_result($result);
     return $booking_has_user; //returns an associative array
 }
+
 //EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
 function validate_booking_has_user($booking_has_user) {
     $errors = [];
@@ -710,6 +735,7 @@ function validate_booking_has_user($booking_has_user) {
 
     return $errors;
 }
+
 function insert_booking_has_user($booking_has_user) {
     global $db;
 
@@ -735,6 +761,7 @@ function insert_booking_has_user($booking_has_user) {
         exit;
     }
 }
+
 function update_booking_has_user($booking_has_user) {
     global $db;
     $errors = validate_booking_has_user($booking_has_user); //array of errors
@@ -758,6 +785,7 @@ function update_booking_has_user($booking_has_user) {
         exit;
     }
 }
+
 function delete_booking_has_user($booking_id) {
     global $db;
     $sql = "DELETE FROM booking_has_user ";
@@ -787,6 +815,7 @@ function find_all_event_has_booking() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_event_has_booking_by_id($id) {
 
     global $db;
@@ -800,6 +829,7 @@ function find_event_has_booking_by_id($id) {
     mysqli_free_result($result);
     return $event_has_booking; //returns an associative array
 }
+
 //EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
 function validate_event_has_booking($event_has_booking) {
     $errors = [];
@@ -892,6 +922,7 @@ function validate_event_has_booking($event_has_booking) {
 
     return $errors;
 }
+
 function insert_event_has_booking($event_has_booking) {
     global $db;
 
@@ -917,6 +948,7 @@ function insert_event_has_booking($event_has_booking) {
         exit;
     }
 }
+
 function update_event_has_booking($event_has_booking) {
     global $db;
     $errors = validate_event_has_booking($event_has_booking); //array of errors
@@ -940,6 +972,7 @@ function update_event_has_booking($event_has_booking) {
         exit;
     }
 }
+
 function delete_event_has_booking($event_id) {
     global $db;
     $sql = "DELETE FROM event_has_booking ";
@@ -958,7 +991,6 @@ function delete_event_has_booking($event_id) {
     }
 }
 
-
 // Rating ----DONE except validate rating-----------------------------------
 
 
@@ -971,6 +1003,7 @@ function find_all_ratings() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_rating_by_id($rating_id) {
     global $db;
 
@@ -983,6 +1016,7 @@ function find_rating_by_id($rating_id) {
     mysqli_free_result($result);
     return $rating; //returns an associative array
 }
+
 function find_rating_by_event_id($event_id) {
     global $db;
 
@@ -997,6 +1031,7 @@ function find_rating_by_event_id($event_id) {
     mysqli_free_result($result);
     return $rating; //returns an associative array
 }
+
 function validate_rating($rating) {
     $errors = [];
 
@@ -1088,6 +1123,7 @@ function validate_rating($rating) {
 
     return $errors;
 }
+
 //EDIT VALIDATE_RATING   FUNCTION
 function insert_rating($rating) {
     global $db;
@@ -1117,6 +1153,7 @@ function insert_rating($rating) {
         exit;
     }
 }
+
 function update_rating($rating) {
     global $db;
     $errors = validate_event($event); //array of errors
@@ -1144,6 +1181,7 @@ function update_rating($rating) {
         exit;
     }
 }
+
 function delete_rating($rating_id) {
     global $db;
     $sql = "DELETE FROM rating ";
@@ -1161,6 +1199,7 @@ function delete_rating($rating_id) {
         exit;
     }
 }
+
 function find_avg_host_rating($host_user_id) {
     global $db;
 
@@ -1177,7 +1216,6 @@ function find_avg_host_rating($host_user_id) {
     return $rating[0];
 }
 
-
 // Film  ----------------------------------------------------------------------
 
 
@@ -1192,6 +1230,7 @@ function find_all_films() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_film_by_id($film_id) {
     global $db;
 
@@ -1204,6 +1243,7 @@ function find_film_by_id($film_id) {
     mysqli_free_result($result);
     return $film; //returns an associative array
 }
+
 function find_films_by_event_id($event_id) {
     global $db;
 
@@ -1216,6 +1256,7 @@ function find_films_by_event_id($event_id) {
     confirm_result_set($result);
     return $result;
 }
+
 function find_number_of_films_by_event_id($event_id) {
     global $db;
 
@@ -1265,7 +1306,7 @@ function insert_film_event($film_event) {
     $sql .= "'" . db_escape($db, $film_event['film_id']) . "', ";
     $sql .= "'" . db_escape($db, $film_event['event_id']) . "'";
     $sql .= ")";
-    
+
     $result = mysqli_query($db, $sql);
     if ($result) {
         return true;
@@ -1275,7 +1316,6 @@ function insert_film_event($film_event) {
         exit;
     }
 }
-
 
 // Room ---DONE----------------------------------------------------------------
 
@@ -1289,6 +1329,7 @@ function find_all_rooms() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_all_rooms_locations() {
     global $db;
 
@@ -1303,6 +1344,7 @@ function find_all_rooms_locations() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_room_by_id($room_id) {
     global $db;
 
@@ -1315,6 +1357,7 @@ function find_room_by_id($room_id) {
     mysqli_free_result($result);
     return $room; //returns an associative array
 }
+
 function find_room_by_event_id($event_id) {
     global $db;
 
@@ -1349,6 +1392,7 @@ function find_address_by_room_id($room_id) {
     mysqli_free_result($result);
     return $address; //returns an associative array
 }
+
 function validate_address($address) {
     $errors = [];
 
@@ -1378,7 +1422,6 @@ function validate_address($address) {
     }
     return $errors;
 }
-
 
 // Countries -------------------------------------------------------------------
 
@@ -1467,4 +1510,5 @@ $city_id) {
     mysqli_free_result($result);
     return $city; //returns an associative array
 }
+
 ?>

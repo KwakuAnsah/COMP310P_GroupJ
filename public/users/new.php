@@ -16,22 +16,37 @@ if (is_post_request()) {
     $user['username'] = $_POST['username'] ?? '';
     $user['address_id'] = $_POST['address_id'] ?? '';
     $user['email'] = $_POST['email'] ?? '';
+    $user['address_line_1'] = $_POST['address_line_1'] ?? '';
+    $user['city_id'] = $_POST['city_id'] ?? '';
+    $user['postcode'] = $_POST['postcode'] ?? '';
+
 
     $result = insert_user($user);
     if ($result === true) {
-        $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/users/show.php?id=' . $new_id));
+        $new_user_id = mysqli_insert_id($db);
+
+
+        redirect_to(url_for('/users/show.php?id=' . $new_user_id));
     } else {
         $errors = $result;
     }
 } else {
-    // display the blank form
+    $user = [];
+    $user['password'] = '';
+    $user['first_name'] = '';
+    $user['last_name'] = '';
+    $user['date_of_birth'] = '';
+    $user['username'] = '';
+    $user['address_id'] = '';
+    $user['email'] = '';
+    $user['address_line_1'];
+    $user['city_id'];
+    $user['postcode'];
 }
 
 $user_set = find_all_users();
 $user_count = mysqli_num_rows($user_set) + 1;
 mysqli_free_result($user_set);
-
 ?>
 
 <!-- Link to our header file -->
@@ -45,8 +60,8 @@ mysqli_free_result($user_set);
         <h5>Please enter your details below. All fields are compulsory.</h5>
         <br>
         <?php echo display_errors($errors); ?>
-     
-    <!-- * * * EDIT ACTION LINK? * * * -->   
+
+        <!-- * * * EDIT ACTION LINK? * * * -->   
         <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
             <dl>
                 <dt>First Name</dt>
