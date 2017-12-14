@@ -4,6 +4,7 @@ require_once('../private/initialize.php');
 
 $page_title = 'Whats On';
 $page = "whats_on.php";
+$dateres= $s = null;
 
 $Search1 = filter_input(INPUT_POST, "Search");
 ?>
@@ -94,8 +95,8 @@ $Search1 = filter_input(INPUT_POST, "Search");
 //add date
         $datedis1 = db_escape($db, filter_input(INPUT_POST, "dateInput1"));
         $datedis2 = db_escape($db, filter_input(INPUT_POST, "dateInput2"));
-        $date1 = $datedis . " 00:00:00";
-        $date2 = $datedis . " 23:59:59";
+        $date1 = $datedis1 . " 00:00:00";
+        $date2 = $datedis2 . " 23:59:59";
         //$date1 = mysqli_real_escape_string($connection, filter_input(INPUT_POST, "dateInput1")) . " 00:00:00";
         //$date2 = mysqli_real_escape_string($connection, filter_input(INPUT_POST, "dateInput2")) . " 23:59:59";
         $datepart = "";
@@ -177,6 +178,7 @@ $Search1 = filter_input(INPUT_POST, "Search");
     if ($result = mysqli_query($db, $sql)) {
         if (mysqli_num_rows($result) > 0) {
             echo "<table class=\"table table-striped\" id=\"myTable\">";
+            echo "<thead>";
             echo "<tr>";
             echo "<th> </th>";
             echo "<th>Event Name</th>";
@@ -188,7 +190,12 @@ $Search1 = filter_input(INPUT_POST, "Search");
             //echo "<th>Film Showing</th>";
             //echo "<th>Film Genre</th>";
             //echo "<th>Tickets Remaining</th>";
+            //
+            
+            
             echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
             $events_set = find_all_events_detailed();
             while ($event = mysqli_fetch_assoc($events_set)) {
                 echo "<tr>";
@@ -204,6 +211,7 @@ $Search1 = filter_input(INPUT_POST, "Search");
                 //echo "<td>" . $row['(e.total_tickets - t.tickets_sold)'] . "</td>";
                 echo "</tr>";
             }
+            echo "</tbody>";
             echo "</table>";
             // Free result set
             mysqli_free_result($result);
@@ -259,8 +267,6 @@ $Search1 = filter_input(INPUT_POST, "Search");
 
 
 
-
-mysqli_close($connection);
     ?>
 
                 
@@ -274,7 +280,7 @@ mysqli_close($connection);
 
 <!--          Table with data-->
 <div class="container-fluid text-center">
-    <table class='table table-striped' id="myTable" >  
+    <table class='table table-striped' <!--  id="myTable"--> >  
         <thead>  
             <tr>  
                 <th>Event Name</th>  
