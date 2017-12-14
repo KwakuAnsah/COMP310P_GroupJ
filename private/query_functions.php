@@ -1,8 +1,6 @@
 <?php
 
 // Users ----DONE except validate users-----------------------------------------
-
-
 function find_all_users() {
     global $db;
 
@@ -141,9 +139,8 @@ function find_host_by_event_id($event_id) {
     return $host; //returns an associative array
 }
 
+
 // Events -------DONE except validate event-------------------------------------
-
-
 function find_all_events() {
     global $db;
 
@@ -159,10 +156,10 @@ function find_all_events_detailed() {
 
     $sql = "SELECT event.event_id, event_name, host_user_id, username, "
             . "first_name, last_name, event_end, event_description, "
-            . "total_tickets, event_category_id, event_start, ticket_sale_end, "
+            . "total_tickets, event_category_id, category_name, event_start, ticket_sale_end, "
             . "room.room_id, room_name, capacity, wheelchair_accessible, "
             . "address.address_id, address_line_1, postcode, city.city_id, "
-            . "city_name, country.country_id, country_name ";
+            . "city_name, country.country_id, country_name, genre_name, title ";
     $sql .= "FROM event "
             . "JOIN user ON event.host_user_id = user.user_id "
             . "JOIN film_event ON film_event.event_id = event.event_id "
@@ -369,6 +366,7 @@ function delete_event($event_id) {
     }
 }
 
+
 // Categories ----DONE----------------------------------------------------------
 function find_all_categories() {
     global $db;
@@ -407,9 +405,8 @@ function find_category_by_event_id($event_id) {
     return $category; //returns an associative array
 }
 
+
 // Bookings ----NEED TO CHECK---------------------------------------------------
-
-
 function find_all_bookings() {
     global $db;
 
