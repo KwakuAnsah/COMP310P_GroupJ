@@ -22,13 +22,22 @@ if (!isset($page_title)) {
         } elseif ($page == 'event_genres.php') {
             echo '<link rel="stylesheet for event_genres" href= "' . url_for('stylesheets/event_genres_CSS.css').'"/>';
         } elseif ($page == 'whats_on.php') {
-            echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
+            echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on_style.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }elseif ($page == 'host_events.php') {
             echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }
         
+
+    //  FOR ABOUT US PAGE :    
+        elseif ($page == 'about_us.php') {
+            echo '<link rel="stylesheet for about us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
+    //  FOR CONTACT US PAGE :    
+        elseif ($page == 'contact_us.php') {
+            echo '<link rel="stylesheet for contact us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
+        }
     //  FOR LINKING TO CREATE AN ACCOUNT (NEW USER) PAGE :    
         elseif ($page == 'user_new.php') {
             echo '<link rel="stylesheet for user pages" href= "' . url_for('/stylesheets/users_style.css').'"/>';
