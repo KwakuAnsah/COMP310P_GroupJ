@@ -94,8 +94,8 @@ $Search1 = filter_input(INPUT_POST, "Search");
 //add date
         $datedis1 = db_escape($db, filter_input(INPUT_POST, "dateInput1"));
         $datedis2 = db_escape($db, filter_input(INPUT_POST, "dateInput2"));
-        $date1 = $datedis . " 00:00:00";
-        $date2 = $datedis . " 23:59:59";
+        $date1 = $datedis1 . " 00:00:00";
+        $date2 = $datedis2 . " 23:59:59";
         //$date1 = mysqli_real_escape_string($connection, filter_input(INPUT_POST, "dateInput1")) . " 00:00:00";
         //$date2 = mysqli_real_escape_string($connection, filter_input(INPUT_POST, "dateInput2")) . " 23:59:59";
         $datepart = "";

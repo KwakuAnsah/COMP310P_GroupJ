@@ -1,57 +1,36 @@
 
 <?php
-require_once('../../private/initialize.php');
-include(SHARED_PATH . '/header.php');
-?>
 
-<?php
 
-$connection = db_connect();
-session_start();
 $email = "";
 $password = "";
 $first_name = "";
 $last_name = "";
 $user_id = "";
 $error = "";
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = mysqli_real_escape_string($connection, $_POST['email']);
-    $password = mysqli_real_escape_string($connection, $_POST['password']);
+if (is_post_request()) {
+    $email = db_escape($db, $_POST['email']);
+    $password = db_escape($db, $_POST['password']);
     
-    $sql = "SELECT * FROM user WHERE email = '$email' AND password = '$password'";
-    $result = mysqli_query($connection, $sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $_SESSION["user_id"] = $row["user_id"];
-    $_SESSION["first_name"] = $row["first_name"];
+    $sql = "SELECT * FROM user WHERE email = '".$email."' AND password = '".$password."'";
+    $result = mysqli_query($db, $sql);
+    $user = mysqli_fetch_assoc($result);
+    $_SESSION["user_id"] = $user["user_id"];
+    $_SESSION["first_name"] = $user["first_name"];
+    $_SESSION["last_name"] = $user["last_name"];
+    $_SESSION["username"] = $user["username"];
+    
+    
+    
     echo $_SESSION["first_name"];
     $count = mysqli_num_rows($result);
     if ($count == 1) {
-        header("location: ../whats_on.php");
+        redirect_to(url_for('/whats_on.php?event_id=' . $new_id));
     } else {
         $error = "Your Email and Password do not match";
+        echo "$user";
     }
 }
 ?>
 
-    <center>
-        <br />
-        <h1>Log In</h1>
-        <br />
-        <?php echo $error; ?>
-        <form action="" method="post">
-            <dl>
-                <dt>Email:</dt>
-                <dd><input type="text" name="email" value=""/></dd>
-            </dl>
-            <dl>
-                <dt>Password:</dt>
-                <dd><input type="password" name="password" value="" /></dd>
-            </dl>
-            <div>
-                <input type="submit" value="Log In!" />
-            </div>
-        </form>
-    </center>
-
-
-<?php include(SHARED_PATH . '/footer.php'); ?>
+  

@@ -62,10 +62,10 @@ $page ="index.php";
                                                     
                                                      <?php echo $error; ?>
                                                     <div class="form-group">
-                                                        <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email">
+                                                        <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" value="">
                                                     </div>
                                                     <div class="form-group text-center">
                                                         <input type="checkbox" tabindex="3" class="" name="remember" id="remember">

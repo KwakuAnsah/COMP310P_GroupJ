@@ -18,6 +18,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-5">
                 <h1 class="heading-left">Contact Us</h1>
+                <?php echo $_SESSION['username']; ?>
                 <br>
                 <h3 class="contact-headings">Head Office:</h3>
                 <div class="well">
