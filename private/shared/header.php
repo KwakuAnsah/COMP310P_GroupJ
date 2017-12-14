@@ -22,7 +22,7 @@ if (!isset($page_title)) {
         } elseif ($page == 'event_genres.php') {
             echo '<link rel="stylesheet for event_genres" href= "' . url_for('stylesheets/event_genres_CSS.css').'"/>';
         } elseif ($page == 'whats_on.php') {
-            echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on_style.css').'"/>';
+            echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }elseif ($page == 'host_events.php') {
             echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
