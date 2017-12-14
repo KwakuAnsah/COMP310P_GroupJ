@@ -168,8 +168,24 @@ function find_all_events() {
 function find_all_events_detailed() {
     global $db;
 
-    $sql = "SELECT * FROM event ";
-    $sql .= "ORDER BY event_id ASC";
+    $sql = "SELECT event.event_id, event_name, host_user_id, username, "
+            . "first_name, last_name, event_end, event_description, "
+            . "total_tickets, event_category_id, event_start, ticket_sale_end, "
+            . "room.room_id, room_name, capacity, wheelchair_accessible, "
+            . "address.address_id, address_line_1, postcode, city.city_id, "
+            . "city_name, country.country_id, country_name ";
+    $sql .= "FROM event "
+            . "JOIN user ON event.host_user_id = user.user_id "
+            . "JOIN film_event ON film_event.event_id = event.event_id "
+            . "JOIN film ON film.film_id = film_event.film_id "
+            . "JOIN film_film_genre ON film_film_genre.film_id =film.film_id "
+            . "JOIN film_genre ON film_genre.genre_id = film_film_genre.genre_id "
+            . "JOIN category ON event_category_id = category_id "
+            . "JOIN room ON event.room_id = room.room_id "
+            . "JOIN address ON room.address_id = address.address_id "
+            . "JOIN city ON address.city_id = city.city_id "
+            . "JOIN country ON country.country_id = city.country_id "
+            . "ORDER BY city_name ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;

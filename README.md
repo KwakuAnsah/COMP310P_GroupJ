@@ -92,20 +92,63 @@ COURSEWORK REQUIREMENTS
 --------------------------------------------------------------------------------
 1.
 --------------------------------------------------------------------------------
-All users can register with the system and create an account. A user must log in to the system
-before using it. A user can be a host and may set up their own events. A user can also be a
-participant and book tickets to other people’s events.
-2. A user may create an event, setting suitable conditions and features of the event including the
-description, location, date, categorisation, number of tickets available and end date.
-3. A user can search the system for categories of events and can browse events within certain
-categories or timeframes.
-4. A user can book a ticket for an event. The system will manage the ticket sales until the set end
-time. No further ticket sales will be permitted if the event is full or if the end time for ticket sales
-of that event has been reached.
-5 Participants can view a list of events they are attending and receive emailed updates on events
-that are imminent. You only have to show that an event (creating an email message) can be
-triggered at the date and time, you do not need to implement an email system.
-6. Users hosting events can view the progress of ticket sales and generate a list of participants for
-an event.
-7. Participants can give feedback and ratings on events after they have happened. Ratings and
-feedback are visible to other users.
+All users can register with the system and create an account.                   DONE
+A user must log in to the system before using it. 
+A user can be a host and may set up their own events.                           DONE EXCEPT (link Login user_id to host_id)
+A user can also be a participant and book tickets to other people’s events.     1/2 DONE 
+--------------------------------------------------------------------------------
+2.
+--------------------------------------------------------------------------------
+A user may create an event, setting suitable conditions and features of the     DONE EXCEPT (link Login user_id to host_id)
+event including the description, location, date, categorisation, number of 
+tickets available and end date.
+--------------------------------------------------------------------------------
+3. 
+--------------------------------------------------------------------------------
+A user can search the system for categories of events and can browse events     1/2 DONE
+within certain categories or timeframes.
+--------------------------------------------------------------------------------
+4. 
+--------------------------------------------------------------------------------
+A user can book a ticket for an event. 
+The system will manage the ticket sales until the set end time.
+No further ticket sales will be permitted if the event is full or if the end 
+time for ticket sales of that event has been reached.
+--------------------------------------------------------------------------------
+5.
+--------------------------------------------------------------------------------
+Participants can view a list of events they are attending 
+Receive email updates on events that are imminent. (You only have to show 
+that an event (creating an email message) can be triggered at the date and time, 
+you do not need to implement an email system.)
+--------------------------------------------------------------------------------
+6. 
+--------------------------------------------------------------------------------
+Users hosting events can view the progress of ticket sales and generate a list  1/4 DONE
+of participants for an event.
+--------------------------------------------------------------------------------
+7.
+--------------------------------------------------------------------------------
+Participants can give feedback and ratings on events after they have happened. 
+Ratings and feedback are visible to other users.
+--------------------------------------------------------------------------------
+
+TODO.
+SORT LOGIN:     A user must log in to the system before using it. KWAKU
+Login required for: all of bookings, all of events, ratings,  DANIELLE
+SORT BOOKINGS: Needs to write to database, needs validation (4.)  DANIELLE
+SORT 3.: Link WHATSON to database. JENNY 
+Participants can view a list of events they are attending.        KWAKU
+Receive email updates on events that are imminent. (JAVASCRIPT) - KWAKU 
+SORT: Host User - (6.) -  JENNY
+SORT: Ratings DANIELLE
+
+
+-----------------------------------------------
+delete locations link from header KWAKU
+sort our log in register index pages. KWAKU. 
+about us and contact us need fixing JENNY
+Put hello firstname in header. KWAKU
+
+EITHER we gonna delete event_genres OR we have to write a page for all events of a film genre.
+search_results: we gonna delete (including delete out of header) OR we have to write a page for search 

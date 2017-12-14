@@ -10,7 +10,7 @@ if (!isset($page_title)) {
         <title><?php echo h($page_title); ?></title>
         <meta charset="utf-8">
 
-        <?php include(PUBLIC_PATH . '/bootstrap.php'); ?>
+        <?php include(PRIVATE_PATH . '/bootstrap.php'); ?>
         <!-- Stylesheet and script-->
         <?php
         if ($page == 'show.php') {
