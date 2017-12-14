@@ -11,14 +11,14 @@ if (!isset($page_title)) {
    
 <!----------------------------------------------------------------->
 
-    <select name="country_id">
+    <select name="city_id">
         <?php
-        $country_set = find_all_countries();
-        while ($country = mysqli_fetch_assoc($country_set)) {
-            echo "<option value=" . $country["country_id"] . ">" 
-                    . h($country["country_name"]) . "</option>";
+        $city_set = find_all_cities();
+        while ($city = mysqli_fetch_assoc($city_set)) {
+            echo "<option value=" . $city["city_id"] . ">" 
+                    . h($city["city_name"]) . "</option>";
         }
-        mysqli_free_result($country_set);
+        mysqli_free_result($city_set);
         ?>
     </select>
 <!----------------------------------------------------------------->
