@@ -187,17 +187,3 @@ $page ="index.php";
 
 
     <?php include(SHARED_PATH . '/footer.php'); ?>
-
-                                                          <select name="subject_id">
-                                                         <?php
-                                                         $country_set = find_all_subjects();
-                                                         while ($subject = mysqli_fetch_assoc($subject_set)) {
-                                                             echo "<option value=\"" . h($subject['id']) . "\"";
-                                                             if ($page["subject_id"] == $subject['id']) {
-                                                                 echo " selected";
-                                                             }
-                                                             echo ">" . h($subject['menu_name']) . "</option>";
-                                                         }
-                                                         mysqli_free_result($subject_set);
-                                                         ?>
-                </select>
