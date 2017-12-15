@@ -40,15 +40,13 @@ if (is_post_request()) {
         </p>
         <i><p class="username_show"><?php echo h($user['username']); ?></p></i>
         <br>
-
-        <!-- * * * button to submit details - EDIT LINK * * * -->            
+         
         <form action="<?php echo url_for('/users/delete.php?id=' . h(u($user['user_id']))); ?>" method="post">            
             <div id="operations">
                 <input class="submission_btn btn btn-lg btn-default" type="submit" name="delete_user" value="Delete User">
             </div>
         </form>
     </div>
-</div>
 </div>
 
 <?php include(SHARED_PATH . '/footer.php'); ?>

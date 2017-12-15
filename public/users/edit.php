@@ -82,22 +82,45 @@ mysqli_free_result($user_set);
                 <dd><input type="date" name="date_of_birth" value='<?php echo h($user['date_of_birth']); ?>' /></dd>
             </dl>            
             <dl>
-                <dt>Country</dt>
-                <dd><input type="text" name="country" value="TO LINK ADDRESS" /></dd>
-            </dl>            
+                <dt>Address Line 1</dt>
+                <dd><input type="text" name="address_line_1" value="<?php
+                    echo
+                    h($user['address_line_1']);
+                    ?>" /></dd>
+            </dl> 
+            <dl>
+                <dt>Postcode</dt>
+                <dd><input type="text" name="postcode" value="<?php
+                    echo
+                    h($user['postcode']);
+                    ?>" /></dd>
+            </dl>             
             <dl>
                 <dt>City</dt>
-                <dd><input type="text" name="city" value="TO LINK ADDRESS" /></dd>
+                <dd>
+                    <select name="city_id">
+                        <?php
+                        $city_set = find_all_cities();
+                        while ($city = mysqli_fetch_assoc($city_set)) {
+                            echo "<option value='" . h($city['city_id']) . "'";
+                            if ($user["city_id"] == $city['city_id']) {
+                                echo " selected";
+                            }
+                            echo ">" . h($city["city_name"]) . "</option>";
+                        }
+                        mysqli_free_result($city_set);
+                        ?>
+                    </select>
+                </dd>
             </dl>
-            <br>
-            
+
             <!-- * * * button to save edited details - EDIT LINK * * * --> 
             <div id="operations">
                 <input class="submission_btn btn btn-lg btn-default" type="submit" name="edit_user" value="Edit User">
             </div>
         </form>
     </div>
-    
+
     <!-- * * * button to save edited details - EDIT LINK * * * -->
     <div class="text-center">
         <a class="action" href="<?php echo url_for('/users/delete.php?user_id=' . h(u($user['user_id']))); ?>">Delete your account</a>
