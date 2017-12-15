@@ -1,3 +1,6 @@
+
+<?php // Did not have time to link this page. ?>
+
 <?php
 require_once('../../private/initialize.php');
 include(SHARED_PATH . '/access_denied.php');

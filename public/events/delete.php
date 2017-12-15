@@ -1,3 +1,5 @@
+<?php // Did not have time to link this page. ?>
+
 <?php
 
 require_once('../../private/initialize.php');
