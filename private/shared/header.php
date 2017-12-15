@@ -88,7 +88,7 @@ if (!isset($page_title)) {
                     </ul>
 
                     <!--                        Form to submit  user search -->
-                    <form class="navbar-form navbar-left" action="/search_results.php" style="text-align:center; position: relative; display: inline-block; left: 240px">
+<!--                    <form class="navbar-form navbar-left" action="<?php echo url_for('/search_results.php'); ?>" style="text-align:center; position: relative; display: inline-block; left: 240px">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search for event" name="search">
                             <div class="input-group-btn">
@@ -99,7 +99,7 @@ if (!isset($page_title)) {
                             </div>
                             
                         </div>
-                    </form>
+                    </form>-->
                     <div class="container" style="text-align:">
                     <ul class="nav navbar-nav" style="text-align:center; position: relative; display: inline-block; left: 290px"> <?php if(isset($_SESSION['user_id'])){                   
                                          echo "<li><a href='". url_for('users/show.php?user_id=').$_SESSION['user_id'] ."'> ".$_SESSION['first_name']."'s Profile</a></li>";
