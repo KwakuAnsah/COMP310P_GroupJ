@@ -31,8 +31,8 @@ if (is_post_request()) {
         $booking_has_user['booking_id'] = $new_booking_id;
         echo "test 5 <br><br>";
         $booking_has_user_result = insert_booking_has_user($booking_has_user);
-
-        redirect_to(url_for('/bookings/confirmation.php?event_id=' . $event_id));
+echo "test 6<br><br>";
+        redirect_to(url_for('/bookings/confirmation.php?event_id=' . $new_booking_id));
     } else {
         $errors = $result;
     }

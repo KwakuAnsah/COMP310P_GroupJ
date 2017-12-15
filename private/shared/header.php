@@ -103,7 +103,7 @@ if (!isset($page_title)) {
                     <div class="container" style="text-align:">
                     <ul class="nav navbar-nav" style="text-align:center; position: relative; display: inline-block; left: 290px"> <?php if(isset($_SESSION['user_id'])){                   
                                          echo "<li><a href='". url_for('users/show.php?user_id=').$_SESSION['user_id'] ."'> ".$_SESSION['first_name']."'s Profile</a></li>";
-                                          }
+                                         echo "<li><a href='". url_for('users/logout.php') ."'>Log Out</a></li>";}
                                 
                                          ?>
                     </ul>

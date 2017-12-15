@@ -581,7 +581,7 @@ function insert_booking_has_user($booking_has_user) {
     $sql .= "(booking_id, user_id) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $booking_has_user['booking_id']) . "',";
-    $sql .= "'" . db_escape($db, $booking_has_user['user_id']) . "',";
+    $sql .= "'" . db_escape($db, $booking_has_user['user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
 // For INSERT statements, $result is true/false
