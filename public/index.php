@@ -159,10 +159,14 @@ $page ="index.php";
                 </div>
                 <div class="col-sm-2 sidenav">
                     <div class="well">
-                        <p>ADS</p>
+                    <p><img src="<?php echo url_for("images/jumanji.jpg")?>" class="img-thumbnail img" alt="Jumanji Poster"> Watch the Lastest Jumanji movie with your friends NOW</p>
+               
                     </div>
                     <div class="well">
-                        <p>ADS</p>
+                        <p><img src="<?php echo url_for("images/pitch.jpg")?>" class="img-thumbnail img" alt="pitch Poster"> Watch the Latest Pitch Perfect with your friends NOW</p>
+                    </div>
+                    <div class="well">
+                        <p><img src="<?php echo url_for("images/starwars.jpg")?>" class="img-thumbnail img" alt="stars Poster"> Watch the Lastest Starwars movie with your friends NOW</p>
                     </div>
                 </div>
             </div>
