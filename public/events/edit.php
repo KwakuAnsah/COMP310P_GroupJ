@@ -1,5 +1,6 @@
 <?php
 require_once('../../private/initialize.php');
+include(SHARED_PATH . '/access_denied.php');
 
 if (!isset($_GET['id'])) {
     redirect_to(url_for('/events/host_pages/index.php'));

@@ -150,6 +150,54 @@ function find_host_by_event_id($event_id) {
     return $host; //returns an associative array
 }
 
+function find_all_participants_by_host($host_user_id) {
+    global $db;
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, "
+            . "event_has_booking.event_id, booking.booking_id, "
+            . "number_of_tickets, event_name, total_tickets, event_start ";
+    $sql .= "FROM user "
+            . "JOIN booking_has_user ON booking_has_user.user_id = user.user_id "
+            . "JOIN event_has_booking ON event_has_booking.booking_id = booking_has_user.booking_id "
+            . "JOIN event ON event.event_id = event_has_booking.event_id "
+            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id "
+            . "WHERE host_user_id ='" . db_escape($db, $host_user_id) . "' "
+            . "AND event_start > '" . $today . "' "
+            . "ORDER BY event_start, event_name, user_id";
+
+
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    return $result; //returns an associative array
+}
+
+function find_all_participants_by_host_past($host_user_id) {
+    global $db;
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, "
+            . "event_has_booking.event_id, booking.booking_id, "
+            . "number_of_tickets, event_name, total_tickets, event_start ";
+    $sql .= "FROM user "
+            . "JOIN booking_has_user ON booking_has_user.user_id = user.user_id "
+            . "JOIN event_has_booking ON event_has_booking.booking_id = booking_has_user.booking_id "
+            . "JOIN event ON event.event_id = event_has_booking.event_id "
+            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id "
+            . "WHERE host_user_id ='" . db_escape($db, $host_user_id) . "' "
+            . "AND event_start < '" . $today . "' "
+            . "ORDER BY event_start, event_name, user_id";
+
+
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    return $result; //returns an associative array
+}
+
 // Events -------DONE except validate event-------------------------------------
 function find_all_events() {
     global $db;
@@ -160,6 +208,35 @@ function find_all_events() {
     confirm_result_set($result);
     return $result;
 }
+
+function find_all_upcoming_events_by_host($host_user_id) {
+    global $db;
+
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "WHERE host_user_id = '" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "AND event_start > '" . $today . "' ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+function find_all_past_events_by_host($host_user_id) {
+    global $db;
+
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "WHERE host_user_id = '" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "AND event_start < '" . $today . "' ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
 
 function find_all_events_detailed() {
     global $db;
@@ -181,7 +258,7 @@ function find_all_events_detailed() {
             . "JOIN address ON room.address_id = address.address_id "
             . "JOIN city ON address.city_id = city.city_id "
             . "JOIN country ON country.country_id = city.country_id "
-            . "ORDER BY city_name ASC";
+            . "ORDER BY event_start ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
@@ -525,6 +602,8 @@ function delete_booking($booking_id) {
 //For DELETE statements, $result is true false
 
     if ($result) {
+        delete_booking_has_user($booking_id);
+        delete_event_has_booking($booking_id);
         return true;
     } else {
         // DELETE failed
@@ -547,6 +626,20 @@ function find_tickets_sold($event_id) {
     $tickets_sold = mysqli_fetch_array($result);
     mysqli_free_result($result);
     return $tickets_sold[0];
+}
+
+function find_total_tickets($event_id) {
+    global $db;
+
+    $sql = "SELECT total_tickets FROM event ";
+    $sql .= "WHERE event_id ='" . $event_id . "'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return '0';
+    }
+    $total_tickets = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $total_tickets[0];
 }
 
 // Booking_has_user -----------------------------------------------------------------------
@@ -684,10 +777,10 @@ function update_event_has_booking($event_has_booking) {
     }
 }
 
-function delete_event_has_booking($event_id) {
+function delete_event_has_booking($booking_id) {
     global $db;
     $sql = "DELETE FROM event_has_booking ";
-    $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
+    $sql .= "WHERE booking_id ='" . db_escape($db, $booking_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
 //For DELETE statements, $result is true false

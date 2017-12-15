@@ -1,7 +1,7 @@
 <?php
 
 require_once('../../private/initialize.php');
-
+include(SHARED_PATH . '/access_denied.php');
 if(!isset($_GET['user_id'])) {
     // If it is a get request not a post request then 
     // redirect back to the index

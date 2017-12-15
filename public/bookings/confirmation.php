@@ -1,5 +1,6 @@
 <?php require_once('../../private/initialize.php'); ?>
-<?php $page_title = 'Booking Confirmation page'; ?>
+<?php $page_title = 'Booking Confirmation page';
+include(SHARED_PATH . '/access_denied.php');?>
 
 <!-- Page header -->
 <?php include(SHARED_PATH . '/header.php'); ?>
@@ -7,8 +8,10 @@
 <!-- For obtaining users' booking ID and email -->
 <?php
 $booking_id = $_GET['booking_id'] ?? '1';
+
 $booking = find_booking_by_id($booking_id);
 $user = find_user_by_id($booking['user_id']);
+$event = find_event_by_id($booking['event_id']);
 ?>
 
 <body>
@@ -19,11 +22,14 @@ $user = find_user_by_id($booking['user_id']);
             <div class="well-lg">
                 <h3 class="confirmation">Thank you very much for booking with us! We hope you enjoy your event!</h3>
                 <br>
-                <br>
                 <p class="message">
+                <h3>Event: <?php echo $event['event_name']?></h3>
                     <b>Your booking ID:</b>
                     <br>
                     <i><?php echo h($booking['booking_id']); ?></i>
+                    <br>
+                    <b>Number of Tickets:</b>
+                    <i><?php echo h($booking['number_of_tickets']); ?></i>
                     <br>
                     <br>
                     <b>A confirmation email has been sent to:</b>
@@ -43,7 +49,7 @@ $user = find_user_by_id($booking['user_id']);
     <div class="container">
         <div class="col-md-2"></div>
         <div class="col-md-3">
-            <a href="<?php echo url_for("users/show.php?user_id=") . h($user_id); ?>" class="view btn btn-lg btn-default">View my Account</a>
+            <a href="<?php echo url_for("users/show.php?user_id=") . h($booking['user_id']); ?>" class="view btn btn-lg btn-default">View my Account</a>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">

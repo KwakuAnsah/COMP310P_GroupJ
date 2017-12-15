@@ -29,7 +29,7 @@ $Search1 = filter_input(INPUT_POST, "Search");
 
 <?php
 $today = date("Y-m-d H:i:s");
-echo "<p>Current date and time:  $today </p>";
+echo "<p>Current date and time:" . $today . "</p>";
 $input = db_escape($db, $Search1);
 
 //Adding filtering by user-specified date range
@@ -59,7 +59,7 @@ $sql .= "FROM event "
         . "JOIN city ON address.city_id = city.city_id "
         . "JOIN country ON country.country_id = city.country_id "
         . "WHERE event_name LIKE '%" . $input . "%' "
-        . "AND event_start > sysdate() "
+        . "AND event_start > '" . $today . "' "
         . $datepart;
 
 if ($date_input1 != "" and $date_input2 != "") {
@@ -80,15 +80,16 @@ if ($result = mysqli_query($db, $sql)) {
         echo "<th class=\"text-center\">Film Genre</th>";
         echo "<th class=\"text-center\">Start Time</th>";
         echo "<th class=\"text-center\">End Time</th>";
+        echo "<th class=\"text-center\">Host</th>";
         echo "<th class=\"text-center\">Room and Address</th>";
         echo "<th class=\"text-center\">Tickets remaining</th>";
         echo "<th class=\"text-center\">Ticket Sale End</th>";
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
-        
+
         //Displaying each event row
-        $events_set = find_all_events_detailed();
+        $events_set = $result;
         while ($event = mysqli_fetch_assoc($events_set)) {
             $t_sold = find_tickets_sold($event['event_id']);
             $tickets_remaining = $event['total_tickets'] - $t_sold;
@@ -103,6 +104,7 @@ if ($result = mysqli_query($db, $sql)) {
             echo "<td>" . $event['genre_name'] . "</td>";
             echo "<td>" . $event['event_start'] . "</td>";
             echo "<td>" . $event['event_end'] . "</td>";
+            echo "<td>" . $event['first_name'] . " " . $event['last_name'] . "</td>";
             echo "<td>" . $event['room_name'] . ", " . $event['address_line_1'] . ", " . $event['postcode'] . ", " . $event['city_name'] . ", " . $event['country_name'] . "</td>";
             echo "<td>" . $tickets_remaining . "/" . $event['total_tickets'] . "</td>";
             echo "<td>" . $event['ticket_sale_end'] . "</td>";
@@ -115,7 +117,7 @@ if ($result = mysqli_query($db, $sql)) {
         echo "No records matching your request were found.";
     }
 } else {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    echo "ERROR: Could execute $sql. " . mysqli_error($db);
 }
 ?>
 <br>
