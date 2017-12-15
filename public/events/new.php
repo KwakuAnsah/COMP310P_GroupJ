@@ -55,7 +55,7 @@ mysqli_free_result($event_set);
 
 <div id="content">
 
-    <div class="event new">
+    <div class="container-fluid text-center" >
         <h1>Create Event</h1>
 
         <?php echo display_errors($errors); ?>
