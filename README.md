@@ -100,31 +100,31 @@ A user can also be a participant and book tickets to other people’s events.   
 2.
 --------------------------------------------------------------------------------
 A user may create an event, setting suitable conditions and features of the     DONE EXCEPT (link Login user_id to host_id)
-event including the description, location, date, categorisation, number of 
-tickets available and end date.
+event including the description, location, date, categorisation, number of      DONE
+tickets available and end date.                                                 DONE
 --------------------------------------------------------------------------------
 3. 
 --------------------------------------------------------------------------------
 A user can search the system for categories of events and can browse events     DONE
-within certain categories or timeframes.
+within certain categories or timeframes.                                        DONE
 --------------------------------------------------------------------------------
 4. 
 --------------------------------------------------------------------------------
 A user can book a ticket for an event.                                          DONE
 The system will manage the ticket sales until the set end time.                 DONE
 No further ticket sales will be permitted if the event is full or if the end    DONE
-time for ticket sales of that event has been reached.
+time for ticket sales of that event has been reached.                           DONE
 --------------------------------------------------------------------------------
 5.
 --------------------------------------------------------------------------------
-Participants can view a list of events they are attending 
-Receive email updates on events that are imminent. (You only have to show 
-that an event (creating an email message) can be triggered at the date and time, 
-you do not need to implement an email system.)
+Participants can view a list of events they are attending                       NOT YET
+Receive email updates on events that are imminent. (You only have to show       NOT YET
+that an event (creating an email message) can be triggered at the date and time,NOT YET 
+you do not need to implement an email system.)                                  NOT YET
 --------------------------------------------------------------------------------
 6. 
 --------------------------------------------------------------------------------
-Users hosting events can view the progress of ticket sales and generate a list  1/4 DONE
+Users hosting events can view the progress of ticket sales and generate a list  1/2 DONE
 of participants for an event.
 --------------------------------------------------------------------------------
 7.

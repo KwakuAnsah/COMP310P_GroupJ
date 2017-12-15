@@ -149,32 +149,54 @@ function find_host_by_event_id($event_id) {
     mysqli_free_result($result);
     return $host; //returns an associative array
 }
-function find_participants_by_event_id($event_id) {
-    global $db;
 
-    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, " 
+function find_all_participants_by_host($host_user_id) {
+    global $db;
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, "
             . "event_has_booking.event_id, booking.booking_id, "
-            . "number_of_tickets, event_name, total_tickets ";
+            . "number_of_tickets, event_name, total_tickets, event_start ";
     $sql .= "FROM user "
             . "JOIN booking_has_user ON booking_has_user.user_id = user.user_id "
             . "JOIN event_has_booking ON event_has_booking.booking_id = booking_has_user.booking_id "
             . "JOIN event ON event.event_id = event_has_booking.event_id "
-            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id ";
-    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
-        
-    //$sql = "SELECT * FROM user ";
-    //$sql .= "JOIN event ON event.host_user_id = user.user_id  ";
-    //$sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
-    $result = mysqli_query($db, $sql);
+            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id "
+            . "WHERE host_user_id ='" . db_escape($db, $host_user_id) . "' "
+            . "AND event_start > '" . $today . "' "
+            . "ORDER BY event_start, event_name, user_id";
 
+
+
+    $result = mysqli_query($db, $sql);
     confirm_result_set($result);
-    //$participants = mysqli_fetch_assoc($result);
-    //mysqli_free_result($result);
-    //return $participants; //returns an associative array
+
     return $result; //returns an associative array
 }
 
+function find_all_participants_by_host_past($host_user_id) {
+    global $db;
+    $today = date("Y-m-d H:i:s");
 
+    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, "
+            . "event_has_booking.event_id, booking.booking_id, "
+            . "number_of_tickets, event_name, total_tickets, event_start ";
+    $sql .= "FROM user "
+            . "JOIN booking_has_user ON booking_has_user.user_id = user.user_id "
+            . "JOIN event_has_booking ON event_has_booking.booking_id = booking_has_user.booking_id "
+            . "JOIN event ON event.event_id = event_has_booking.event_id "
+            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id "
+            . "WHERE host_user_id ='" . db_escape($db, $host_user_id) . "' "
+            . "AND event_start < '" . $today . "' "
+            . "ORDER BY event_start, event_name, user_id";
+
+
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    return $result; //returns an associative array
+}
 
 // Events -------DONE except validate event-------------------------------------
 function find_all_events() {
@@ -186,6 +208,35 @@ function find_all_events() {
     confirm_result_set($result);
     return $result;
 }
+
+function find_all_upcoming_events_by_host($host_user_id) {
+    global $db;
+
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "WHERE host_user_id = '" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "AND event_start > '" . $today . "' ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+function find_all_past_events_by_host($host_user_id) {
+    global $db;
+
+    $today = date("Y-m-d H:i:s");
+
+    $sql = "SELECT * FROM event ";
+    $sql .= "WHERE host_user_id = '" . db_escape($db, $host_user_id) . "' ";
+    $sql .= "AND event_start < '" . $today . "' ";
+    $sql .= "ORDER BY event_id ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
 
 function find_all_events_detailed() {
     global $db;
@@ -578,7 +629,7 @@ function find_tickets_sold($event_id) {
 }
 
 function find_total_tickets($event_id) {
-        global $db;
+    global $db;
 
     $sql = "SELECT total_tickets FROM event ";
     $sql .= "WHERE event_id ='" . $event_id . "'";
