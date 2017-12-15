@@ -31,8 +31,8 @@ $sql .= "FROM booking_has_user "
         . "JOIN address ON room.address_id = address.address_id "
         . "JOIN city ON address.city_id = city.city_id "
         . "JOIN country ON country.country_id = city.country_id "
-        . "WHERE user_id =". $_SESSION['user_id']
-        . " AND event_start > '" . $today . "' "
+        . "WHERE user_id =" . $_SESSION['user_id']
+        . " AND event_start < '" . $today . "' "
         . $datepart;
 
 
@@ -64,7 +64,17 @@ if ($result = mysqli_query($db, $sql)) {
             echo "<tr class=\"text-center\">";
             echo "<td>"
             ?><a class="action" href="<?php echo url_for('events/show.php?event_id=' . $event['event_id']); ?>">View Details</a><br><br><?php
-            ?><a class="action" href="<?php echo url_for('bookings/new.php?event_id=' . $event['event_id']); ?>">Book More Tickets</a><?php
+            ?>
+            <?php
+            if (user_has_already_rated_event($event['event_id']) == 1) {
+                echo '<a class="action" href="' . url_for('rating/show.php?event_id=' . $event['event_id']) . '"> See Your Review</a>';
+            } else {
+                echo '<a class="action" href="' . url_for('rating/new.php?event_id=' . $event['event_id']) . '"> Review this Event</a>';
+            }
+            ?>
+
+
+            <?php
             "</td>";
             echo "<td>" . $event['number_of_tickets'] . "</td>";
             echo "<td>" . $event['event_name'] . "</td>";
