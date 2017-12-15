@@ -16,21 +16,32 @@ if (!isset($page_title)) {
         <?php
         if ($page == 'show.php') {
            echo '<link rel="stylesheet for sidenav" href= "' . url_for('stylesheets/index_sidenav_CSS.css').'"/>';  
-        } elseif ($page == 'index.php') {
+        } 
+        
+        elseif ($page == 'index.php') {
            echo '<link rel="stylesheet for sidenav" href= "' . url_for('stylesheets/index_sidenav_CSS.css').'"/>';
            echo '<script type = "text/javascript" src = "' .url_for('script/index-login script.js') . '" async></script>'; 
            echo '<link rel="stylesheet for index page" href= "' . url_for('stylesheets/index CSS.css').'"/>';
-        } elseif ($page == 'event_genres.php') {
+        } 
+        
+        elseif ($page == 'event_genres.php') {
             echo '<link rel="stylesheet for event_genres" href= "' . url_for('stylesheets/event_genres_CSS.css').'"/>';
-        } elseif ($page == 'whats_on.php') {
+        } 
+        
+        elseif ($page == 'whats_on.php') {
             echo '<link rel="whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
-            echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
-        }elseif ($page == 'host_events.php') {
-            echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
             echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
         }
         
-
+        elseif ($page == 'host_events.php') {
+            echo '<link rel="stylesheet for sidenav & whats on page" href= "' . url_for('stylesheets/whats_on CSS.css').'"/>';
+            echo '<script type = "text/javascript" src = "' .url_for('script/whats_on script.js') . '" async></script>'; 
+        }
+    //  FOR BOOKING CONFIRMATION PAGE :  
+        elseif ($page == 'Booking Confirmation page') {
+            echo "<link href='". url_for('stylesheets/bookings_style.css')."' rel='Bookings stylesheet'>";
+        }
+                
     //  FOR ABOUT US PAGE :    
         elseif ($page == 'about_us.php') {
             echo '<link rel="stylesheet for about us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
@@ -92,7 +103,7 @@ if (!isset($page_title)) {
                     <div class="container" style="text-align:">
                     <ul class="nav navbar-nav" style="text-align:center; position: relative; display: inline-block; left: 290px"> <?php if(isset($_SESSION['user_id'])){                   
                                          echo "<li><a href='". url_for('users/show.php?user_id=').$_SESSION['user_id'] ."'> ".$_SESSION['first_name']."'s Profile</a></li>";
-                                          }
+                                         echo "<li><a href='". url_for('users/logout.php') ."'>Log Out</a></li>";}
                                 
                                          ?>
                     </ul>

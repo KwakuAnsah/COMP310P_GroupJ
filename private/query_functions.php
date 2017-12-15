@@ -10,9 +10,16 @@ function find_all_users() {
     confirm_result_set($result);
     return $result;
 }
+
 function find_user_by_id($user_id) {
     global $db;
-    $sql = "SELECT * FROM user ";
+    $sql = "SELECT user.user_id, user.password, user.first_name, user.last_name,";
+    $sql .= " user.username, user.address_id, user.email, user.date_of_birth, ";
+    $sql .= "address.address_id, address_line_1, postcode, city.city_id, ";
+    $sql .= "city_name, country.country_id, country_name FROM user ";
+    $sql .= "JOIN address ON address.address_id = user.address_id ";
+    $sql .= "JOIN city ON address.city_id = city.city_id ";
+    $sql .= "JOIN country ON country.country_id = city.country_id ";
     $sql .= "WHERE user_id='" . db_escape($db, $user_id) . "'";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
@@ -20,6 +27,7 @@ function find_user_by_id($user_id) {
     mysqli_free_result($result);
     return $user;
 }
+
 function validate_user($user) {
     $errors = [];
     /* TESTS 
@@ -77,6 +85,7 @@ function validate_user($user) {
     }
     return $errors;
 }
+
 function insert_user($user) {
     global $db;
 
@@ -97,7 +106,7 @@ function insert_user($user) {
     $sql .= "'" . db_escape($db, $user['address_id']) . "',";
     $sql .= "'" . db_escape($db, $user['date_of_birth']) . "'";
     $sql .= ") ";
-    
+
     $result = mysqli_query($db, $sql);
     if ($result) {
         return true;
@@ -107,10 +116,11 @@ function insert_user($user) {
         exit;
     }
 }
-function delete_user($id) {
+
+function delete_user($user_id) {
     global $db;
     $sql = "DELETE FROM user ";
-    $sql .= "WHERE id ='" . db_escape($db, $id) . "' ";
+    $sql .= "WHERE id ='" . db_escape($db, $user_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
     //For DELETE statements, $result is true false
@@ -124,6 +134,7 @@ function delete_user($id) {
         exit;
     }
 }
+
 function find_host_by_event_id($event_id) {
     global $db;
 
@@ -196,7 +207,7 @@ function find_all_events_detailed() {
             . "JOIN address ON room.address_id = address.address_id "
             . "JOIN city ON address.city_id = city.city_id "
             . "JOIN country ON country.country_id = city.country_id "
-            . "ORDER BY city_name ASC";
+            . "ORDER BY event_start ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
@@ -391,7 +402,6 @@ function delete_event($event_id) {
     }
 }
 
-
 // Categories ----DONE----------------------------------------------------------
 function find_all_categories() {
     global $db;
@@ -430,8 +440,7 @@ function find_category_by_event_id($event_id) {
     return $category; //returns an associative array
 }
 
-
-// Bookings ----NEED TO CHECK---------------------------------------------------
+// Bookings ----DONE---------------------------------------------------
 function find_all_bookings() {
     global $db;
 
@@ -445,8 +454,11 @@ function find_all_bookings() {
 function find_booking_by_id($id) {
     global $db;
 
-    $sql = "SELECT * FROM booking ";
-    $sql .= "WHERE booking_id='" . db_escape($db, $id) . "'";
+    $sql = "SELECT booking.booking_id, number_of_tickets, user_id, event_id ";
+    $sql .= "FROM booking ";
+    $sql .= "JOIN event_has_booking ON event_has_booking.booking_id = booking.booking_id ";
+    $sql .= "JOIN booking_has_user ON booking_has_user.booking_id = booking.booking_id ";
+    $sql .= "WHERE booking.booking_id='" . db_escape($db, $id) . "'";
     $result = mysqli_query($db, $sql);
 
     confirm_result_set($result);
@@ -458,92 +470,27 @@ function find_booking_by_id($id) {
 function validate_booking($booking) {
     $errors = [];
 
-    /* EXAMPLES TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['event_id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
-
-    // event_name -------------------------------------------------------------
-    //      Event name cannot be blank.
-    //      Name must be between 2 and 150 characters.
+    // number_of_tickets -------------------------------------------------------------
+    //      Please fill in the number of tickets.
+    //      You must order at least one ticket.
+    //      There's not enough tickets to meet your request. Please order less tickets.
     // ------------------------------------------------------------------------
-    if (is_blank($event['event_name'])) {
-        $errors[] = "Event name cannot be blank.";
-    } elseif (!has_length($event['event_name'], ['min' => 2, 'max' => 150])) {
-        $errors[] = "Name must be between 2 and 150 characters.";
+    if (is_blank($booking['number_of_tickets'])) {
+        $errors[] = "Please fill in the number of tickets.";
     }
-
-    // host_user_id -----------------------------------------------------------
-    //      You must log in to create an event. (host_user_id cannot be blank).
-    // ------------------------------------------------------------------------
-    if (is_blank($event['host_user_id'])) {
-        $errors[] = "You must log in to create an event. (host_user_id cannot be blank).";
+    if ($booking['number_of_tickets'] <= 0) {
+        $errors[] = "You must order at least one ticket.";
     }
-
-    // event_end --------------------------------------------------------------
-    //      Event end time must be after event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
+    $event = find_event_by_id($booking['event_id']);
+    $tickets_sold = find_tickets_sold($booking['event_id']);
+    $tickets_remaining = $event['total_tickets'] - $tickets_sold;
+    if ($booking['number_of_tickets'] > $tickets_remaining) {
+        if ($tickets_remaining == 1) {
+            $errors[] = "There is only " . $tickets_remaining . "ticket remaining.  Please order less tickets.";
+        } else {
+            $errors[] = "There are only " . $tickets_remaining . "tickets remaining.  Please order less tickets.";
+        }
     }
-
-    // ticket_sale_end --------------------------------------------------------
-    //      The time that ticket sales end must be before the event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
-    }
-
-    // event_start ------------------------------------------------------------
-    //      The event start time cannot be in the past.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
-    $todays_date_int = (int) $todays_date_obj;
-    if ($todays_date_int > $event_start) {
-        $errors[] = "The event start time cannot be in the past.";
-    }
-
-    // event_description  -----------------------------------------------------
-    //      Event description cannot be blank.
-    // ------------------------------------------------------------------------
-    if (is_blank($event['event_description'])) {
-        $errors[] = "Event description cannot be blank.";
-    }
-
     return $errors;
 }
 
@@ -556,13 +503,12 @@ function insert_booking($booking) {
     }
 
     $sql = "INSERT INTO booking ";
-    $sql .= "(booking_id, number_of_tickets) ";
+    $sql .= "(number_of_tickets) ";
     $sql .= "VALUES (";
-    $sql .= "'" . db_escape($db, $event['booking_id']) . "',";
-    $sql .= "'" . db_escape($db, $event['number_of_tickets']) . "',";
+    $sql .= "'" . db_escape($db, $booking['number_of_tickets']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-    // For INSERT statements, $result is true/false
+// For INSERT statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -580,13 +526,12 @@ function update_booking($booking) {
         return $errors;
     }
     $sql = "UPDATE booking SET ";
-    $sql .= "booking_id='" . db_escape($db, $booking['booking_id']) . "', ";
-    $sql .= "number_of_tickets='" . db_escape($db, $booking['number_of_tickets']) . "', ";
+    $sql .= "number_of_tickets='" . db_escape($db, $booking['number_of_tickets']) . "' ";
     $sql .= "WHERE booking_id='" . db_escape($db, $booking['booking_id']) . "' ";
     $sql .= "LIMIT 1";
 
     $result = mysqli_query($db, $sql);
-    // For UPDATE statements, $result is true/false
+// For UPDATE statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -603,9 +548,11 @@ function delete_booking($booking_id) {
     $sql .= "WHERE booking_id ='" . db_escape($db, $booking_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
-    //For DELETE statements, $result is true false
+//For DELETE statements, $result is true false
 
     if ($result) {
+        delete_booking_has_user($booking_id);
+        delete_event_has_booking($booking_id);
         return true;
     } else {
         // DELETE failed
@@ -669,143 +616,21 @@ function find_booking_has_user_by_id($id) {
     return $booking_has_user; //returns an associative array
 }
 
-//EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
-function validate_booking_has_user($booking_has_user) {
-    $errors = [];
-
-    /* EXAMPLES TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['event_id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
-
-    // event_name -------------------------------------------------------------
-    //      Event name cannot be blank.
-    //      Name must be between 2 and 150 characters.
-    // ------------------------------------------------------------------------
-    if (is_blank($event['event_name'])) {
-        $errors[] = "Event name cannot be blank.";
-    } elseif (!has_length($event['event_name'], ['min' => 2, 'max' => 150])) {
-        $errors[] = "Name must be between 2 and 150 characters.";
-    }
-
-    // host_user_id -----------------------------------------------------------
-    //      You must log in to create an event. (host_user_id cannot be blank).
-    // ------------------------------------------------------------------------
-    if (is_blank($event['host_user_id'])) {
-        $errors[] = "You must log in to create an event. (host_user_id cannot be blank).";
-    }
-
-    // event_end --------------------------------------------------------------
-    //      Event end time must be after event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
-    }
-
-    // ticket_sale_end --------------------------------------------------------
-    //      The time that ticket sales end must be before the event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
-    }
-
-    // event_start ------------------------------------------------------------
-    //      The event start time cannot be in the past.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
-    $todays_date_int = (int) $todays_date_obj;
-    if ($todays_date_int > $event_start) {
-        $errors[] = "The event start time cannot be in the past.";
-    }
-
-    // event_description  -----------------------------------------------------
-    //      Event description cannot be blank.
-    // ------------------------------------------------------------------------
-    if (is_blank($event['event_description'])) {
-        $errors[] = "Event description cannot be blank.";
-    }
-
-    return $errors;
-}
-
 function insert_booking_has_user($booking_has_user) {
     global $db;
-
-    $errors = validate_booking_has_user($booking_has_user); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }
 
     $sql = "INSERT INTO booking_has_user ";
     $sql .= "(booking_id, user_id) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $booking_has_user['booking_id']) . "',";
-    $sql .= "'" . db_escape($db, $booking_has_user['user_id']) . "',";
+    $sql .= "'" . db_escape($db, $booking_has_user['user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-    // For INSERT statements, $result is true/false
+// For INSERT statements, $result is true/false
     if ($result) {
         return true;
     } else {
         // INSERT failed
-        echo mysqli_error($db);
-        db_disconnect($db);
-        exit;
-    }
-}
-
-function update_booking_has_user($booking_has_user) {
-    global $db;
-    $errors = validate_booking_has_user($booking_has_user); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }
-    $sql = "UPDATE booking_has_user SET ";
-    $sql .= "booking_id='" . db_escape($db, $booking_has_user['booking_id']) . "', ";
-    $sql .= "user_id='" . db_escape($db, $booking_has_user['user_id']) . "', ";
-    $sql .= "WHERE booking_id='" . db_escape($db, $booking_has_user['booking_id']) . "' ";
-    $sql .= "LIMIT 1";
-
-    $result = mysqli_query($db, $sql);
-    // For UPDATE statements, $result is true/false
-    if ($result) {
-        return true;
-    } else {
-        // UPDATE failed
         echo mysqli_error($db);
         db_disconnect($db);
         exit;
@@ -818,7 +643,7 @@ function delete_booking_has_user($booking_id) {
     $sql .= "WHERE booking_id ='" . db_escape($db, $booking_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
-    //For DELETE statements, $result is true false
+//For DELETE statements, $result is true false
 
     if ($result) {
         return true;
@@ -856,115 +681,17 @@ function find_event_has_booking_by_id($id) {
     return $event_has_booking; //returns an associative array
 }
 
-//EDIT VALIDATE_BOOKING_HAS_USER FUNCTION
-function validate_event_has_booking($event_has_booking) {
-    $errors = [];
-
-    /* EXAMPLES TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['event_id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
-
-    // event_name -------------------------------------------------------------
-    //      Event name cannot be blank.
-    //      Name must be between 2 and 150 characters.
-    // ------------------------------------------------------------------------
-    if (is_blank($event['event_name'])) {
-        $errors[] = "Event name cannot be blank.";
-    } elseif (!has_length($event['event_name'], ['min' => 2, 'max' => 150])) {
-        $errors[] = "Name must be between 2 and 150 characters.";
-    }
-
-    // host_user_id -----------------------------------------------------------
-    //      You must log in to create an event. (host_user_id cannot be blank).
-    // ------------------------------------------------------------------------
-    if (is_blank($event['host_user_id'])) {
-        $errors[] = "You must log in to create an event. (host_user_id cannot be blank).";
-    }
-
-    // event_end --------------------------------------------------------------
-    //      Event end time must be after event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
-    }
-
-    // ticket_sale_end --------------------------------------------------------
-    //      The time that ticket sales end must be before the event start time.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
-    }
-
-    // event_start ------------------------------------------------------------
-    //      The event start time cannot be in the past.
-    // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
-    $todays_date_int = (int) $todays_date_obj;
-    if ($todays_date_int > $event_start) {
-        $errors[] = "The event start time cannot be in the past.";
-    }
-
-    // event_description  -----------------------------------------------------
-    //      Event description cannot be blank.
-    // ------------------------------------------------------------------------
-    if (is_blank($event['event_description'])) {
-        $errors[] = "Event description cannot be blank.";
-    }
-
-    return $errors;
-}
-
 function insert_event_has_booking($event_has_booking) {
     global $db;
-
-    $errors = validate_event_has_booking($event_has_booking); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }
 
     $sql = "INSERT INTO event_has_booking ";
     $sql .= "(event_id, booking_id) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $event_has_booking['event_id']) . "',";
-    $sql .= "'" . db_escape($db, $event_has_booking['booking_id']) . "',";
+    $sql .= "'" . db_escape($db, $event_has_booking['booking_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-    // For INSERT statements, $result is true/false
+// For INSERT statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -988,7 +715,7 @@ function update_event_has_booking($event_has_booking) {
     $sql .= "LIMIT 1";
 
     $result = mysqli_query($db, $sql);
-    // For UPDATE statements, $result is true/false
+// For UPDATE statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -999,13 +726,13 @@ function update_event_has_booking($event_has_booking) {
     }
 }
 
-function delete_event_has_booking($event_id) {
+function delete_event_has_booking($booking_id) {
     global $db;
     $sql = "DELETE FROM event_has_booking ";
-    $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
+    $sql .= "WHERE booking_id ='" . db_escape($db, $booking_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
-    //For DELETE statements, $result is true false
+//For DELETE statements, $result is true false
 
     if ($result) {
         return true;
@@ -1095,44 +822,44 @@ function validate_rating($rating) {
 
      */
 
-    // event_name -------------------------------------------------------------
-    //      Event name cannot be blank.
-    //      Name must be between 2 and 150 characters.
-    // ------------------------------------------------------------------------
+// event_name -------------------------------------------------------------
+//      Event name cannot be blank.
+//      Name must be between 2 and 150 characters.
+// ------------------------------------------------------------------------
     if (is_blank($event['event_name'])) {
         $errors[] = "Event name cannot be blank.";
     } elseif (!has_length($event['event_name'], ['min' => 2, 'max' => 150])) {
         $errors[] = "Name must be between 2 and 150 characters.";
     }
 
-    // host_user_id -----------------------------------------------------------
-    //      You must log in to create an event. (host_user_id cannot be blank).
-    // ------------------------------------------------------------------------
+// host_user_id -----------------------------------------------------------
+//      You must log in to create an event. (host_user_id cannot be blank).
+// ------------------------------------------------------------------------
     if (is_blank($event['host_user_id'])) {
         $errors[] = "You must log in to create an event. (host_user_id cannot be blank).";
     }
 
-    // event_end --------------------------------------------------------------
-    //      Event end time must be after event start time.
-    // ------------------------------------------------------------------------
+// event_end --------------------------------------------------------------
+//      Event end time must be after event start time.
+// ------------------------------------------------------------------------
     $event_end = (int) $event['event_end'];
     $event_start = (int) $event['event_start'];
     if ($event_end < $event_start) {
         $errors[] = "Event end time must be after event start time.";
     }
 
-    // ticket_sale_end --------------------------------------------------------
-    //      The time that ticket sales end must be before the event start time.
-    // ------------------------------------------------------------------------
+// ticket_sale_end --------------------------------------------------------
+//      The time that ticket sales end must be before the event start time.
+// ------------------------------------------------------------------------
     $event_end = (int) $event['event_end'];
     $event_start = (int) $event['event_start'];
     if ($event_end < $event_start) {
         $errors[] = "Event end time must be after event start time.";
     }
 
-    // event_start ------------------------------------------------------------
-    //      The event start time cannot be in the past.
-    // ------------------------------------------------------------------------
+// event_start ------------------------------------------------------------
+//      The event start time cannot be in the past.
+// ------------------------------------------------------------------------
     $event_end = (int) $event['event_end'];
     $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
     $todays_date_int = (int) $todays_date_obj;
@@ -1140,9 +867,9 @@ function validate_rating($rating) {
         $errors[] = "The event start time cannot be in the past.";
     }
 
-    // event_description  -----------------------------------------------------
-    //      Event description cannot be blank.
-    // ------------------------------------------------------------------------
+// event_description  -----------------------------------------------------
+//      Event description cannot be blank.
+// ------------------------------------------------------------------------
     if (is_blank($event['event_description'])) {
         $errors[] = "Event description cannot be blank.";
     }
@@ -1169,7 +896,7 @@ function insert_rating($rating) {
     $sql .= "'" . db_escape($db, $rating['rater_user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-    // For INSERT statements, $result is true/false
+// For INSERT statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -1197,7 +924,7 @@ function update_rating($rating) {
     $sql .= "LIMIT 1";
 
     $result = mysqli_query($db, $sql);
-    // For UPDATE statements, $result is true/false
+// For UPDATE statements, $result is true/false
     if ($result) {
         return true;
     } else {
@@ -1214,7 +941,7 @@ function delete_rating($rating_id) {
     $sql .= "WHERE raring_id ='" . db_escape($db, $rating_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
-    //For DELETE statements, $result is true false
+//For DELETE statements, $result is true false
 
     if ($result) {
         return true;
@@ -1422,32 +1149,33 @@ function find_address_by_room_id($room_id) {
 function validate_address($address) {
     $errors = [];
 
-    // address_line_1 -------------------------------------------------------------
-    //      Address Line 1 cannot be blank.
-    //      Address Line 1 must be between 2 and 150 characters.
-    // ------------------------------------------------------------------------
+// address_line_1 -------------------------------------------------------------
+//      Address Line 1 cannot be blank.
+//      Address Line 1 must be between 2 and 150 characters.
+// ------------------------------------------------------------------------
     if (is_blank($address['address_line_1'])) {
         $errors[] = "Address Line 1 cannot be blank.";
     } elseif (!has_length($address['address_line_1'], ['min' => 2, 'max' => 100])) {
         $errors[] = "Address Line 1 must be between 2 and 100 characters.";
     }
-    // Postcode -----------------------------------------------------------
-    //      Postcode cannot be blank.
-    //      Postcode must be between 2 and 150 characters.
-    // ------------------------------------------------------------------------
+// Postcode -----------------------------------------------------------
+//      Postcode cannot be blank.
+//      Postcode must be between 2 and 150 characters.
+// ------------------------------------------------------------------------
     if (is_blank($address['postcode'])) {
         $errors[] = "Postcode cannot be blank.";
     } elseif (!has_length($address['postcode'], ['min' => 2, 'max' => 45])) {
         $errors[] = "Postcode must be between 2 and 45 characters.";
     }
-    // city_id -----------------------------------------------------------
-    //      City_id cannot be blank.
-    // ------------------------------------------------------------------------
+// city_id -----------------------------------------------------------
+//      City_id cannot be blank.
+// ------------------------------------------------------------------------
     if (is_blank($address['city_id'])) {
         $errors[] = "Please select your closest city.";
     }
     return $errors;
 }
+
 function insert_address($address) {
     global $db;
 
@@ -1544,4 +1272,5 @@ function find_city_by_id($city_id) {
     mysqli_free_result($result);
     return $city; //returns an associative array
 }
+
 ?>

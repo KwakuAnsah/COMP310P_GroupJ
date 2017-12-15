@@ -29,7 +29,7 @@ $page ="index.php";
                     <br>
                     <div class="container-fluid "> 
                         <h1 class=" text-center" style="font-weight: lighter">  
-                            Join the Biggest Film Community In the World.   <?php echo $_SESSION["first_name"];?>
+                            Join the Biggest Film Community In the World.
                         </h1>
                     </div>
                     <br>

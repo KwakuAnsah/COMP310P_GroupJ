@@ -105,7 +105,11 @@ INSERT INTO `booking` (`booking_id`, `number_of_tickets`) VALUES
 (1, 2),
 (2, 3),
 (3, 5),
-(4, 6);
+(4, 6),
+(18, 1),
+(20, 2),
+(21, 3),
+(22, 1);
 
 -- --------------------------------------------------------
 
@@ -130,7 +134,12 @@ INSERT INTO `booking_has_user` (`booking_id`, `user_id`) VALUES
 (1, 1),
 (3, 4),
 (4, 4),
+(20, 4),
+(21, 4),
+(22, 4),
+(18, 5),
 (2, 11);
+
 
 
 -- --------------------------------------------------------
@@ -4541,7 +4550,11 @@ CREATE TABLE IF NOT EXISTS `event` (
 
 INSERT INTO `event` (`event_id`, `event_name`, `host_user_id`, `event_end`, `event_description`, `total_tickets`, `room_id`, `event_category_id`, `event_start`, `ticket_sale_end`) VALUES
 (1, 'Spooky Movie Marathon', 1, '2018-01-19 02:00:00', 'Spooky Movie Night in the Buttercup Room', 16, 3, 2, '2018-01-18 18:00:00', '2018-01-18 17:00:00'),
-(2, 'Fun ACADEMY DINOSAUR Screening!', 3, '2017-12-08 23:00:00', 'Come along and watch Academy Dinosaur with me!', 17, 2, 1, '2017-12-08 17:00:00', '2017-12-08 16:45:00');
+(2, 'Fun ACADEMY DINOSAUR Screening!', 3, '2017-12-08 23:00:00', 'Come along and watch Academy Dinosaur with me!', 17, 2, 1, '2017-12-08 17:00:00', '2017-12-08 16:45:00'),
+(6, 'Scary Spider Night', 4, '2017-12-28 22:00:00', 'Come and join me to celebrate spiders', 16, 7, 3, '2017-12-28 18:00:00', '2017-12-27 23:59:00'),
+(7, 'Got the Travel-Bug Film Night', 11, '2017-12-23 22:00:00', 'An event for those who love to travel. Let\'s watch a film!', 14, 13, 1, '2018-01-23 16:00:00', '2018-01-22 23:59:00'),
+(8, 'Kids Under the Sea Party', 4, '2017-12-01 16:00:00', 'Come and enjoy an underwater experience. Dress code: Ocean themed fancy dress!', 19, 12, 1, '2017-12-02 10:00:00', '2017-12-02 09:59:00'),
+(9, 'Extraordinary Plant-Based Sci-Night', 3, '2017-12-09 22:00:00', 'I will be screening the famous Garden Island film. Sci-Fi at it\'s best!', 22, 16, 1, '2017-12-09 19:00:00', '2017-12-09 18:59:00');
 
 -- --------------------------------------------------------
 
@@ -4566,7 +4579,12 @@ INSERT INTO `event_has_booking` (`event_id`, `booking_id`) VALUES
 (1, 1),
 (2, 2),
 (1, 3),
-(2, 4);
+(2, 4),
+(6, 18),
+(8, 20),
+(2, 21),
+(9, 22);
+
 
 
 -- --------------------------------------------------------

@@ -5,7 +5,7 @@ $page_title = 'Create Event';
 $page = 'show.php';
 
 if(!isset($_SESSION['user_id'])){
-    echo "<div class='no_session'> ksndkcsdn </div>";
+    echo "<div class='no_session'>  </div>";
     redirect_to(url_for("index.php"));
 }
 
@@ -28,7 +28,7 @@ if (is_post_request()) {
         $film_event['film_id'] = $_POST['film_id'] ?? '';
         $film_event['event_id'] = $new_event_id;
         insert_film_event($film_event);
-        redirect_to(url_for('/events/show.php?id=' . $new_event_id));
+        redirect_to(url_for('/events/show.php?event_id=' . $new_event_id));
     } else {
         $errors = $result;
     }
