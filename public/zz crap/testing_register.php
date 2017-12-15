@@ -1,5 +1,3 @@
-
-
 <?php
 if (is_post_request()) {
 
@@ -55,4 +53,3 @@ $user_set = find_all_users();
 $user_count = mysqli_num_rows($user_set) + 1;
 mysqli_free_result($user_set);
 ?>
-

@@ -6,7 +6,8 @@ $page ="index.php";
     
 
 ?>
- <?php include(PUBLIC_PATH . '/users/login.php'); ?>
+<?php include(PUBLIC_PATH . '/users/login.php'); ?>
+<?php include(PUBLIC_PATH . '/users/new.php'); ?>
 <?php include(SHARED_PATH . '/header.php'); ?>
   
 
@@ -109,8 +110,31 @@ $page ="index.php";
                                                         <input type="password" name="password" id="password" tabindex="4" class="form-control" placeholder="Password">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="password" name="confirm-password" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirm Password">
+                                                        <input type="password" name="password_check" id="confirm-password" tabindex="5" class="form-control" placeholder="Confirm Password">
                                                     </div> 
+                                                     <div class="form-group">
+                                                        <input type="date" name="date_of_birth" id="confirm-password" tabindex="6" class="form-control" placeholder="Date Of Birth">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" name="address_line_1" id="confirm-password" tabindex="7" class="form-control" placeholder="Address Line 1">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" name="postcode" id="confirm-password" tabindex="8" class="form-control" placeholder="Postcode">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <h4>City</h4>  
+                                                        <select name="city_id">
+                                                            <?php
+                                                            $city_set = find_all_cities();
+                                                            while ($city = mysqli_fetch_assoc($city_set)) {
+                                                                echo "<option value=" . $city["city_id"] . ">"
+                                                                . h($city["city_name"]) . "</option>";
+                                                            }
+                                                            mysqli_free_result($city_set);
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    
                                                     
                                                     <div class="form-group">
                                                         <div class="row">
