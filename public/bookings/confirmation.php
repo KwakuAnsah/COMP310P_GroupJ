@@ -43,7 +43,7 @@ $user = find_user_by_id($booking['user_id']);
     <div class="container">
         <div class="col-md-2"></div>
         <div class="col-md-3">
-            <a href="<?php echo url_for("users/show.php?user_id=") . h($user_id); ?>" class="view btn btn-lg btn-default">View my Account</a>
+            <a href="<?php echo url_for("users/show.php?user_id=") . h($booking['user_id']); ?>" class="view btn btn-lg btn-default">View my Account</a>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">

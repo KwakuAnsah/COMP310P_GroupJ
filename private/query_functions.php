@@ -181,7 +181,7 @@ function find_all_events_detailed() {
             . "JOIN address ON room.address_id = address.address_id "
             . "JOIN city ON address.city_id = city.city_id "
             . "JOIN country ON country.country_id = city.country_id "
-            . "ORDER BY city_name ASC";
+            . "ORDER BY event_start ASC";
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;

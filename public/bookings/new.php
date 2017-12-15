@@ -32,7 +32,7 @@ if (is_post_request()) {
         echo "test 5 <br><br>";
         $booking_has_user_result = insert_booking_has_user($booking_has_user);
 echo "test 6<br><br>";
-        redirect_to(url_for('/bookings/confirmation.php?event_id=' . $new_booking_id));
+        redirect_to(url_for('/bookings/confirmation.php?booking_id=' . $new_booking_id));
     } else {
         $errors = $result;
     }
@@ -108,6 +108,16 @@ $tickets_remaining = $event['total_tickets'] - $tickets_sold;
                     }
                     ?>
                 </dl>
+                <!-- PHP TAG BELOW FOR ADDING USERS TO PAST EVENTS FOR TESTING PURPOSES -->
+                <?php /*echo '<dl>' . '<dt>Number of tickets:</dt>' .
+                    '<dd><input type="text" name="number_of_tickets" value="" /></dd>' .
+                    '</dl>';
+                    echo '</dl>
+                    <div id="operations">
+                        <input type="submit" value="Confirm Booking" />
+                   </div>'; */
+                ?>
+                
                 <?php
                 if ($timestamp_ticket_sale_end > $now && $tickets_remaining > 0) {
                     echo '<dl>' . '<dt>Number of tickets:</dt>' .
