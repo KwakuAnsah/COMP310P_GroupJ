@@ -149,6 +149,32 @@ function find_host_by_event_id($event_id) {
     mysqli_free_result($result);
     return $host; //returns an associative array
 }
+function find_participants_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT user.user_id, first_name, last_name, host_user_id, " 
+            . "event_has_booking.event_id, booking.booking_id, "
+            . "number_of_tickets, event_name, total_tickets ";
+    $sql .= "FROM user "
+            . "JOIN booking_has_user ON booking_has_user.user_id = user.user_id "
+            . "JOIN event_has_booking ON event_has_booking.booking_id = booking_has_user.booking_id "
+            . "JOIN event ON event.event_id = event_has_booking.event_id "
+            . "JOIN booking ON booking.booking_id = booking_has_user.booking_id ";
+    $sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+        
+    //$sql = "SELECT * FROM user ";
+    //$sql .= "JOIN event ON event.host_user_id = user.user_id  ";
+    //$sql .= "WHERE event.event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+
+    confirm_result_set($result);
+    //$participants = mysqli_fetch_assoc($result);
+    //mysqli_free_result($result);
+    //return $participants; //returns an associative array
+    return $result; //returns an associative array
+}
+
+
 
 // Events -------DONE except validate event-------------------------------------
 function find_all_events() {
@@ -549,6 +575,20 @@ function find_tickets_sold($event_id) {
     $tickets_sold = mysqli_fetch_array($result);
     mysqli_free_result($result);
     return $tickets_sold[0];
+}
+
+function find_total_tickets($event_id) {
+        global $db;
+
+    $sql = "SELECT total_tickets FROM event ";
+    $sql .= "WHERE event_id ='" . $event_id . "'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return '0';
+    }
+    $total_tickets = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $total_tickets[0];
 }
 
 // Booking_has_user -----------------------------------------------------------------------
