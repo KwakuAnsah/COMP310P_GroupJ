@@ -12,6 +12,7 @@ function has_length_greater_than($value, $min) {
     $length = strlen($value);
     return $length > $min;
 }
+
 // has_length_less_than('abcd', 5)
 function has_length_less_than($value, $max) {
     $length = strlen($value);
@@ -23,7 +24,7 @@ function has_length_exactly($value, $exact) {
     $length = strlen($value);
     return $length == $exact;
 }
-        
+
 // has_length('abcd', ['min' => 3, 'max' => 5])
 function has_length($value, $options) {
     if (isset($options['min']) && !has_length_greater_than($value, $options['min'] - 1)) {
@@ -69,7 +70,6 @@ function has_valid_password_format($value) {
     return preg_match($password_regex, $value) === 1;
 }
 
-
 // email is unique
 
 function has_unique_email($email, $current_id = "0") {
@@ -77,7 +77,7 @@ function has_unique_email($email, $current_id = "0") {
 
     $sql = "SELECT * FROM user ";
     $sql .= "WHERE email='" . db_escape($db, $email) . "' ";
-    $sql .= "AND id != '" . db_escape($db, $current_id). "'";
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "'";
 
     $email_set = mysqli_query($db, $sql);
     $email_count = mysqli_num_rows($email_set);
@@ -85,4 +85,16 @@ function has_unique_email($email, $current_id = "0") {
 
     return $email_count === 0;
 }
+
+function event_is_in_past($event_id) {
+    $event = find_event_by_id($event_id);
+    $now = time(); //ms
+    $timestamp_event_end = strtotime($event['event_end']); //ms
+    if ($timestamp_event_end > $now) {
+        //IF in Future
+        return 0;
+    }
+    return 1;
+}
+
 ?>

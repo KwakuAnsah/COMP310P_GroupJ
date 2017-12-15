@@ -75,14 +75,14 @@ function validate_user($user) {
         $errors[] = "Password must be between 8 and 30 characters.";
     }
     if (($user['password']) !== ($user['password_validation'])) {
-           
+
         $errors[] = "Passwords do not match.";
-    } 
+    }
     if (!has_valid_email_format($user['email']) == 1) {
         $errors[] = "Email must be entered in correct format.";
     }
-    
-     
+
+
     return $errors;
 }
 
@@ -780,6 +780,20 @@ function find_all_ratings() {
     return $result;
 }
 
+function find_all_ratings_by_event_id($event_id) {
+    global $db;
+
+    $sql = "SELECT event_rating, host_rating, review_text, rating_id, 
+        user.user_id, username FROM rating 
+        JOIN user ON user.user_id = rating.rater_user_id 
+        WHERE rating.event_id =". $event_id;
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
+
 function find_rating_by_id($rating_id) {
     global $db;
 
@@ -919,52 +933,28 @@ function insert_rating($rating) {
     $sql .= "'" . db_escape($db, $rating['rater_user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-}
-
-function update_rating($rating) {
-    global $db;
-    $errors = validate_event($event); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }
-    $sql = "UPDATE rating SET ";
-    $sql .= "rating_id='" . db_escape($db, $rating['rating_id']) . "', ";
-    $sql .= "event_rating='" . db_escape($db, $rating['event_rating']) . "', ";
-    $sql .= "host_rating='" . db_escape($db, $rating['host_rating']) . "', ";
-    $sql .= "review_text='" . db_escape($db, $rating['review_text']) . "', ";
-    $sql .= "event_id='" . db_escape($db, $rating['event_id']) . "', ";
-    $sql .= "rater_user_id='" . db_escape($db, $rating['ticket_sale_end']) . "' ";
-    $sql .= "WHERE ratingt_id='" . db_escape($db, $rating['rating_id']) . "' ";
-    $sql .= "LIMIT 1";
-
-    $result = mysqli_query($db, $sql);
-// For UPDATE statements, $result is true/false
     if ($result) {
         return true;
     } else {
-        // UPDATE failed
         echo mysqli_error($db);
         db_disconnect($db);
         exit;
     }
 }
 
-function delete_rating($rating_id) {
+function user_has_already_rated_event($event_id) {
     global $db;
-    $sql = "DELETE FROM rating ";
-    $sql .= "WHERE raring_id ='" . db_escape($db, $rating_id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = mysqli_query($db, $sql);
-//For DELETE statements, $result is true false
 
-    if ($result) {
-        return true;
-    } else {
-        // DELETE failed
-        echo mysqli_error($db);
-        db_disconnect($db);
-        exit;
+    $sql = "SELECT count(event_id) FROM rating ";
+    $sql .= "WHERE rater_user_id='" . $_SESSION['user_id'] . "' ";
+    $sql .= "AND event_id='" . db_escape($db, $event_id) . "'";
+    $result = mysqli_query($db, $sql);
+    if (!$result) {
+        return '0';
     }
+    $number_of_ratings_for_this_event = mysqli_fetch_array($result);
+    mysqli_free_result($result);
+    return $number_of_ratings_for_this_event [0];
 }
 
 function find_avg_host_rating($host_user_id) {
