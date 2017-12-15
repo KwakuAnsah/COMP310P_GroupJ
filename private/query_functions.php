@@ -30,39 +30,6 @@ function find_user_by_id($user_id) {
 
 function validate_user($user) {
     $errors = [];
-    /* TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
     // first_name -------------------------------------------------------------
     //      First name cannot be blank.
     //      First name must be between 2 and 65 characters.
@@ -78,11 +45,44 @@ function validate_user($user) {
     //      Last name cannot be blank.
     //      Last name must be between 2 and 100 characters.
     // ------------------------------------------------------------------------
-    if (is_blank($user['first_name'])) {
+    if (is_blank($user['last_name'])) {
         $errors[] = "Last name cannot be blank.";
-    } elseif (!has_length($user['first_name'], ['min' => 2, 'max' => 100])) {
+    } elseif (!has_length($user['last_name'], ['min' => 2, 'max' => 100])) {
         $errors[] = "Last name must be between 2 and 100 characters.";
     }
+    // email -------------------------------------------------------------
+    //      Email cannot be blank
+    //      Email must be entered in correct format.
+    //      Email already in use.
+    // ------------------------------------------------------------------------
+
+    if (is_blank($user['email'])) {
+        $errors[] = "Email cannot be blank.";
+    } elseif (!has_valid_email_format($user['email']) == 1) {
+        $errors[] = "Email must be entered in correct format.";
+    } elseif (!has_unique_email($user['email'])) {
+        $errors[] = "Email already in use.";
+    }
+    // password -------------------------------------------------------------
+    //      Password cannot be blank
+    //      Password must be between 4 and 20 characters.
+    //      Passwords do not match.
+    // ------------------------------------------------------------------------
+
+    if (is_blank($user['password'])) {
+        $errors[] = "Password cannot be blank.";
+    } elseif (!has_length($user['password'], ['min' => 8, 'max' => 30])) {
+        $errors[] = "Password must be between 8 and 30 characters.";
+    }
+    if (($user['password']) !== ($user['password_validation'])) {
+           
+        $errors[] = "Passwords do not match.";
+    } 
+    if (!has_valid_email_format($user['email']) == 1) {
+        $errors[] = "Email must be entered in correct format.";
+    }
+    
+     
     return $errors;
 }
 
@@ -237,7 +237,6 @@ function find_all_past_events_by_host($host_user_id) {
     return $result;
 }
 
-
 function find_all_events_detailed() {
     global $db;
 
@@ -280,40 +279,6 @@ function find_event_by_id($event_id) {
 function validate_event($event) {
     $errors = [];
 
-    /* EXAMPLES TESTS 
-     * CANNOT BE BLANK
-      if (is_blank($event['XXXX'])) {
-      $errors[] = "XXXXX cannot be blank.";
-      }
-     * 
-     * MUST BE UNIQUE
-      $current_id = $event['event_id'] ?? '0';
-      if(!has_unique_event_menu_name($event['menu_name'],$current_id)){
-      $errors[] = "Menu name must be unique.";
-      }
-     * 
-     * MUST BE WITHIN A RANGE (INTs)
-      $postion_int = (int) $event['position'];
-      if ($postion_int <= 0) {
-      $errors[] = "Position must be greater than zero.";
-      }
-      if ($postion_int > 999) {
-      $errors[] = "Position must be less than 999.";
-      }
-     * 
-     * STRING LENGTH MUST BE WITH RANGE
-     * if (!has_length($event['menu_name'], ['min' => 2, 'max' => 150])) {
-      $errors[] = "Name must be between 2 and 150 characters.";
-      }
-     * 
-     * STRING MUST INCLUDE 0 OR 1 / Make sure we are working with a string
-      $visible_str = (string) $event['visible'];
-      if (!has_inclusion_of($visible_str, ["0", "1"])) {
-      $errors[] = "Visible must be true or false.";
-      }
-
-     */
-
     // event_name -------------------------------------------------------------
     //      Event name cannot be blank.
     //      Name must be between 2 and 150 characters.
@@ -351,13 +316,20 @@ function validate_event($event) {
 
     // event_start ------------------------------------------------------------
     //      The event start time cannot be in the past.
+    //      Event end time must be after event start time.
     // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $todays_date_obj = new Date() . setHours(0, 0, 0, 0);
-    $todays_date_int = (int) $todays_date_obj;
-    if ($todays_date_int > $event_start) {
+    $start_time = strtotime($event['event_start']);
+    $end_time = strtotime($event['event_end']);
+    if ($end_time < $start_time) {
+        $errors[] = "Event end time must be after event start time.";
+    }
+
+    $today = time();
+    if ($today > $start_time) {
         $errors[] = "The event start time cannot be in the past.";
     }
+    return $errors;
+
 
     // event_description  -----------------------------------------------------
     //      Event description cannot be blank.
@@ -933,9 +905,9 @@ function insert_rating($rating) {
     global $db;
 
     /* $errors = validate_rating($rating); //array of errors
-    if (!empty($errors)) {
-        return $errors;
-    }*/
+      if (!empty($errors)) {
+      return $errors;
+      } */
 
     $sql = "INSERT INTO rating ";
     $sql .= "(event_rating, host_rating, review_text, event_id, "
@@ -947,8 +919,6 @@ function insert_rating($rating) {
     $sql .= "'" . db_escape($db, $rating['rater_user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-    
-   
 }
 
 function update_rating($rating) {
