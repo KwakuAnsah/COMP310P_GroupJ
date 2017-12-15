@@ -1,7 +1,8 @@
 <?php
 require_once('../../private/initialize.php');
 $page_title = 'Edit account details';
-$page = 'user_edit.php'
+$page = 'user_edit.php';
+include(SHARED_PATH . '/access_denied.php');
 ?>
 
 <?php

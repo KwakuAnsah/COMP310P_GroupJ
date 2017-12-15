@@ -93,7 +93,7 @@ COURSEWORK REQUIREMENTS
 1.
 --------------------------------------------------------------------------------
 All users can register with the system and create an account.                   DONE
-A user must log in to the system before using it. 
+A user must log in to the system before using it.                               DONE                
 A user can be a host and may set up their own events.                           DONE EXCEPT (link Login user_id to host_id)
 A user can also be a participant and book tickets to other people’s events.     1/2 DONE 
 --------------------------------------------------------------------------------
@@ -135,8 +135,8 @@ Ratings and feedback are visible to other users.
 
 TODO.
 SORT LOGIN:     A user must log in to the system before using it. KWAKU >>> DONE
-Login required for: all of bookings, all of events, ratings,  DANIELLE
-SORT BOOKINGS: Needs to write to database, needs validation (4.)  DANIELLE
+Login required for: all of bookings, all of events, ratings,  DANIELLE >>> DONE
+SORT BOOKINGS: Needs to write to database, needs validation (4.)  DANIELLE >>> DONE
 SORT 3.: Link WHATSON to database.                              JENNY   >>> DONE
 Participants can view a list of events they are attending.        KWAKU
 Receive email updates on events that are imminent. (JAVASCRIPT) - KWAKU 

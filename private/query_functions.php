@@ -591,7 +591,7 @@ function find_total_tickets($event_id) {
     return $total_tickets[0];
 }
 
-// Booking_has_user ------NEED TO CHECK------------------------------------------------------
+// Booking_has_user -----------------------------------------------------------------------
 
 function find_all_booking_has_user() {
     global $db;

@@ -1,12 +1,21 @@
 <?php
 require_once('../../private/initialize.php');
 $page_title = 'Profile page';
-$page = 'show.php'
+$page = 'show.php';
+
+include(SHARED_PATH . '/access_denied.php');
+
+
 ?>
 
 <?php
 $user_id = $_GET['user_id'] ?? '1'; // PHP > 7.0
 $user = find_user_by_id($user_id);
+
+if($_SESSION['user_id'] !== $user_id ){
+    redirect_to(url_for("index.php"));
+}
+
 ?>
 
 <?php include(SHARED_PATH . '/header.php'); ?>

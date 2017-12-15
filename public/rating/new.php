@@ -2,6 +2,7 @@
 require_once('../../private/initialize.php');
 $page_title = 'Rate an Event';
 $page = 'new.php';
+include(SHARED_PATH . '/access_denied.php');
 
 if(!isset($_SESSION['user_id'])){
     echo "<div class='no_session'>  </div>";

@@ -1,5 +1,9 @@
 <?php
 require_once('../../private/initialize.php');
+include(SHARED_PATH . '/access_denied.php');
+
+$event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
+$user_id = $_SESSION['user_id'];
 
 
 $event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0

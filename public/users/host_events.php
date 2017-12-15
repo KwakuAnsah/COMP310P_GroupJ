@@ -1,5 +1,6 @@
 <?php
 require_once('../../private/initialize.php');
+include(SHARED_PATH . '/access_denied.php');
 
 $page_title = 'Host user';
 $page = "host_events.php";
