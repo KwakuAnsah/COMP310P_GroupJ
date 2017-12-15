@@ -1,118 +1,177 @@
-<?php 
-       require_once('../../private/initialize.php');
-   
-        $id = $_GET['event_id'] ?? '1'; // PHP > 7.0
-        $event = find_event_by_id($id);
-// this enables us to display the event info
-// further down the webevent 
-        
-        if (is_post_request()) {
-            $rating = [];
-            $rating['rating_id'] = $_POST['rating_id'] ?? '';
-            $rating['event_rating'] = $_POST['event_rating'] ?? '';
-            $rating['host_rating'] = $_POST['host_rating'] ?? '';
-            $rating['review_text'] = $_POST['review_text'] ?? '';
-            $rating['event_id'] = $_POST['event_id'] ?? '';
-            $rating['user_id(rater)'] = $_POST['user_id(rater)'] ?? '';
-        
-            $result = insert_rating($rating);
-            if ($result === true) {
-                $new_id = mysqli_insert_id($db);
-                //UPDATE URL
-                redirect_to(url_for('/events/show.php?id=' . $new_id));
-            } else {
-                $errors = $result;
-            }
-        } else {
-            $rating = [];
-            $rating['rating_id'] = '';
-            $rating['event_rating'] = '';
-            $rating['host_rating'] = '';
-            $rating['review_text'] = '';
-            $rating['event_id'] = '';
-            $rating['user_id(rater)'] = '';
-        }
-        ?>
-        <?php $page_title = 'Show Events Page'; ?>
-      <!-- <head>-->
-        <!-- CSS stylesheet for Events pages-->
-        <!-- <link href="../../public/stylesheets/events_style.css" rel="Style for events pages"> -->
-   <!-- </head> -->
-    
-  
-    <!-- * * * * * ADD CORRECT HEADER FILE? * * * * *-->
-        <?php include(SHARED_PATH . '/header.php'); ?>
-        <div class="container">
-            <div id="content">
-                <a class="back-link" href="<?php echo url_for('/events/host_pages/index.php'); ?>">&laquo; Back to List</a>
-                <div class="event show">
-                    <h1><?php echo h($event['event_name']); ?></h1>
-                    <div class="attributes"> 
-                        <h2>Event Details</h2>
-                        <dl>
-                            <dt>Event type:</dt>
-                            <dd><?php echo h($event['event_category_id']); ?></dd>
-                        </dl>
-                        <dl>
-                            <dt>Hosted by:</dt>
-                            <dd><?php echo h($event['host_user_id']); ?></dd>
-                        </dl>
-                        <dl>
-                            <dt>Host rating:</dt>
-    <!-- * * * * * * * * * * INSERT host rating * * * * * * * * * * -->
-                            <dd><?php echo h($XXX['XXX']); ?></dd>
-                        </dl>
-                        <!-- Not sure what this is for?
-                        <dl>
-                            <dt>Visible:</dt>
-                            <dd><?php echo $event['visible'] == '1' ? 'true' : 'false'; ?></dd>
-                        </dl>
-                        -->
-                        <dl>
-                            <dt>Event Description:</dt>
-                            <dd><?php echo h($event['event_description']); ?></dd>
-                        </dl>
-                        <dl>
-                            <dt>Films showing:</dt>
-    <!-- * * * * * * * * * * INSERT films to be shown * * * * * * * * * * -->
-                            <dd><?php echo h($XXX['XXX']); ?></dd>
-                        </dl>
-                        <br>
-                        <h2>Date and Time</h2>
-                        <dl>
-                            <dt>Start:</dt>
-                            <dd><?php echo h($event['event_start']); ?></dd>
-                        </dl>
-                        <dl>
-                            <dt>End:</dt>
-                            <dd><?php echo h($event['event_end']); ?></dd>
-                        </dl>
-                        <br>
-                        <h2>Location</h2>
-                        <dl>
-                            <dt>Room:</dt>
-                            <dd><?php echo h($event['room_id']); ?></dd>
-                        </dl>
-    <!-- * * * * * Include rest of address? - address id, postcode, city id, country id etc.? * * * * * -->       
-                        <br>
-                        <h2>More Information</h2>
-                        <dl>
-                            <dt>Room is wheelchair accessible:</dt>
-    <!-- * * * * * * * * * * Include this here? Or show this on the locations page? * * * * * * * * * * -->                        
-                            <dd><?php echo h($XXX['XXX']); ?></dd>
-                        </dl>
-    <!-- * * * * * * * * * * FOR WRITING A REVIEW * * * * * * * * * * -->
-                        <h1>Write a review:</h1>                     
-                       <form action="../../public/users/show.php">
-                                Overall event rating: <input type="text" name="event_rating"><br><br>
-                                Host rating: <input type="text" name="host_rating"><br><br>
-                                <!-- move style to external sheet -->
-                                Comments: <input type="text" name="host_rating" style="height:100px;width:400px;"><br><br>
-                                <input type="submit" value="Submit">
-                        </form>                       
-                    </div>                  
-                </div>
-            </div>
-        </div>
+<?php
+require_once('../../private/initialize.php');
+$page_title = 'Rate an Event';
+$page = 'new.php';
 
-    <?php include(SHARED_PATH . '/footer.php'); ?>
+if(!isset($_SESSION['user_id'])){
+    echo "<div class='no_session'>  </div>";
+    redirect_to(url_for("index.php"));
+}
+
+if (is_post_request()) {
+    
+    $rating = [];
+    $rating['event_name'] = $_POST['event_rating'] ?? '';
+    $rating['host_user_id'] = $_POST['host_rating'] ?? '';
+    $rating['event_description'] = $_POST['review_text'] ?? '';
+    $rating['total_tickets'] = $_POST['event_id'] ?? '';
+    $rating['room_id'] = $_POST['rater_user_id'] ?? '';
+
+
+    $result = insert_event($rating);
+    if ($result === true) {
+        $new_event_id = mysqli_insert_id($db);
+        $film_event['film_id'] = $_POST['film_id'] ?? '';
+        $film_event['event_id'] = $new_event_id;
+        insert_film_event($film_event);
+        redirect_to(url_for('/events/show.php?event_id=' . $new_event_id));
+    } else {
+        $errors = $result;
+    }
+} else {
+    $rating = [];
+    $rating['event_name'] =  '';
+    $rating['host_user_id'] =  '';
+    $rating['event_description'] =  '';
+    $rating['total_tickets']=  '';
+    $rating['room_id'] =  '';
+}
+
+$rating_set = find_all_events();
+$rating_count = mysqli_num_rows($rating_set) + 1;
+mysqli_free_result($rating_set);
+?>
+
+
+<?php include(SHARED_PATH . '/header.php'); ?>
+
+<div id="content">
+
+    <div class="event new">
+        <h1>Create Event</h1>
+
+        <?php echo display_errors($errors); ?>
+
+        <form action="<?php echo url_for('/events/new.php'); ?>" method="post">
+            <dl>
+                <dt>Event Name</dt>
+                <dd><input type="text" name="event_name" value="<?php
+                    echo
+                    h($rating['event_name']);
+                    ?>" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>Host</dt>
+                <dd>
+                    <select name="host_user_id">
+                        <?php
+                        $user_set = find_all_users();
+                        while ($user = mysqli_fetch_assoc($user_set)) {
+                            echo "<option value=" . $user["user_id"] . ">"
+                            . h($user["username"]) . " - " . h($user["first_name"])
+                            . " " . h($user["last_name"]) . "</option>";
+                        }
+                        mysqli_free_result($user_set);
+                        ?>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>Category</dt>
+                <dd>
+                    <select name="event_category_id">
+                        <?php
+                        $category_set = find_all_categories();
+                        while ($category = mysqli_fetch_assoc($category_set)) {
+                            echo "<option value='" . $category["category_id"] .
+                            "'>" . h($category["category_name"]) . "</option>";
+                        }
+                        mysqli_free_result($category_set);
+                        ?>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+
+                <dt>Description</dt>
+                <dd><input type="text" name="event_description" value="<?php
+                    echo
+                    h($rating['event_description']);
+                    ?>" />
+                </dd>
+            </dl>
+            <h2>Films</h2>
+            <dl>
+                <dt>Film</dt>
+                <dd>
+                    <select name="film_id">
+                        <?php
+                        $film_set = find_all_films();
+                        while ($film = mysqli_fetch_assoc($film_set)) {
+                            echo "<option value=" . $film["film_id"] . ">"
+                            . h($film["title"]) . " ("
+                            . h($film["certificate"]) . ") - "
+                            . h($film["genre_name"]) . "</option>";
+                        }
+                        mysqli_free_result($film_set);
+                        ?>
+                    </select>
+                </dd>
+            </dl>
+
+
+
+
+            <h2>Date and Time</h2>
+            <p> Please select a date and type a time:</p>
+            <dl>
+                <dt>Event Start</dt>
+                <dd><input type="datetime-local" name="event_start" value="<?php echo h($rating['event_start']); ?>" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>Event End</dt>
+                <dd><input type="datetime-local" name="event_end" value="<?php echo h($rating['event_end']); ?>" />
+                </dd>
+            </dl>
+            <h2>Location</h2>
+            <dl>
+                <dt>Room</dt>
+                <select name="room_id">
+                    <?php
+                    $room_set = find_all_rooms_locations();
+                    while ($room = mysqli_fetch_assoc($room_set)) {
+                        echo "<option value=" . $room["room_id"] . ">"
+                        . h($room["room_name"]) . " - (Capacity: "
+                        . h($room["capacity"]) . "), "
+                        . h($room["address_line_1"]) . ", "
+                        . h($room["postcode"]) . ", "
+                        . h($room["city_name"]) . ", "
+                        . h($room["country_name"]) . "</option>";
+                    }
+                    mysqli_free_result($room_set);
+                    ?>
+                </select>
+            </dl>
+            <h2>Tickets</h2>
+            <dl>
+                <dt>Ticket Sale End</dt>
+                <dd><input type="datetime-local" name="ticket_sale_end" value="<?php echo h($rating['ticket_sale_end']); ?>" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>Total Tickets</dt>
+                <dd><input type="int" name="total_tickets" value="<?php echo h($rating['total_tickets']); ?>" />
+                </dd>
+            </dl>
+            <div id="operations">
+                <input type="submit" value="Create Event" />
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+<?php include(SHARED_PATH . '/footer.php'); ?>

@@ -27,6 +27,9 @@ $event = find_event_by_id($booking['event_id']);
                     <br>
                     <i><?php echo h($booking['booking_id']); ?></i>
                     <br>
+                    <b>Number of Tickets:</b>
+                    <i><?php echo h($booking['number_of_tickets']); ?></i>
+                    <br>
                     <br>
                     <b>A confirmation email has been sent to:</b>
                     <br>
