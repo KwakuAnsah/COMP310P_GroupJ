@@ -1,3 +1,4 @@
+<?php // Adapted from: (Lynda.com - Kevin Skoglund, 2017) ?>
 <?php
 
 require_once ('db_credentials.php');

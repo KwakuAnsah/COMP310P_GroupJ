@@ -1,3 +1,5 @@
+<?php // Adapted from: (Lynda.com - Kevin Skoglund, 2017) ?>
+
 <?php
 
 ob_start(); // output buffering is turned on

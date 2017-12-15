@@ -6,7 +6,6 @@ if (mysqli_num_rows($ratings_set) > 0) {
     echo "<table class=\"table table-striped\" id=\"myTable\">";
     echo "<thead>";
     echo "<tr>";
-    echo "<th></th>";
     echo "<th class=\"text-center\">Username</th>";
     echo "<th class=\"text-center\">Event Rating</th>";
     echo "<th class=\"text-center\">Host Rating</th>";
@@ -28,7 +27,5 @@ if (mysqli_num_rows($ratings_set) > 0) {
     echo "</tbody>";
     echo "</table>";
     mysqli_free_result($ratings_set);
-} else {
-    echo "No records matching your request were found.";
 }
 ?>

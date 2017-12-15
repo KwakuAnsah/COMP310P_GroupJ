@@ -85,16 +85,18 @@ $page = 'show';
 
                 <?php
                 if (event_is_in_past($event_id)) {
-                    echo "TABLE OF REVIEWS";
-                    include(PUBLIC_PATH . 'events/event reviews.php'); 
+                    echo "<br><br><dl>
+                    <dt>Reviews:</dt>  
+                </dl>";
+                    include(PUBLIC_PATH . '/events/event reviews.php');
                     // 
                 } else {
                     echo "  <h2>Booking</h2>
                 <dl>
                     <dt>Ticket sales end:</dt>
-                    <dd>". h($event['ticket_sale_end']). "</dd>
-                    <dt><a href='".url_for('/bookings/new.php?event_id=')
-                    . h(u($event['event_id']))."'>Click to book</a></dt>
+                    <dd>" . h($event['ticket_sale_end']) . "</dd>
+                    <dt><a href='" . url_for('/bookings/new.php?event_id=')
+                    . h(u($event['event_id'])) . "'>Click to book</a></dt>
                 </dl>";
                 }
                 ?>
