@@ -95,7 +95,7 @@ COURSEWORK REQUIREMENTS
 All users can register with the system and create an account.                   DONE
 A user must log in to the system before using it.                               DONE                
 A user can be a host and may set up their own events.                           DONE EXCEPT (link Login user_id to host_id)
-A user can also be a participant and book tickets to other people’s events.     1/2 DONE 
+A user can also be a participant and book tickets to other people’s events.     DONE 
 --------------------------------------------------------------------------------
 2.
 --------------------------------------------------------------------------------
@@ -105,14 +105,14 @@ tickets available and end date.
 --------------------------------------------------------------------------------
 3. 
 --------------------------------------------------------------------------------
-A user can search the system for categories of events and can browse events     3/4 DONE
+A user can search the system for categories of events and can browse events     DONE
 within certain categories or timeframes.
 --------------------------------------------------------------------------------
 4. 
 --------------------------------------------------------------------------------
-A user can book a ticket for an event. 
-The system will manage the ticket sales until the set end time.
-No further ticket sales will be permitted if the event is full or if the end 
+A user can book a ticket for an event.                                          DONE
+The system will manage the ticket sales until the set end time.                 DONE
+No further ticket sales will be permitted if the event is full or if the end    DONE
 time for ticket sales of that event has been reached.
 --------------------------------------------------------------------------------
 5.
