@@ -9,7 +9,7 @@ include(SHARED_PATH . '/access_denied.php');
 if (is_post_request()) {
     $event = [];
     $event['event_name'] = $_POST['event_name'] ?? '';
-    $event['host_user_id'] = $_POST['host_user_id'] ?? '';
+    $event['host_user_id'] = $_SESSION['user_id'] ?? '';
     $event['event_description'] = $_POST['event_description'] ?? '';
     $event['total_tickets'] = $_POST['total_tickets'] ?? '';
     $event['room_id'] = $_POST['room_id'] ?? '';
@@ -69,22 +69,7 @@ mysqli_free_result($event_set);
                     ?>" />
                 </dd>
             </dl>
-            <dl>
-                <dt>Host</dt>
-                <dd>
-                    <select name="host_user_id">
-                        <?php
-                        $user_set = find_all_users();
-                        while ($user = mysqli_fetch_assoc($user_set)) {
-                            echo "<option value=" . $user["user_id"] . ">"
-                            . h($user["username"]) . " - " . h($user["first_name"])
-                            . " " . h($user["last_name"]) . "</option>";
-                        }
-                        mysqli_free_result($user_set);
-                        ?>
-                    </select>
-                </dd>
-            </dl>
+           
             <dl>
                 <dt>Category</dt>
                 <dd>
