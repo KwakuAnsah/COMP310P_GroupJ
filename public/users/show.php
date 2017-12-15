@@ -4,27 +4,24 @@ $page_title = 'Profile page';
 $page = 'show.php';
 
 include(SHARED_PATH . '/access_denied.php');
-
-
 ?>
 
 <?php
 $user_id = $_GET['user_id'] ?? '1'; // PHP > 7.0
 $user = find_user_by_id($user_id);
 
-if($_SESSION['user_id'] !== $user_id ){
+if ($_SESSION['user_id'] !== $user_id) {
     redirect_to(url_for("index.php"));
 }
-
 ?>
 
 <?php include(SHARED_PATH . '/header.php'); ?>
 <!--Start of body-->
 <div class="container-fluid text-center">    
-    
+
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <p><img src="<?php echo url_for("images/Justice league poster.jpg")?>" class="img-thumbnail img" alt="Generic profile picure"> Profile picture</p>
+            <p><img src="<?php echo url_for("images/Justice league poster.jpg") ?>" class="img-thumbnail img" alt="Generic profile picure"> Profile picture</p>
             <br>
             <br>
             <!--                Include links to pages later-->
@@ -63,16 +60,24 @@ if($_SESSION['user_id'] !== $user_id ){
                         <dd><?php echo h($user['email']) ?></dd>
                     </dl>
                     <dl>
-                    <dt>Address:</dt>
-                    <dd><?php echo h($user['address_line_1']); ?></dd>
-                    <dd><?php echo h($user['postcode']); ?></dd>
-                    <dd><?php echo h($user['city_name']); ?></dd>
-                    <dd><?php echo h($user['country_name']); ?></dd>
-                </dl>
+                        <dt>Address:</dt>
+                        <dd><?php echo h($user['address_line_1']); ?></dd>
+                        <dd><?php echo h($user['postcode']); ?></dd>
+                        <dd><?php echo h($user['city_name']); ?></dd>
+                        <dd><?php echo h($user['country_name']); ?></dd>
+                    </dl>
                 </div>
             </div>
-
         </div>
     </div>
+    <br>
+    <br>
+    <h2>Your Upcoming Events</h2>
+    <?php include(PUBLIC_PATH . '/users/upcoming_user_events.php'); ?>  
+        <br>
+    <br>
+    <h2>Events You Have Attended</h2>
+    <?php include(PUBLIC_PATH . '/users/past_user_events.php'); ?>  
 </div>
+
 <?php include(SHARED_PATH . '/footer.php'); ?>

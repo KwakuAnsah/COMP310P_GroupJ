@@ -82,15 +82,23 @@ $page = 'show';
                     <dt>Wheelchair Accessible:</dt>                       
                     <dd><?php echo h($room['wheelchair_accessible']); ?></dd>
                 </dl>
-                <h2>Booking</h2>
+
+                <?php
+                if (event_is_in_past($event_id)) {
+                    echo "TABLE OF REVIEWS";
+                    include(PUBLIC_PATH . 'events/event reviews.php'); 
+                    // 
+                } else {
+                    echo "  <h2>Booking</h2>
                 <dl>
                     <dt>Ticket sales end:</dt>
-                    <dd><?php echo h($event['ticket_sale_end']); ?></dd>
-                    <dt><a href="<?php
-                        echo url_for('/bookings/new.php?event_id='
-                                . h(u($event['event_id'])));
-                        ?>">Click to book</a></dt>
-                </dl>
+                    <dd>". h($event['ticket_sale_end']). "</dd>
+                    <dt><a href='".url_for('/bookings/new.php?event_id=')
+                    . h(u($event['event_id']))."'>Click to book</a></dt>
+                </dl>";
+                }
+                ?>
+
             </div>                  
         </div>
     </div>
