@@ -48,7 +48,6 @@ if (is_post_request()) {
     $user['address_id'] = '';
     $user['email'] = '';
 
-
     $address = [];
     $address['address_line_1'] = '';
     $address['city_id'] = '';

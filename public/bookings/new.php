@@ -10,16 +10,29 @@ if (is_post_request()) {
     // Handle form values
     $booking = [];
     $booking['number_of_tickets'] = $_POST['number_of_tickets'] ?? '';
-    $booking['user_id'] = $user_id;
-    $booking['event_id'] = $event_id;
+    $booking['user_id'] = $user_id ?? '';
+    $booking['event_id'] = $event_id ?? '';
 
     $booking_has_user = [];
+    $booking_has_user['user_id'] = $user_id ?? '';
+
     $event_has_booking = [];
+    $event_has_booking['event_id'] = $event_id ?? '';
+
 
     $result = insert_booking($booking);
     if ($result === true) {
-        $new_id = mysqli_insert_id($db);
-        redirect_to(url_for('/bookings/show.php?event_id=' . $new_id));
+        $new_booking_id = mysqli_insert_id($db);
+        echo "test 2 <br><br>";
+        $event_has_booking['booking_id'] = $new_booking_id;
+        echo "test 3 <br><br>";
+        $event_has_booking_result = insert_event_has_booking($event_has_booking);
+        echo "test 4 <br><br>";
+        $booking_has_user['booking_id'] = $new_booking_id;
+        echo "test 5 <br><br>";
+        $booking_has_user_result = insert_booking_has_user($booking_has_user);
+
+        redirect_to(url_for('/bookings/confirmation.php?event_id=' . $event_id));
     } else {
         $errors = $result;
     }
@@ -28,8 +41,14 @@ if (is_post_request()) {
     $booking['number_of_tickets'] = "";
     $booking['user_id'] = $user_id;
     $booking['event_id'] = $event_id;
+
     $booking_has_user = [];
+    $booking_has_user['booking_id'] = '';
+    $booking_has_user['user_id'] = '';
+
     $event_has_booking = [];
+    $event_has_booking['booking_id'] = '';
+    $event_has_booking['event_id'] = '';
 }
 
 $booking_set = find_all_bookings();
@@ -48,8 +67,8 @@ $address = find_address_by_room_id($event['room_id']);
 $city = find_city_by_id($address['city_id']);
 $country = find_country_by_id($city['country_id']);
 
-$t_sold = find_tickets_sold($event['event_id']);
-$tickets_remaining = $event['total_tickets'] - $t_sold;
+$tickets_sold = find_tickets_sold($event['event_id']);
+$tickets_remaining = $event['total_tickets'] - $tickets_sold;
 ?>
 
 <?php $page_title = 'Make a booking'; ?>
@@ -63,7 +82,7 @@ $tickets_remaining = $event['total_tickets'] - $t_sold;
             <br>
             <?php echo display_errors($errors); ?>
             <!-- FOR ENTERING NUMBER OF TICKETS -->                    
-            <form action="<?php echo url_for('/bookings/new.php'); ?>" method="post">
+            <form action="<?php echo url_for('/bookings/new.php?event_id=') . $event_id; ?>" method="post">
                 <h3>Please enter number of tickets below</h3>
                 <dl>
                     <dt>Tickets remaining:</dt>
@@ -74,24 +93,30 @@ $tickets_remaining = $event['total_tickets'] - $t_sold;
                 <dl>
                     <dt>Ticket sales end:</dt>
                     <dd><?php echo h($event['ticket_sale_end']); ?></dd>
-                    <dt>Time Left:</dt>
                     <?php
                     $now = time();
                     $timestamp_ticket_sale_end = strtotime($event['ticket_sale_end']);
                     $time_to_sale_end = date_create()->diff(date_create($event['ticket_sale_end']));
-                    ?>
-                    <dd>
-                        <?php
-                        echo $time_to_sale_end->format("%a days\n%h hours\n%i minutes\n"); //Walter Tross
+                    if ($timestamp_ticket_sale_end > $now) {
+
+                        echo "<dt>Time Left to Book:</dt>";
+
+                        echo "<dd>";
+                        echo "</dd>";
+                        echo $time_to_sale_end->format("%a days\n%h hours\n%i minutes\n"); // SOURCE: Walter Tross
                         //https://stackoverflow.com/questions/22597110/need-to-show-days-hours-minutes-and-seconds-between-two-dates-in-php
-                        ?>
-                    </dd>
+                    }
+                    ?>
                 </dl>
                 <?php
                 if ($timestamp_ticket_sale_end > $now && $tickets_remaining > 0) {
                     echo '<dl>' . '<dt>Number of tickets:</dt>' .
                     '<dd><input type="text" name="number_of_tickets" value="" /></dd>' .
                     '</dl>';
+                    echo '</dl>
+                    <div id="operations">
+                        <input type="submit" value="Confirm Booking" />
+                   </div>';
                 } else {
                     echo '<dl><dt>You cannot book a ticket</dt>';
                     if ($timestamp_ticket_sale_end < $now) {
@@ -100,13 +125,10 @@ $tickets_remaining = $event['total_tickets'] - $t_sold;
                     if ($tickets_remaining <= 0) {
                         echo "<dd>This event has SOLD OUT.</dd>";
                     }
-                    echo "</dl>";
                 }
                 ?>  
 
-                <div id="operations">
-                    <input type="submit" value="Confirm Booking" />
-                </div>
+
             </form>
 
 

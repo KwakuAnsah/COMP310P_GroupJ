@@ -94,8 +94,8 @@ if ($result = mysqli_query($db, $sql)) {
             $tickets_remaining = $event['total_tickets'] - $t_sold;
             echo "<tr class=\"text-center\">";
             echo "<td>"
-            ?><a class="action" href="<?php echo url_for('events/show.php?id=' . $event['event_id']); ?>">View Details</a><br><br><?php
-            ?><a class="action" href="<?php echo url_for('bookings/new.php?id=' . $event['event_id']); ?>">Book</a><?php
+            ?><a class="action" href="<?php echo url_for('events/show.php?event_id=' . $event['event_id']); ?>">View Details</a><br><br><?php
+            ?><a class="action" href="<?php echo url_for('bookings/new.php?event_id=' . $event['event_id']); ?>">Book</a><?php
             "</td>";
             echo "<td>" . $event['event_name'] . "</td>";
             echo "<td>" . $event['category_name'] . "</td>";
