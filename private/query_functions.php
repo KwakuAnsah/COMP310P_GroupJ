@@ -932,14 +932,14 @@ function validate_rating($rating) {
 function insert_rating($rating) {
     global $db;
 
-    $errors = validate_rating($rating); //array of errors
+    /* $errors = validate_rating($rating); //array of errors
     if (!empty($errors)) {
         return $errors;
-    }
+    }*/
 
     $sql = "INSERT INTO rating ";
     $sql .= "(event_rating, host_rating, review_text, event_id, "
-            . "user_ID(rater)) VALUES (";
+            . "rater_user_id) VALUES (";
     $sql .= "'" . db_escape($db, $rating['event_rating']) . "',";
     $sql .= "'" . db_escape($db, $rating['host_rating']) . "',";
     $sql .= "'" . db_escape($db, $rating['review_text']) . "',";
@@ -947,15 +947,8 @@ function insert_rating($rating) {
     $sql .= "'" . db_escape($db, $rating['rater_user_id']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
-// For INSERT statements, $result is true/false
-    if ($result) {
-        return true;
-    } else {
-        // INSERT failed
-        echo mysqli_error($db);
-        db_disconnect($db);
-        exit;
-    }
+    
+   
 }
 
 function update_rating($rating) {

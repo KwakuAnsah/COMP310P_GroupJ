@@ -1,6 +1,5 @@
 <?php
 require_once('../../private/initialize.php');
-$page_title = 'Rate an Event';
 $page = 'new.php';
 include(SHARED_PATH . '/access_denied.php');
 
@@ -8,10 +7,12 @@ if (!isset($_SESSION['user_id'])) {
     echo "<div class='no_session'>  </div>";
     redirect_to(url_for("index.php"));
 }
-if(!isset($_GET['event_id'])) {
-  redirect_to(url_for('/users/show.php?user_id='.$_SESSION['user_id']));
-}
 $event_id = $_GET['event_id'];
+$user_id = $_SESSION['user_id'];
+
+if (!isset($_GET['event_id'])) {
+    redirect_to(url_for('/users/show.php?user_id=' . $user_id));
+}
 
 if (is_post_request()) {
 
@@ -19,8 +20,8 @@ if (is_post_request()) {
     $rating['event_rating'] = $_POST['event_rating'] ?? '';
     $rating['host_rating'] = $_POST['host_rating'] ?? '';
     $rating['review_text'] = $_POST['review_text'] ?? '';
-    $rating['event_id'] = $_POST['event_id'] ?? '';
-    $rating['rater_user_id'] = $_SESSION['user_id'];
+    $rating['event_id'] = $event_id ?? '';
+    $rating['rater_user_id'] = $user_id;
 
 
     $result = insert_rating($rating);
@@ -28,10 +29,11 @@ if (is_post_request()) {
         $new_event_id = mysqli_insert_id($db);
         redirect_to(url_for('/events/show.php?event_id=' . $new_event_id));
     } else {
+        echo "didnt work";
         $errors = $result;
     }
 } else {
-    $rating=[];
+    $rating = [];
     $rating['event_rating'] = '';
     $rating['host_rating'] = '';
     $rating['review_text'] = '';
@@ -44,8 +46,6 @@ $rating_count = mysqli_num_rows($rating_set) + 1;
 mysqli_free_result($rating_set);
 ?>
 
-
-<?php include(SHARED_PATH . '/header.php'); ?>
 <?php
 $event_id = $_GET['event_id'] ?? '1'; // PHP > 7.0
 $user_id = $_SESSION['user_id'];
@@ -81,29 +81,27 @@ $tickets_remaining = $event['total_tickets'] - $tickets_sold;
         <div class="new_booking">
             <h1>Write a Review for <?php echo $event['event_name'] ?></h1>
             <br>
-<?php echo display_errors($errors); ?>
+            <?php echo display_errors($errors); ?>
 
-            <form action="<?php echo url_for('/ratings/new.php'); ?>" method="post">
+            <form action="<?php echo url_for('/rating/new.php?event_id=').$event_id; ?>" method="post">
                 <dl>
                     <dt>Overall Event Score:</dt>
-                    <dd><input type="text" name="event_rating" value="
-                        <?php echo h($rating['event_rating']); ?>"/> / 10
-                        </dd>
+                    <dd><input type="text" name="event_rating" value="<?php echo h($rating['event_rating']); ?>"/> / 10
+                    </dd>
                 </dl>
                 <dl>
                     <dt>Host Score:</dt>
-                    <dd><input type="text" name="host_rating" value="
-                        <?php echo h($rating['host_rating']); ?>" /> / 10
-                        </dd>
+                    <dd><input type="text" name="host_rating" value="<?php echo h($rating['host_rating']); ?>" /> / 10
+                    </dd>
                 </dl>
                 <dl>
                     <dt>Review:</dt>
-                    <dd><input type="text" name="host_rating" value="
-                        <?php echo h($rating['review_text']); ?>" />
-                        </dd>
+                    <dd><input type="text" name="review_text" style="width:500px; height:200px" value="<?php echo h($rating['review_text']); ?>" />
+                    </dd>
                 </dl>
-                    <dl>
-                
+                    <div id="operations">
+                        <input type="submit" value="Submit Review" />
+                    </div>                
             </form>
 
 
@@ -118,9 +116,9 @@ $tickets_remaining = $event['total_tickets'] - $tickets_sold;
                 <dl>
                     <dt>Hosted by:</dt>
                     <dd><?php
-                                echo h($host['first_name']) . ' ' .
-                                h($host['last_name']) . ' - ' . h($host['username']);
-?></dd>
+            echo h($host['first_name']) . ' ' .
+            h($host['last_name']) . ' - ' . h($host['username']);
+            ?></dd>
                 </dl>
 
                         <?php $rating = find_rating_by_event_id($event['event_id']) ?>

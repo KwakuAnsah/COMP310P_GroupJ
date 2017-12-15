@@ -118,9 +118,9 @@ time for ticket sales of that event has been reached.                           
 5.
 --------------------------------------------------------------------------------
 Participants can view a list of events they are attending                       NOT YET
-Receive email updates on events that are imminent. (You only have to show       NOT YET
-that an event (creating an email message) can be triggered at the date and time,NOT YET 
-you do not need to implement an email system.)                                  NOT YET
+Receive email updates on events that are imminent. (You only have to show       
+that an event (creating an email message) can be triggered at the date and time,
+you do not need to implement an email system.)                                  
 --------------------------------------------------------------------------------
 6. 
 --------------------------------------------------------------------------------
