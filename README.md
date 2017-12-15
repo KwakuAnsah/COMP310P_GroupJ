@@ -136,7 +136,7 @@ Ratings and feedback are visible to other users.
 TODO.
 SORT LOGIN:     A user must log in to the system before using it. KWAKU >>> DONE
 Login required for: all of bookings, all of events, ratings,  DANIELLE
-SORT BOOKINGS: Needs to write to database, needs validation (4.)  DANIELLE
+SORT BOOKINGS: Needs to write to database, needs validation (4.)  DANIELLE >>> DONE
 SORT 3.: Link WHATSON to database.                              JENNY   >>> DONE
 Participants can view a list of events they are attending.        KWAKU
 Receive email updates on events that are imminent. (JAVASCRIPT) - KWAKU 

@@ -1,5 +1,6 @@
 <?php require_once('../../private/initialize.php'); ?>
-<?php $page_title = 'Booking Confirmation page'; ?>
+<?php $page_title = 'Booking Confirmation page';
+include(SHARED_PATH . '/access_denied.php');?>
 
 <!-- Page header -->
 <?php include(SHARED_PATH . '/header.php'); ?>

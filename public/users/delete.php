@@ -1,7 +1,8 @@
 <?php
 require_once('../../private/initialize.php');
 $page_title = 'Delete user';
-$page = 'user_delete.php'
+$page = 'user_delete.php';
+include(SHARED_PATH . '/access_denied.php');
 ?>
 
 <?php
