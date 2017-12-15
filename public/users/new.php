@@ -19,6 +19,7 @@ if (is_post_request()) {
     $address['postcode'] = $_POST['postcode'] ?? '';
 
     $address_errors = validate_address($address);
+    $user_errors = [];
     if (empty($address_errors)) {
         $address_result = insert_address($address);
         if ($address_result === true) {
@@ -29,7 +30,7 @@ if (is_post_request()) {
                 $new_user_id = mysqli_insert_id($db);
                 redirect_to(url_for('/users/show.php?user_id=' . $new_user_id));
             } else {
-                $user_result = $user_errors;
+                $user_errors = validate_address($address);
             }
         }
     }

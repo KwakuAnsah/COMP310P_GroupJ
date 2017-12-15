@@ -11,10 +11,8 @@ $host_user_id = $_SESSION['user_id'];
 <?php include(SHARED_PATH . '/header.php'); ?>
 <?php
 if(!isset($_SESSION["user_id"])){
-    echo "<div class='no_session'> THERE IS NO SESSION  </div>";
-    
-    
-    //redirect_to(url_for("index.php"));
+   
+    redirect_to(url_for("index.php"));
 }
 ?>
 <!-- Asynchronous searching used on this page -->
