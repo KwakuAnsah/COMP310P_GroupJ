@@ -67,7 +67,7 @@ if (!isset($page_title)) {
     
     <body>
         <div class="container text-center "> 
-            <h1  style="display: inline; font-size:500%;" >MovieTime     </h1>
+            <h1  style="display: inline; font-size:500%;" ><a href="<?php echo url_for('/whats_on.php'); ?>"> MovieTime </a></h1>
         </div>
 
         <!--        Creates & centers the navigation bar  & makes sure black strip fills the screen width-->
@@ -82,7 +82,7 @@ if (!isset($page_title)) {
                         <li class="active"><a href="<?php echo url_for('/index.php'); ?>">Home</a></li>
                         <li><a href="<?php echo url_for('/whats_on.php'); ?>">What's on</a></li>
                         <li><a href="<?php echo url_for('/events/new.php'); ?>">Create Event</a></li> 
-                        <li><a href="<?php echo url_for('/film_genres_browse.php'); ?>">Film Genres </a></li>
+                        <li><a href="<?php echo url_for('/event_genres.php'); ?>">Film Genres </a></li>
                         <li><a href="<?php echo url_for('/about_us.php'); ?>">About Us</a></li>
                         <li><a href="<?php echo url_for('/contact_us.php'); ?>">Contact Us</a></li>
                     </ul>
@@ -90,7 +90,7 @@ if (!isset($page_title)) {
                     <!--                        Form to submit  user search -->
                     <form class="navbar-form navbar-left" action="/search_results.php" style="text-align:center; position: relative; display: inline-block; left: 240px">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" name="search">
+                            <input type="text" class="form-control" placeholder="Search for event" name="search">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="glyphicon glyphicon-search"></i>
