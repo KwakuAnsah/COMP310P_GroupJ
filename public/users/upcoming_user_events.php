@@ -1,8 +1,9 @@
 <?php
-require_once('../private/initialize.php');
-$page_title = 'Whats On';
-$page = "whats_on.php";
+require_once('../../private/initialize.php');
+include(SHARED_PATH . '/access_denied.php');
 
+$page_title = 'Host user';
+$page = "host_events.php";
 // Setting up parameters for this page
 $date_result = null;
 $Search1 = filter_input(INPUT_POST, "Search");
@@ -15,15 +16,6 @@ $Search1 = filter_input(INPUT_POST, "Search");
     <h1 class='whats_on_title text-light bg-dark'>What's On</h1>
     <br>
     <br>
-    <form class="searchbox form-group" onsubmit="return checkSearch(this)" method="post">
-        <p class="search_dates">
-            Search for events happening between:
-            <input type="date" id="dateinput1" name="dateInput1"/>
-            and
-            <input type="date" id="dateinput2" name="dateInput2"/>
-            <input type="submit" value="Search" name="searchsubmit"/>
-        </p>
-    </form>
 </div>
 <br>
 
@@ -38,21 +30,22 @@ $date_input2 = db_escape($db, filter_input(INPUT_POST, "dateInput2"));
 $date_time1 = $date_input1 . " 00:00:00";
 $date_time2 = $date_input2 . " 23:59:59";
 $datepart = "";
-if ($date_input1 != "" and $date_input2 != "") {
-    $datepart = "AND event_start BETWEEN '$date_time1'  AND '$date_time2'";
-}
-$sql = "SELECT event.event_id, event_name, host_user_id, username, "
-        . "first_name, last_name, event_end, event_description, "
-        . "total_tickets, event_category_id, category_name, event_start, ticket_sale_end, "
+
+
+$sql = "SELECT booking.number_of_tickets, event_has_booking .booking_id, booking_has_user. user_id, "
+        . "event.event_id, event_name, event_end, event_description, total_tickets, event_category_id, "
+        . "category_name, event_start, ticket_sale_end, room.room_id, room_name, capacity, "
         . "room.room_id, room_name, capacity, wheelchair_accessible, "
-        . "address.address_id, address_line_1, postcode, city.city_id, "
-        . "city_name, country.country_id, country_name, genre_name ";
-$sql .= "FROM event "
-        . "JOIN user ON event.host_user_id = user.user_id "
-        . "JOIN film_event ON film_event.event_id = event.event_id "
-        . "JOIN film ON film.film_id = film_event.film_id "
-        . "JOIN film_film_genre ON film_film_genre.film_id =film.film_id "
-        . "JOIN film_genre ON film_genre.genre_id = film_film_genre.genre_id "
+        . "wheelchair_accessible, address.address_id, address_line_1, postcode, city.city_id, city_name, "
+        . "country.country_id, country_name, genre_name ";
+$sql .= "FROM booking_has_user "
+        . "JOIN event_has_booking ON  booking_has_user.booking_id=event_has_booking. booking_id "
+        . "JOIN booking ON event_has_booking. booking_id=booking.booking_id "
+        . "JOIN event ON event.event_id=event_has_booking.event_id"
+        . "JOIN film_event ON film_event.event_id=event.event_id "
+        . "JOIN film ON film.film_id=film_event.film_id "
+        . "JOIN film_film_genre ON film_film_genre.film_id=film.film_id "
+        . "JOIN film_genre ON film_genre.genre_id=film_film_genre.genre_id "
         . "JOIN category ON event_category_id = category_id "
         . "JOIN room ON event.room_id = room.room_id "
         . "JOIN address ON room.address_id = address.address_id "
@@ -62,9 +55,7 @@ $sql .= "FROM event "
         . "AND event_start > '" . $today . "' "
         . $datepart;
 
-if ($date_input1 != "" and $date_input2 != "") {
-    $date_result = "happening between $date_input1 and $date_input2";
-}
+
 echo "<h3>Your search results: Events $date_result</h3>";
 
 //Creating table of events
@@ -74,13 +65,12 @@ if ($result = mysqli_query($db, $sql)) {
         echo "<thead>";
         echo "<tr>";
         echo "<th></th>";
+        echo "<th class=\"text-center\">Number Of Tickets</th>";
         echo "<th class=\"text-center\">Event Name</th>";
         echo "<th class=\"text-center\">Event Category</th>";
         echo "<th class=\"text-center\">Event Description</th>";
-        echo "<th class=\"text-center\">Film Genre</th>";
         echo "<th class=\"text-center\">Start Time</th>";
         echo "<th class=\"text-center\">End Time</th>";
-        echo "<th class=\"text-center\">Host</th>";
         echo "<th class=\"text-center\">Room and Address</th>";
         echo "<th class=\"text-center\">Tickets remaining</th>";
         echo "<th class=\"text-center\">Ticket Sale End</th>";
@@ -98,13 +88,12 @@ if ($result = mysqli_query($db, $sql)) {
             ?><a class="action" href="<?php echo url_for('events/show.php?event_id=' . $event['event_id']); ?>">View Details</a><br><br><?php
             ?><a class="action" href="<?php echo url_for('bookings/new.php?event_id=' . $event['event_id']); ?>">Book</a><?php
             "</td>";
+            echo "<td>" . $event['number_of_tickets'] . "</td>";
             echo "<td>" . $event['event_name'] . "</td>";
             echo "<td>" . $event['category_name'] . "</td>";
             echo "<td>" . $event['event_description'] . "</td>";
-            echo "<td>" . $event['genre_name'] . "</td>";
             echo "<td>" . $event['event_start'] . "</td>";
             echo "<td>" . $event['event_end'] . "</td>";
-            echo "<td>" . $event['first_name'] . " " . $event['last_name'] . "</td>";
             echo "<td>" . $event['room_name'] . ", " . $event['address_line_1'] . ", " . $event['postcode'] . ", " . $event['city_name'] . ", " . $event['country_name'] . "</td>";
             echo "<td>" . $tickets_remaining . "/" . $event['total_tickets'] . "</td>";
             echo "<td>" . $event['ticket_sale_end'] . "</td>";

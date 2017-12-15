@@ -1,5 +1,3 @@
-
-
 <?php
 if (is_post_request()) {
 
@@ -44,6 +42,7 @@ if (is_post_request()) {
     $user['address_id'] = '';
     $user['email'] = '';
 
+
     $address = [];
     $address['address_line_1'] = '';
     $address['city_id'] = '';
@@ -54,4 +53,3 @@ $user_set = find_all_users();
 $user_count = mysqli_num_rows($user_set) + 1;
 mysqli_free_result($user_set);
 ?>
-
