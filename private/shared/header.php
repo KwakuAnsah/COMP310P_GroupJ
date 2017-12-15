@@ -41,7 +41,7 @@ if (!isset($page_title)) {
         elseif ($page == 'Booking Confirmation page') {
             echo "<link href='". url_for('stylesheets/bookings_style.css')."' rel='Bookings stylesheet'>";
         }
-                
+
     //  FOR ABOUT US PAGE :    
         elseif ($page == 'about_us.php') {
             echo '<link rel="stylesheet for about us" href= "' . url_for('/stylesheets/about_contact_us_style.css').'"/>';
