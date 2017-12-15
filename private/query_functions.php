@@ -525,6 +525,8 @@ function delete_booking($booking_id) {
 //For DELETE statements, $result is true false
 
     if ($result) {
+        delete_booking_has_user($booking_id);
+        delete_event_has_booking($booking_id);
         return true;
     } else {
         // DELETE failed
@@ -684,10 +686,10 @@ function update_event_has_booking($event_has_booking) {
     }
 }
 
-function delete_event_has_booking($event_id) {
+function delete_event_has_booking($booking_id) {
     global $db;
     $sql = "DELETE FROM event_has_booking ";
-    $sql .= "WHERE event_id ='" . db_escape($db, $event_id) . "' ";
+    $sql .= "WHERE booking_id ='" . db_escape($db, $booking_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
 //For DELETE statements, $result is true false

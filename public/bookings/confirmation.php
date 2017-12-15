@@ -7,8 +7,10 @@
 <!-- For obtaining users' booking ID and email -->
 <?php
 $booking_id = $_GET['booking_id'] ?? '1';
+
 $booking = find_booking_by_id($booking_id);
 $user = find_user_by_id($booking['user_id']);
+$event = find_event_by_id($booking['event_id']);
 ?>
 
 <body>
@@ -19,8 +21,8 @@ $user = find_user_by_id($booking['user_id']);
             <div class="well-lg">
                 <h3 class="confirmation">Thank you very much for booking with us! We hope you enjoy your event!</h3>
                 <br>
-                <br>
                 <p class="message">
+                <h3>Event: <?php echo $event['event_name']?></h3>
                     <b>Your booking ID:</b>
                     <br>
                     <i><?php echo h($booking['booking_id']); ?></i>
