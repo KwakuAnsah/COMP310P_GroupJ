@@ -79,7 +79,7 @@ function has_unique_email($email, $current_id = "0") {
 
     $sql = "SELECT * FROM user ";
     $sql .= "WHERE email='" . db_escape($db, $email) . "' ";
-    $sql .= "AND id != '" . db_escape($db, $current_id) . "'";
+    //$sql .= "AND id != '" . db_escape($db, $current_id) . "'";
 
     $email_set = mysqli_query($db, $sql);
     $email_count = mysqli_num_rows($email_set);

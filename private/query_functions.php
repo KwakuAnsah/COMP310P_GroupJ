@@ -1,4 +1,4 @@
-<?php // Adapted from: (Lynda.com - Kevin Skoglund, 2017) ?>
+<?php // Adapted from: (Lynda.com - Kevin Skoglund, 2017)     ?>
 <?php
 
 // Users ----DONE except validate users-----------------------------------------
@@ -75,7 +75,7 @@ function validate_user($user) {
     } elseif (!has_length($user['password'], ['min' => 8, 'max' => 30])) {
         $errors[] = "Password must be between 8 and 30 characters.";
     }
-    if (($user['password']) !== ($user['password_validation'])) {
+    if (($user['password']) !== ($user['password_check'])) {
 
         $errors[] = "Passwords do not match.";
     }
@@ -121,7 +121,7 @@ function insert_user($user) {
 function delete_user($user_id) {
     global $db;
     $sql = "DELETE FROM user ";
-    $sql .= "WHERE id ='" . db_escape($db, $user_id) . "' ";
+    $sql .= "WHERE user_id ='" . db_escape($db, $user_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
     //For DELETE statements, $result is true false
@@ -305,15 +305,21 @@ function validate_event($event) {
     if ($event_end < $event_start) {
         $errors[] = "Event end time must be after event start time.";
     }
+    if (is_blank($event_end) || empty($event_end)) {
+        $errors[] = "Event end time must be set";
+    }
 
     // ticket_sale_end --------------------------------------------------------
     //      The time that ticket sales end must be before the event start time.
     // ------------------------------------------------------------------------
-    $event_end = (int) $event['event_end'];
-    $event_start = (int) $event['event_start'];
-    if ($event_end < $event_start) {
-        $errors[] = "Event end time must be after event start time.";
+    $ticket_sale_end = (int) $event['ticket_sale_end'];
+    if ($ticket_sale_end > $event_start) {
+        $errors[] = "The time that ticket sales end must be before the event start time.";
     }
+    if (is_blank($ticket_sale_end) || empty($ticket_sale_end)) {
+        $errors[] = "Ticket sale end time must be set";
+    }
+
 
     // event_start ------------------------------------------------------------
     //      The event start time cannot be in the past.
@@ -329,8 +335,9 @@ function validate_event($event) {
     if ($today > $start_time) {
         $errors[] = "The event start time cannot be in the past.";
     }
-    return $errors;
-
+    if (is_blank($start_time) || empty($start_time)) {
+        $errors[] = "Start time must be set";
+    }
 
     // event_description  -----------------------------------------------------
     //      Event description cannot be blank.
@@ -338,17 +345,31 @@ function validate_event($event) {
     if (is_blank($event['event_description'])) {
         $errors[] = "Event description cannot be blank.";
     }
+    
 
+    // total_tickets -----------------------------------------------------------
+    //      Please enter the number of tickets you would like to release.
+    //      Name must be between 2 and 150 characters.
+    // ------------------------------------------------------------------------
+    if (is_blank($event['total_tickets'])) {
+        $errors[] = "Please enter the number of tickets you would like to release.";
+    } elseif ($event['total_tickets']<1) {
+        $errors[] = "You must release at least one ticket.";
+    }
+
+
+
+    
     return $errors;
 }
 
 function insert_event($event) {
     global $db;
 
-    /* $errors = validate_event($event); //array of errors
-      if (!empty($errors)) {
-      return $errors;
-      } */
+    $errors = validate_event($event); //array of errors
+    if (!empty($errors)) {
+        return $errors;
+    }
 
     $sql = "INSERT INTO event ";
     $sql .= "(event_name, host_user_id, event_end, event_description, "
@@ -787,13 +808,12 @@ function find_all_ratings_by_event_id($event_id) {
     $sql = "SELECT event_rating, host_rating, review_text, rating_id, 
         user.user_id, username FROM rating 
         JOIN user ON user.user_id = rating.rater_user_id 
-        WHERE rating.event_id =". $event_id;
+        WHERE rating.event_id =" . $event_id;
 
     $result = mysqli_query($db, $sql);
     confirm_result_set($result);
     return $result;
 }
-
 
 function find_rating_by_id($rating_id) {
     global $db;

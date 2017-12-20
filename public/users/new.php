@@ -1,6 +1,7 @@
 
 
 <?php
+
 if (is_post_request()) {
 
     // Handle form values
@@ -19,20 +20,20 @@ if (is_post_request()) {
     $address['postcode'] = $_POST['postcode'] ?? '';
 
     $address_errors = validate_address($address);
-    $user_errors = [];
-    if (empty($address_errors)) {
+    $user_errors = validate_user($user);
+
+    if (empty($address_errors) && empty($user_errors)) {
         $address_result = insert_address($address);
-        if ($address_result === true) {
-            $new_address_id = mysqli_insert_id($db);
-            $user['address_id'] = $new_address_id;
-            $user_result = insert_user($user);
-            if ($user_result === true) {
-                $new_user_id = mysqli_insert_id($db);
-                redirect_to(url_for('/users/show.php?user_id=' . $new_user_id));
-            } else {
-                $user_errors = validate_address($address);
-            }
-        }
+        $new_address_id = mysqli_insert_id($db);
+        $user['address_id'] = $new_address_id;
+        $user_result = insert_user($user);
+        $new_user_id = mysqli_insert_id($db);
+        $_SESSION["user_id"] = $new_user_id;
+        $_SESSION["first_name"] = $user["first_name"];
+        $_SESSION["last_name"] = $user["last_name"];
+        $_SESSION["username"] = $user["username"];
+
+        redirect_to(url_for('/users/show.php?user_id=' . $new_user_id));
     }
     $errors = array_merge($address_errors, $user_errors);
 } else {

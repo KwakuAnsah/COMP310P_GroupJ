@@ -27,7 +27,6 @@ if ($_SESSION['user_id'] !== $user_id) {
             <!--                Include links to pages later-->
             <p><a href="">Create Event</a></p>
             <p><a class="action" href="<?php echo url_for('/users/delete.php?user_id=' . h(u($user['user_id']))); ?>">Delete your account</a></p>
-            <p><a class="action" href="<?php echo url_for('/users/edit.php?user_id=' . h(u($user['user_id']))); ?>">Edit your account details</a></p>
             <p><a class="action" href="<?php echo url_for('/users/host_events.php?host_user_id=' . h(u($user['user_id']))); ?>">View Events you are Hosting</a></p>
         </div>
         <div id="content">

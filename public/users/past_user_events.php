@@ -63,11 +63,10 @@ if ($result = mysqli_query($db, $sql)) {
             $tickets_remaining = $event['total_tickets'] - $t_sold;
             echo "<tr class=\"text-center\">";
             echo "<td>"
-            ?><a class="action" href="<?php echo url_for('events/show.php?event_id=' . $event['event_id']); ?>">View Details</a><br><br><?php
-            ?>
+            ?><a class="action" href="<?php echo url_for('events/show.php?event_id=' . $event['event_id']); ?>">View Details</a><br>
             <?php
             if (user_has_already_rated_event($event['event_id']) == 1) {
-                echo '<a class="action" href="' . url_for('rating/show.php?event_id=' . $event['event_id']) . '"> See Your Review</a>';
+                echo 'You have already reviewed this event';
             } else {
                 echo '<a class="action" href="' . url_for('rating/new.php?event_id=' . $event['event_id']) . '"> Review this Event</a>';
             }

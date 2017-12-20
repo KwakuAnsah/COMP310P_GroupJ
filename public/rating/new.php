@@ -26,8 +26,7 @@ if (is_post_request()) {
 
     $result = insert_rating($rating);
     if ($result === true) {
-        $new_event_id = mysqli_insert_id($db);
-        redirect_to(url_for('/events/show.php?event_id=' . $new_event_id));
+        redirect_to(url_for('/events/show.php?event_id=' . $event_id));
     } else {
         echo "didnt work";
         $errors = $result;

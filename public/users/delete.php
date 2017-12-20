@@ -11,12 +11,19 @@ if (!isset($_GET['user_id'])) {
     // redirect back to the index
     redirect_to(url_for('index.php'));
 }
-$user_id = $_GET['user_id'];
+$user_id = $_SESSION['user_id'];
 
 if (is_post_request()) {
     // If it is a POST request then we will delete the entry 
+
     $result = delete_user($user_id);
-    redirect_to(url_for('index.php'));
+    if ($result) {
+        setcookie(session_name(), '', 100);
+        session_unset();
+        session_destroy();
+        $_SESSION = array();
+        redirect_to(url_for("index.php"));
+    }
 } else {
     // Error handling
     $user = find_user_by_id($user_id);
@@ -41,8 +48,8 @@ if (is_post_request()) {
         </p>
         <i><p class="username_show"><?php echo h($user['username']); ?></p></i>
         <br>
-         
-        <form action="<?php echo url_for('/users/delete.php?id=' . h(u($user['user_id']))); ?>" method="post">            
+
+        <form action="<?php echo url_for('/users/delete.php?user_id=' . h(u($user['user_id']))); ?>" method="post">            
             <div id="operations">
                 <input class="submission_btn btn btn-lg btn-default" type="submit" name="delete_user" value="Delete User">
             </div>
